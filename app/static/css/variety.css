@@ -1,0 +1,30 @@
+.question-info {
+    text-align: center;
+}
+
+.answer-list li{
+    list-style: none;
+    border-bottom: 1px solid #eee;
+}
+
+.avatar{
+    width: 30px;
+    border-radius: 50%;
+}
+
+.user-info{
+    font-size: 15px;
+    color: #9b9b9b;
+    line-height: 40px;
+}
+.user-info .username{
+    margin-left: 15px;
+
+}
+.answer-content{
+    margin-left: 50px;
+}
+
+.user-info .create-time{
+    float:right;
+}

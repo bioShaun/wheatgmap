@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+ <div class="col-xs-12">
+  <h4>General information</h4>
+  <table style="width=100%">
+    <tbody>
+    <tr>
+      <td valign="top"></td>
+        <br>
+        <table class="table">
+          <thead><b>General information</b></thead>
+          <tbody>
+            <tr>
+              <td><b>Profile of {{ current_user.username }}: </b></td>
+              <td>
+                <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Username: </b></td>
+              <td>{{ current_user.username }}</td>
+            </tr>
+            <tr>
+              <td><b>Institute: </b></td>
+              {% if current_user.institute %}
+                <td>{{ current_user.institute }}</td>
+              {% else %}
+                <td> - </td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><b>Telephone: </b></td>
+              {% if current_user.phone %}
+                <td>{{ current_user.phone }}</td>
+              {% else %}
+                <td> - </td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><b>Email: </b></td>
+              {% if current_user.email %}
+                <td>{{ current_user.email }}</td>
+              {% else %}
+                <td> - </td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+        <td valign="top"></td>
+          <br>
+          <table class="table">
+            <thead><b>Statistics</b></thead>
+            <tbody>
+              <tr>
+                <td><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span><strong>Public VCF</strong></td>
+                <td>{{ stat['pu_vcf'] }}</td>
+              </tr>
+              <tr>
+                <td><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><strong>Private VCF</strong></td>
+                <td id="pr-vcf">{{ stat['pr_vcf'] }}</td>
+              </tr>
+              <tr>
+                <td><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span><strong>Public Samples</strong></td>
+                <td>{{ stat['pu_sample'] }}</td>
+              </tr>
+              <tr>
+                <td><span class="glyphicon glyphicon-lock" aria-hidden="true"></span><strong>Private Samples</strong></td>
+                <td id="pr-sample"><a id="pr-sample-href">{{ stat['pr_sample'] }}</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <td valign="top"></td>
+          <br>
+          <table class="table">
+            <thead><b>Backend task</b> (most save 5 latest task below)</thead>
+            <tbody>
+              {% for task in tasks %}
+              <tr>
+                <td><a href="/task/result/{{ task['id'] }}/"><b>{{ task['id'] }}</b></a></td>
+                <td>{{ task['state'] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <td valign="top"></td>
+            <br>
+                <table class="table">
+                  <thead><b>Upload vcf</b></thead>
+                    <tbody>
+                      <tr>
+                        <td><input id="vcf-file" input name="vcfile" type="file">
+                          <div class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: 0%;">
+                                    <span class="sr-only">0%</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <select id="vcf-type" class="form-control" data-width="20%">
+                            <option value=WGS>WES</option>
+                            <option value=WES>WGS</option>
+                            <option value=RNAse>RNAse</option>
+                          </select>
+                        </td>
+                        <td>
+                        <input class="btn btn-default"  id="vcf-sub" type="submit"  value="Upload">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row">
+                    <div id="vcf-result" class="col-xs-6">
+                    </div>
+                  </div>
+        </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
+{% endblock %}

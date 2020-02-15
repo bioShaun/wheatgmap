@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel-body">
+    <div class="panel">
+        <h2>Get Pca Plot:</h2>
+        <div class="page-heading">
+            <h3 class="panel-title">Get a scatter plot by upload your pca table.&nbsp;<span><a href="/static/download/pca/test.tpm.txt">Download example table</a></span></h3>
+        </div>
+        <div class="panel-body">
+          <form id="expr" method="post" enctype="multipart/form-data">
+             <label>expression file:</label>
+             <input name="expression" type="file">
+             <br/>
+             <label>sample group(optional):</label>
+             <input name="sample_group" type="file">
+             <input class="btn btn-default" id="sub_expr" type="submit" value=Upload>
+          </form>
+          <!--
+          <form id="expr" method="post" enctype="multipart/form-data">
+            <table class='table table-strip table-bordered'>
+              <tr>
+                <td><label for="">expression table file: </label></td>
+                <td><input name="expression" type="file"></td>
+              </tr>
+              <tr>
+                <td><label for="">sample group: (Optional)</label><td>
+                <td><input name="sample_group" type="file"></td>
+              </tr>
+              <tr>
+                <td colspan=2>
+                  <input type="reset" />
+                  <input id="sub_expr" type="submit" value=submit>
+                </td>
+              </tr>
+            </table>
+          </form>
+          -->
+        </div>
+        <br>
+        <div class="page-heading">
+            <h3 class="panel-title">Get a scatter plot by upload your vcf table.&nbsp;<span><a href="/static/download/pca.xlsx">Download example vcf file</a></span></h3>
+        </div>
+       <div class="panel-body">
+          <form id="vcf" method="post" enctype="multipart/form-data">
+             <label>vcf gz file:</label>
+             <input name="vcfile" type="file">
+             <input class="btn btn-default" id="sub_vcf" type="submit" value=Upload>
+          </form> 
+        </div>
+    </div>
+  <div id="query_hint"></div>
+  <h2>Plot Results:</h2>
+  <div id="result-plot" style="width: 1200px; height: 800px;"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="https://unpkg.com/echarts@3.5.3/dist/echarts.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils/get_pca.js') }}"></script>
+{% endblock %}

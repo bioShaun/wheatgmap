@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-xs-8">
+    <h2>Vcf Annotation:</h2>
+    <div class="panel-heading">
+        <h3 class="panel-title">Select a database, and input vcf file to get annotation information.</h3>
+    </div>
+    <table style="width=100%">
+      <tbody>
+        <tr>
+          <td valign="top"></td>
+            <br>
+              <table class="table">
+                <tr>
+                  <td>
+                    <span><label>select annotation database:</label>
+                    <select id="database" class="form-control" data-width="25%">
+                      <option value= selected="selected"></option>
+                      {% for db in annotation_database %}
+                        <option value={{ db }}>{{ db }}</option>
+                      {% endfor %}
+                    </select>
+                    </span>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    <span><label>uoload vcf file:</label>
+                    <input id="file" type="file">
+                    </span>
+                    <div class="progress progress-striped active">
+                      <div class="progress-bar progress-bar-success" role="progressbar"
+                           aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                              style="width: 0%;">
+                              <span class="sr-only">0%</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                      <button type="submit" class="btn btn-sm btn-primary" id="submit">Submit</button>
+                    </td>
+                </tr>
+              </table>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>
+<div id="query_hint"></div>
+<h2>Annotation Results:</h2>
+<div id="result"></div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/annotation.js') }}"></script>
+{% endblock %}

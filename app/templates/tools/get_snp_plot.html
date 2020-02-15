@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block css %}
+{% assets 'css_fancybox' -%}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+{%- endassets %}
+{% endblock %}
+{% block content %}
+<div class="panel-body">
+<div class="panel">
+  <h2>Get Snp Index Plot:</h2>
+    <div class="panel-heading">
+        <h3 class="panel-title">Select a file. </h3>
+    </div>
+<div class="panel-body">
+<div class="row">
+<div class="col-xs-6">
+        <div class="form-group">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">File name:</span>
+            <select class="selectpicker" data-width="25%" name="file" id="select-file">
+                        <option value= selected="selected"></option>
+                        {% for file in files %}
+                        <option value={{file}}>{{file}}</option>
+                        {% endfor %}
+            </select>
+        </div>
+        <br>
+
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Windows and Step:</span>
+            <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
+                        <option value= selected="selected"></option>
+                        <option value=w1m_s100k>Windows 1M and Step 100K</option>
+                        <option value=w1m_s50k>Windows 1M and Step 50K</option>
+                        <option value=w1m_s20k>Windows 1M and Step 20K</option>
+                        <option value=w500k_s100k>Windows 500K and Step 100K</option>
+                        <option value=w500k_s50k>Windows 500K and Step 50K</option>
+                        <option value=w500k_s20k>Windows 500K and Step 20K</option>
+                        <option value=w200k_s100k>Windows 200K and Step 100K</option>
+                        <option value=w200k_s50k>Windows 200K and Step 50K</option>
+                        <option value=w200k_s20k>Windows 200K and Step 20K</option>
+            </select>
+        </div>
+	<br>
+
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Compared groups:</span>
+            <select class="selectpicker" data-width="25%" name="chr" id="select-group">
+                        <option value= selected="selected"></option>
+                        {% for group in groups %}
+                        <option value={{ group }}>{{group }}</option>
+                        {% endfor %}
+            </select>
+        </div>
+
+        </div>
+      </div>
+    <div class="col-xs-6">
+        <div class="form-group">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Custom GroupA Name:</span>
+            <input type="text" id="groupA-name" class="form-control input-group-sm"  name="groupA name" value="GroupA">
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Custom GroupB Name:</span>
+            <input type="text" id="groupB-name" class="form-control input-group-sm"  name="groupB name" value="GroupB">
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+<!-- right -->
+<!--
+<div class="col-xs-8">
+<div class="panel">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4">
+          <h3 class="panel-title">select samples displayed in the result (<span class='text-danger'>optional</span>):</h3>
+        </div>
+        <div class="col-xs-8">
+          <div class="input-group search">
+            <input type="text" class="form-control" id="search-sample" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-search" id="search-button" type="button"><i class="fa fa-search fa-fw"></i> Search</button>
+            </span>
+          </div>
+        </div>
+    </div>
+    <div class="panel-body show-samples">
+    </div>
+</div>
+</div>
+</div>
+-->
+</div>
+<div>
+  <h2>Divide groups:</h2>
+  <div class="panel-heading">
+  <h3 class="panel-title">Divide samples which showed below to two groups.</h3>
+  </div>
+  <div class="row">
+    <div class="col-xs-5">
+        <select name="from[]" id="multi_d" class="form-control" size="26" multiple="multiple">
+        </select>
+    </div>
+
+    <div class="col-xs-2">
+        <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+    </div>
+
+    <div class="col-xs-5">
+        <b>group A</b>
+        <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
+
+        <br/><hr/><br/>
+
+        <b>group B</b>
+        <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
+    </div>
+</div>
+</div>
+  <div class="panel-body">
+    <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
+  </div>
+  <hr/>
+  <!-- add loading hint -->
+  <div id="query_hint"></div>
+  <h2>Plot Results:</h2>
+  <div id="results-plot"></div>
+{% endblock %}
+
+{% block js %}
+    {% assets 'js_fancybox' -%}
+        <script src="{{ ASSET_URL }}"></script>
+    {%- endassets %}
+<script src="{{ url_for('static', filename='js/utils/snp_plot.js') }}"></script>
+{% endblock %}

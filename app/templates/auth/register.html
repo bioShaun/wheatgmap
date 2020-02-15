@@ -1,0 +1,27 @@
+{% extends 'auth_base.html' %}
+{% from 'auth/_authform.html' import render_field %}
+{% block css %}
+{% endblock %}
+
+{% block auth %}
+    <li><a href="{{url_for('auth.login')}}">login</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<h2 style="text-align: center">Registration</h2>
+<form class="form form-register" method="post" action="{{ url_for('auth.register') }}">
+    {{ form.csrf_token }}
+    {{ render_field(form.username, placeholder="Username", class_="form-control") }}
+    {{ render_field(form.email, placeholder="Email", class_="form-control") }}
+    {{ render_field(form.institute, placeholder="Institute", class_="form-control") }}
+    {{ render_field(form.telephone, placeholder="Telephone", class_="form-control") }}
+    {{ render_field(form.password, placeholder="Password", class_="form-control") }}
+    {{ render_field(form.confirm, placeholder="Verify Password", class_="form-control") }}
+    <p align="center"><input class="btn btn-primary" type="submit" value="submit"/></p>
+</form>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

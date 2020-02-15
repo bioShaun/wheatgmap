@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  <h2>Select Samples:</h2>
+  <div class="panel-heading">
+  <h3 class="panel-title">Select samples which showed below.</h3>
+  </div>
+  <div class="row">
+    <div class="col-xs-5">
+        <select name="from[]" id="multi_d" class="form-control" size="8" multiple="multiple">
+             {% for sample in samples %}
+               <option value="{{ sample }}">{{ sample }}</option>
+             {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-xs-2">
+        <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+    </div>
+    <div class="col-xs-5">
+        <b>Group</b>
+        <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
+    </div>
+ </div>
+ <div class="panel-body">
+  <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
+ </div>
+ </div>
+<hr/>
+<!-- add loading hint -->
+<div id="query_hint"></div>
+<h2>Search Results:</h2>
+<div id="result-plot" style="width: 1200px; height: 600px;"></div>
+{% endblock %}
+{% block js %}
+<script src="https://unpkg.com/echarts@3.5.3/dist/echarts.js"></script>
+<script src="{{ url_for('static', filename='js/utils/expr_pca.js') }}"></script>
+{% endblock %}

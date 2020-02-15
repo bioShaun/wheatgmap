@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>BSA Result:</h2>
+<p id='task-id'>task id:{{ task_id }}</p>
+<p>task state:{{ state }}</p>
+<div class="row">
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/bsa_result.js') }}"></script>
+{% endblock %}

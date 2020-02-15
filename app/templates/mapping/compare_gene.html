@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Compare Variation by Gene:</h2>
+<form role="search" method="" action="#">
+    <div class="input-group">
+        <table class="table">
+        <tr>
+        <td>
+         Gene ID/Symbol/Name<input id="gene_name" type="text" name='gene' class="form-control" value="" placeholder="Input one Gene Symbol/Name">
+        </td>
+        <!--
+        <td>
+          Select a file<select class="form-control" data-width="25%" name="file" id="select_file">
+                          <option value= selected="selected"></option>
+                          {% for file in files %}
+                          <option value={{file}}>{{file}}</option>
+                          {% endfor %}
+                        </select>
+        </td>
+        -->
+        </tr>
+        <tr>
+        <td>
+        Upstream (kb, optional, must &lt;&#61; 10kb) <input id="up" type="text" name='up' class="form-control" value=2 placeholder="Upstream Region(kb)">
+        </td>
+        </tr>
+        <tr>
+        <td>
+        Downstream (kb, optional, must  &lt;&#61; 10kb) <input id="down" type="text" name='down' class="form-control" value=1 placeholder="Downstream Region(Kb)">
+        </td>
+        </tr>
+        <!--
+        <tr>
+        <td>
+        <div class="input-group-btn">
+            <button id="submit" type="submit" class="btn btn-success btn-sm">
+                Submit
+            </button>
+        </div>
+        </td>
+        </tr>
+        -->
+        </table>
+    </div>
+</form>
+<div>
+  <h2>Divide groups:</h2>
+  <div class="panel-heading">
+  <h3 class="panel-title">Divide samples which showed below to two groups.</h3>
+  </div>
+  <div class="row">
+    <div class="col-xs-5">
+        <select name="from[]" id="multi_d" class="form-control" size="67" multiple="multiple">
+          {% for sample in samples %}
+          <option value="{{ sample }}">{{ sample }}</option>
+          {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-xs-2">
+        <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+       
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>  
+    </div>
+
+    <div class="col-xs-5">
+     <b>Wild Bulk</b>
+        <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
+
+        <br/><hr/><br/>
+
+        <b>Mutant Bulk</b>
+        <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Wild parent</b>
+        <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Mutant parent</b>
+        <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Background</b>
+        <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
+    </div>
+</div>
+</div>
+<div class="panel-body">
+  <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
+</div>
+<hr/>
+<!-- add loading hint -->
+<div id="query_hint"></div>
+<h2>Search Results:</h2>
+    <div id="results-table2" class="results-tables"></div>
+    <br/>
+    <div id="results-table3" class="results-tables"></div>
+    <br/>
+    <div id="results-table4" class="results-tables"></div>
+    <br/>
+    <div id="results-tablen" class="results-tables"></div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/compare_gene.js') }}"></script>
+{% endblock %}

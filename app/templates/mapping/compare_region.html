@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block css %}
+<link href={{ url_for('static', filename='css/main.css') }} rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="panel-body">
+<div class="panel">
+  <h2>Compare Variations in Region:</h2>
+    <div class="panel-heading">
+        <h3 class="panel-title">Select a chromosome and input a range. (<span class="text-danger">required</span>, &lt;1000kb)</h3>
+    </div>
+<div class="panel-body">
+  <div class="row">
+    <div class="col-xs-6">
+        <div class="form-group">
+          <!--
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">File name:</span>
+            <select class="selectpicker" data-width="25%" name="file" id="select_file">
+                        <option value= selected="selected"></option>
+                        {% for file in files %}
+                        <option value={{file}}>{{file}}</option>
+                        {% endfor %}
+            </select>
+        </div>
+        <br>
+        -->
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Chromsome:</span>
+            <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
+                        <option value= selected="selected"></option>
+                        <option value=chr1A>chr1A</option>
+                        <option value=chr1B>chr1B</option>
+                        <option value=chr1D>chr1D</option>
+                        <option value=chr2A>chr2A</option>
+                        <option value=chr2B>chr2B</option>
+                        <option value=chr2D>chr2D</option>
+                        <option value=chr3A>chr3A</option>
+                        <option value=chr3B>chr3B</option>
+                        <option value=chr3D>chr3D</option>
+                        <option value=chr4A>chr4A</option>
+                        <option value=chr4B>chr4B</option>
+                        <option value=chr4D>chr4D</option>
+                        <option value=chr5A>chr5A</option>
+                        <option value=chr5B>chr5B</option>
+                        <option value=chr5D>chr5D</option>
+                        <option value=chr6A>chr6A</option>
+                        <option value=chr6B>chr6B</option>
+                        <option value=chr6D>chr6D</option>
+                        <option value=chr7A>chr7A</option>
+                        <option value=chr7B>chr7B</option>
+                        <option value=chr7D>chr7D</option>
+                        <option value=chrUn>chrUn</option>
+            </select>
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Start position:</span>
+            <input type="text" id="pos-start" class="form-control input-group-sm"  name="pos_start" >
+        </div>
+        </div>
+        <div class="form-group">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">End position:</span>
+            <input type="text" id="pos-end" class="form-control input-group-sm"  name="pos_end" >
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+<!-- right -->
+<!--
+<div class="col-xs-8">
+<div class="panel">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4">
+          <h3 class="panel-title">select samples displayed in the result (<span class='text-danger'>optional</span>):</h3>
+        </div>
+        <div class="col-xs-8">
+          <div class="input-group search">
+            <input type="text" class="form-control" id="search-sample" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-search" id="search-button" type="button"><i class="fa fa-search fa-fw"></i> Search</button>
+            </span>
+          </div>
+        </div>
+    </div>
+    <div class="panel-body show-samples">
+    </div>
+</div>
+</div>
+</div>
+-->
+</div>
+<div>
+  <h2>Divide groups:</h2>
+  <div class="panel-heading">
+  <h3 class="panel-title">Divide samples which showed below to two groups.</h3>
+  </div>
+  <div class="row">
+    <div class="col-xs-5">
+        <select name="from[]" id="multi_d" class="form-control" size="67" multiple="multiple">
+          {% for sample in samples %}
+          <option value="{{ sample }}">{{ sample }}</option>
+          {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-xs-2">
+        <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+        
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+        <hr style="margin: 40px 0 60px;" />
+
+        <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+        <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+        <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+        <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+    </div>
+
+    <div class="col-xs-5">
+      <b>Wild Bulk</b>
+        <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
+
+        <br/><hr/><br/>
+
+        <b>Mutant Bulk</b>
+        <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Wild parent</b>
+        <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Mutant parent</b>
+        <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
+        <br/><hr/><br/>
+
+        <b>Background</b>
+        <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
+    </div>
+</div>
+</div>
+  <div class="panel-body">
+    <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
+  </div>
+  <hr/>
+  <!-- add loading hint -->
+  <div id="query_hint"></div>
+  <h2>Search Results:</h2>
+    <div id="results-table2" class="results-tables"></div>
+    <br/>
+    <div id="results-table3" class="results-tables"></div>
+    <br/>
+    <div id="results-table4" class="results-tables"></div>
+    <br/>
+    <div id="results-tablen" class="results-tables"></div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/compare_region.js') }}"></script>
+{% endblock %}

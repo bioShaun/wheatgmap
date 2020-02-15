@@ -1,0 +1,25 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.form-sigin {
+   max-width: 350px;
+   padding: 15px;
+   margin: 0 auto;
+}
+
+.form-sigin p {
+   align: center;
+}
+.form-register {
+   max-width: 400px;
+   padding: 15px;
+   margin: 0 auto;
+}
+
+.form-register p {
+  align: center;
+}

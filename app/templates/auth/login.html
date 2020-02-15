@@ -1,0 +1,22 @@
+{% from "auth/_authform.html" import render_field %}
+{% extends 'auth_base.html' %}
+
+{% block css %}
+{% endblock %}
+
+{% block auth %}
+    <li><a href="{{url_for('auth.register')}}">register</a></li>
+{% endblock %}
+
+{% block content %}
+    <h2 style="text-align: center">Sign In</h2>
+    <form class="form form-sigin" method="post" action="{{ url_for('auth.login') }}">
+        {{ form.csrf_token }}
+        {{ render_field(form.username, placeholder="Username", class_="form-control") }}
+        {{ render_field(form.password, placeholder="Password", class_="form-control") }}
+        <p align="center"><input type="submit" class="btn btn-primary" value="submit"></p>
+    </form>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

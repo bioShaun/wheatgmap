@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Wheat Gmap</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    {% assets "css_all" -%}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {%- endassets %}
+    {% block css %}
+    {% endblock %}
+    <link rel="apple-touch-icon-precomposed" href="{{url_for('static', filename='images/logo_icon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo_icon.png')}}">
+  </head>
+  <body>
+    <div id='menu'>
+      <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+              <span class="fa fa-bars color-white"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}" data-0="line-height:90px;" data-300="line-height:50px;">Wheat Gmap</a>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav navbar-right">
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gene Mapping<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="{{ url_for('mapping.bsa_base') }}">Mapping via BSA</a></li>
+                  <li class="divider"></li>
+                  <li><a href="{{ url_for('mapping.compare_group') }}">Compare by Group</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="{{url_for('variants.query_sample')}}">Variants</a>
+              </li>
+
+
+              <li>
+                <a href="{{ url_for('tools.jbrowse') }}">Genome Browser</a>
+              </li>
+
+              <li>
+                <a href="/data/samples/">Data Share</a>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{ url_for('tools.blast') }}">Blast</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('tools.gene_information') }}">Gene Information</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('tools.get_sequence') }}">Get Sample Sequence</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('expression.expression_by_gene') }}">Expression</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('expression.enrichment') }}">Enrichment</a></li>
+                </ul>
+              </li>
+
+
+
+                {% if current_user.is_authenticated %}
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">User<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{{ url_for('auth.account') }}">Account</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('auth.samples') }}">Samples</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                  </ul>
+              </li>
+                {% else %}
+              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+              <li><a href='http://www.tcuni.com'>Contact</a></li>
+     </ul>
+    </div>
+  </div>
+</nav>
+</div>
+<div>
+    <div class="myalert"></div>
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message[1] }}
+    </div>
+    {% endfor %}
+  {% block content %}
+  {% endblock %}
+    <hr/>
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2019 <a href="http://www.tcuni.com">Tcuni, Inc.</a> &middot; Privacy &middot; <a href="#">Terms</a></p>
+    </footer>
+</div>
+</body>
+  {% assets "js_all" -%}
+      <script src="{{ ASSET_URL }}"></script>
+  {%- endassets %}
+{% block js %}
+{% endblock %}
+</html>

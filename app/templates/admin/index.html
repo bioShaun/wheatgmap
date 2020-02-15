@@ -1,0 +1,15 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="jumbotron">
+    <h1 SnpIndex Admin></h1>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+    <p class="lead">Snp Index Admin</p>
+    <p> weclome, {{ current_user.username }}</p>
+    {% elif current_user.is_authenticated %}
+    <p class="lead">Snp Index User</p>
+    <p>weclome, {{ current_user.username }}, it seems you are not a admin.</p>
+    {% endif %}
+     <a class="btn btn-primary" href="{{ url_for('main.index') }}"><i class="icon-arrow-left icon-white"></i>Back</a>
+</div>
+{% endblock %}
