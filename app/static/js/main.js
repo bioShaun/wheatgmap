@@ -279,97 +279,16 @@ function select_plugin(){
   });
 }
 
-/* function select_plugin2(){
-    // multiselect plugin
-    $('#multi_d2').multiselect({
-      right: '#multi_d_to, #multi_d_to_2, #multi_d_to_3, #multi_d_to_4, #multi_d_to_5',
-      rightSelected: '#multi_d_rightSelected, #multi_d_rightSelected_2, #multi_d_rightSelected_3, #multi_d_rightSelected_4, #multi_d_rightSelected_5',
-      leftSelected: '#multi_d_leftSelected, #multi_d_leftSelected_2, #multi_d_leftSelected_3, #multi_d_leftSelected_4, #multi_d_leftSelected_5',
-      rightAll: '#multi_d_rightAll, #multi_d_rightAll_2, #multi_d_rightAll_3, #multi_d_rightAll_4, #multi_d_rightAll_5',
-      leftAll: '#multi_d_leftAll, #multi_d_leftAll_2, #multi_d_leftAll_3 #multi_d_leftAll_4, #multi_d_leftAll_5',
-  
-      search: {
-          left: '<input type="text" name="q" class="form-control" placeholder="Search..." />'
-      },
-  
-      moveToRight: function(Multiselect, $options, event, silent, skipStack) {
-          var button = $(event.currentTarget).attr('id');
-  
-          if (button == 'multi_d_rightSelected') {
-              var $left_options = Multiselect.$left.find('> option:selected');
-              Multiselect.$right.eq(0).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(0).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(0));
-              }
-          } else if (button == 'multi_d_rightAll') {
-              var $left_options = Multiselect.$left.children(':visible');
-              Multiselect.$right.eq(0).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(0).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(0));
-              }
-          } else if (button == 'multi_d_rightSelected_2') {
-              var $left_options = Multiselect.$left.find('> option:selected');
-              Multiselect.$right.eq(1).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(1).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(1));
-              }
-          } else if (button == 'multi_d_rightAll_2') {
-              var $left_options = Multiselect.$left.children(':visible');
-              Multiselect.$right.eq(1).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(1).eq(1).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(1));
-              }
-          } else if (button == 'multi_d_rightSelected_3') {
-             var $left_options = Multiselect.$left.find('> option:selected');
-              Multiselect.$right.eq(2).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(2).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(2));
-              }
-          } else if (button == 'multi_d_rightAll_3') {
-              var $left_options = Multiselect.$left.children(':visible');
-              Multiselect.$right.eq(2).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(2).eq(2).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(2));
-              }
-          } else if (button == 'multi_d_rightSelected_4') {
-             var $left_options = Multiselect.$left.find('> option:selected');
-              Multiselect.$right.eq(3).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(3).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(3));
-              }
-          } else if (button == 'multi_d_rightAll_4') {
-              var $left_options = Multiselect.$left.children(':visible');
-              Multiselect.$right.eq(3).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(3).eq(3).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(3));
-              }
-          } else if (button == 'multi_d_rightSelected_5') {
-             var $left_options = Multiselect.$left.find('> option:selected');
-              Multiselect.$right.eq(4).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(4).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(4));
-              }
-          } else if (button == 'multi_d_rightAll_5') {
-              var $left_options = Multiselect.$left.children(':visible');
-              Multiselect.$right.eq(4).append($left_options);
-  
-              if ( typeof Multiselect.callbacks.sort == 'function' && !silent ) {
-                  Multiselect.$right.eq(4).eq(4).find('> option').sort(Multiselect.callbacks.sort).appendTo(Multiselect.$right.eq(4));
-              }
-          }
-      }
+function clear_select_plugin() {
+    var multi_select_box1 = $("#multi_d");
+    var multi_select_box2 = $("#multi_d2");
+    multi_select_box2.click(function () {
+        multi_select_box1.val([]);
     });
-  } */
-
+    multi_select_box1.click(function () {
+        multi_select_box2.val([]);
+    });
+}
 
 function generate_plot(info){
   var myChart = echarts.init(document.getElementById('main'));

@@ -119,6 +119,7 @@ function check_input_data(info, params){
   
 $(document).ready(function(){
   select_plugin();
+  clear_select_plugin();
   $("#submit").bind('click',function() {
         var params = {};
         var info = get_input_data();

@@ -49,6 +49,7 @@ function get_input_data(){
 
 $(document).ready(function(){
    select_plugin();
+   clear_select_plugin();
    $("#submit").click(function(){
       var info = get_input_data();  
       if(check_info(info)){

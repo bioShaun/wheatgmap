@@ -75,6 +75,7 @@ function connResult(taskId) {
 
 $(document).ready(function(){
   select_plugin();
+  clear_select_plugin();
   $("#submit").bind('click',function() {
       var info = get_input_data();
       error_msg = check_input_data(info);
