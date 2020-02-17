@@ -14,20 +14,20 @@ def current_username():
 
 @mapping.route('/bsa-base/', methods=['GET'])
 def bsa_base():
-    samples = fetch_vcf()
-    return render_template('mapping/mapping_bsa_base.html',samples=samples)
+    pub_samples, private_samples = fetch_vcf()
+    return render_template('mapping/mapping_bsa_base.html', pub_samples=pub_samples, pri_samples=private_samples)
 
 
 @mapping.route('/bsa/', methods=['GET'])
 def bsa():
-    samples = fetch_vcf()
-    return render_template('mapping/mapping_bsa.html',samples=samples)
+    pub_samples, private_samples = fetch_vcf() 
+    return render_template('mapping/mapping_bsa.html', pub_samples=pub_samples, pri_samples=private_samples)
 
 
 @mapping.route('/compare/group/', methods=['GET'])
 def compare_group():
-    samples=fetch_vcf()
-    return render_template('mapping/compare_group.html', samples=samples)
+    pub_samples, private_samples = fetch_vcf()
+    return render_template('mapping/compare_group.html', pub_samples=pub_samples, pri_samples=private_samples)
 
     
 @mapping.route('/bsa/run/', methods=['GET', 'POST'])

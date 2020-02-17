@@ -26,8 +26,7 @@ def query_sample():
         private_samples = ['.'.join([each.tc_id,each.sample_name]) for each in private_data]
     else:
         private_samples = []
-    samples = pub_samples + private_samples
-    return render_template('variants/query_sample.html', samples=samples)
+    return render_template('variants/query_sample.html', pub_samples=pub_samples, pri_samples=private_samples)
 
 
 @variants.route('/query/result/', methods=['POST'])

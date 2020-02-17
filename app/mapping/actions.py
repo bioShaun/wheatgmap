@@ -16,15 +16,14 @@ gene_bed_file = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
 
 def fetch_vcf():
     pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
-    own_vcf = []
+    pub_samples = ['.'.join([each.tc_id,each.sample_name]) for each in pub_vcf]
     if current_user.is_authenticated:
         own_vcf = Data.query.filter_by(provider=current_user.username, opened=0, sign=0).all()
+        private_samples = ['.'.join([each.tc_id,each.sample_name]) for each in own_vcf]
     else:
-        own_vcf = []
+        private_samples = []
     
-    tc_series = ['.'.join([each.tc_id, each.sample_name]) for each in pub_vcf] + ['.'.join([each.tc_id, each.sample_name]) for each in own_vcf]
-    print(tc_series)
-    return tc_series
+    return pub_samples, private_samples
 
 @celery.task
 def run_bsa(info):

@@ -64,13 +64,28 @@
   <h3 class="panel-title">Divide samples which showed below to groups.</h3>
   </div>
   <div class="row">
-    <div class="col-xs-5">
-        <select name="from[]" id="multi_d" class="form-control" size="67" multiple="multiple">
-          {% for sample in samples %}
-          <option value="{{ sample }}">{{ sample }}</option>
-          {% endfor %}
+
+    {% if pri_samples %}
+    <div class="col-xs-3">
+        <h3 class="panel-title">Private samples</h3>
+        <select name="from[]" id="multi_d" class="form-control multi_d" size="67" multiple="multiple">
+            {% for sample in pri_samples %}
+                <option value="private">{{ sample }}</option>
+            {% endfor %}
         </select>
     </div>
+    {% endif %}
+
+    {% if pub_samples %}
+    <div class="col-xs-3">
+        <h3 class="panel-title">Public samples</h3>
+        <select name="from[]" id="multi_d2" class="form-control multi_d" size="67" multiple="multiple">
+            {% for sample in pub_samples %}
+                <option value="public">{{ sample }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
 
     <div class="col-xs-2">
         <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
@@ -106,7 +121,7 @@
         <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
     </div>
 
-    <div class="col-xs-5">
+    <div class="col-xs-4">
         <div class="input-group">
             <span class="input-group-addon">Group name</span>
             <input id="g1" type="text" class="form-control" placeholder="">
