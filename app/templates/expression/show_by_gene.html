@@ -19,9 +19,9 @@
   </div>
   <div class="row">
     <div class="col-xs-5">
-        <select name="from[]" id="multi_d" class="form-control" size="8" multiple="multiple">
+        <select name="from[]" id="multi_d" class="form-control multi_d" size="8" multiple="multiple">
              {% for sample in samples %}
-               <option value="{{ sample }}">{{ sample }}</option>
+               <option value="public">{{ sample }}</option>
              {% endfor %}
         </select>
     </div>

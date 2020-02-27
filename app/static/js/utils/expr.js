@@ -76,6 +76,7 @@ function create_expr(head, genes, series) {
 $(document).ready(function(){
   // multiselect plugin
   select_plugin()
+  clear_select_plugin()
   $('#submit').click(function(){
     var gene_name = $("#gene_name").val();
     var group = [];
