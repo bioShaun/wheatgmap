@@ -17,3 +17,5 @@ run_celery_test_*
 test.py
 gunicorn.pid
 
+# vscode
+.vscode

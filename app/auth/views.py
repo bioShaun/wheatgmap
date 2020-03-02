@@ -20,6 +20,7 @@ from app.utils import redis_task
 def load_user(id):
     return User.query.filter_by(id=int(id)).first()
 
+
 '''
 @auth.before_app_request
 def before_request():
@@ -95,9 +96,14 @@ def register():
                     phone=form.telephone.data)
         user.save()
         token = user.generate_confirmation_token()
-        send_mail(user.email, 'Confirm Your Account',
-                  'mail/confirm', user=user, token=token)
-        flash('Thanks your register. A confirm email has been sent to your email', 'success')
+        send_mail(user.email,
+                  'Confirm Your Account',
+                  'mail/confirm',
+                  user=user,
+                  token=token)
+        flash(
+            'Thanks your register. A confirm email has been sent to your email',
+            'success')
         login_user(user)
         return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
@@ -122,11 +128,26 @@ def account():
     stat = {}
     pr_vcf = 0
     pu_vcf = 0
-    pr_sample = len(Data.query.filter_by(opened=0, sign=0, provider=current_user.username).all())
-    pu_sample = len(Data.query.filter_by(opened=1, sign=0, provider=current_user.username).all())
-    tasks = redis_task.fetch_task(current_user.username)
-    stat = {'pr_vcf': pr_vcf, 'pu_vcf': pu_vcf, 'pr_sample': pr_sample, 'pu_sample': pu_sample}
-    return render_template('auth/account.html', stat=stat, tasks=tasks)
+    pr_sample = len(
+        Data.query.filter_by(opened=0, sign=0,
+                             provider=current_user.username).all())
+    pu_sample = len(
+        Data.query.filter_by(opened=1, sign=0,
+                             provider=current_user.username).all())
+    stat = {
+        'pr_vcf': pr_vcf,
+        'pu_vcf': pu_vcf,
+        'pr_sample': pr_sample,
+        'pu_sample': pu_sample
+    }
+    return render_template('auth/account.html', stat=stat)
+
+
+@auth.route('/tasks/', methods=['GET'])
+@login_required
+def tasks():
+    my_tasks = redis_task.fetch_task(current_user.username)
+    return render_template("auth/tasks.html", tasks=my_tasks)
 
 
 @auth.route('/upload/', methods=['POST'])
@@ -142,11 +163,15 @@ def upload():
 
         if vcf_file and vcf_file.filename.rsplit('/')[-1][-6:] == 'vcf.gz':
             # add timestamp
-            filename = '_'.join([str(int(time.time())), secure_filename(vcf_file.filename)])
+            filename = '_'.join(
+                [str(int(time.time())),
+                 secure_filename(vcf_file.filename)])
             filepath = os.path.join(Config.VCF_FILE_PATH, filename)
             vcf_file.save(filepath)
             if os.stat(filepath).st_size > 1 * 1000:
-                task = async_fetch_vcf_samples.delay(filename, current_user.username, vcf_type)
+                task = async_fetch_vcf_samples.delay(filename,
+                                                     current_user.username,
+                                                     vcf_type)
                 redis_task.push_task(current_user.username, task.id)
                 return jsonify({'msg': 'async', 'task_id': task.id})
             else:
@@ -156,7 +181,7 @@ def upload():
                     row = Data(tc_id=each[0],
                                provider=current_user.username,
                                sample_name=each[1],
-                               type = vcf_type)
+                               type=vcf_type)
                     row.save()
                 return jsonify({'msg': 'ok', 'table': result})
         return jsonify({'msg': 'check upload file(only *.vcf.gz suffix)'})
@@ -174,7 +199,8 @@ def samples():
 def fetch_samples():
     if request.method == 'GET':
         result = []
-        samples = Data.query.filter_by(provider=current_user.username, sign=0).all()
+        samples = Data.query.filter_by(provider=current_user.username,
+                                       sign=0).all()
         for sample in samples:
             result.append({
                 'opened': sample.opened,
@@ -207,7 +233,7 @@ def fetch_samples():
         info = request.form['data']
         info = json.loads(info)
         sample = Data.query.filter_by(tc_id=info['id']).first()
-        del(info['id'])
+        del (info['id'])
         sample.update(**info)
         return jsonify({'msg': 'ok'})
     elif request.method == 'POST':
@@ -229,7 +255,10 @@ def fetch_samples():
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_mail(current_user.email, 'Confirm Your Account',
-              'mail/confirm', user=current_user, token=token)
+    send_mail(current_user.email,
+              'Confirm Your Account',
+              'mail/confirm',
+              user=current_user,
+              token=token)
     flash('A new confirmation email has been sent to you by email.', 'success')
     return redirect(url_for('main.index'))
