@@ -1,45 +1,47 @@
 {% extends 'base.html' %} {% block content %}
 <div class="row">
-  <div class="col-xs-12">
-    <h3>User Information</h3>
+  <h3>User Information</h3>
 
-    <table
-      class="table"
-      style="border-bottom:1px solid #e6e6e6; margin-bottom: 20px;"
-    >
-      <tbody>
-        <tr>
-          <td><b>Username: </b></td>
-          <td>{{ current_user.username }}</td>
-        </tr>
-        <tr>
-          <td><b>Institute: </b></td>
-          {% if current_user.institute %}
-          <td>{{ current_user.institute }}</td>
-          {% else %}
-          <td>-</td>
-          {% endif %}
-        </tr>
-        <tr>
-          <td><b>Telephone: </b></td>
-          {% if current_user.phone %}
-          <td>{{ current_user.phone }}</td>
-          {% else %}
-          <td>-</td>
-          {% endif %}
-        </tr>
-        <tr>
-          <td><b>Email: </b></td>
-          {% if current_user.email %}
-          <td>{{ current_user.email }}</td>
-          {% else %}
-          <td>-</td>
-          {% endif %}
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table
+    class="table"
+    style="border-bottom:1px solid #e6e6e6; margin-bottom: 20px;"
+  >
+    <tbody>
+      <tr>
+        <td><b>Username: </b></td>
+        <td>{{ current_user.username }}</td>
+      </tr>
+      <tr>
+        <td><b>Institute: </b></td>
+        {% if current_user.institute %}
+        <td>{{ current_user.institute }}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td><b>Telephone: </b></td>
+        {% if current_user.phone %}
+        <td>{{ current_user.phone }}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td><b>Email: </b></td>
+        {% if current_user.email %}
+        <td>{{ current_user.email }}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+  <a href="{{ url_for('auth.edit') }}">
+    <input class="btn btn-primary" value="Edit" />
+  </a>
 </div>
+
 {% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
 {% endblock %}

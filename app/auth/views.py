@@ -6,7 +6,7 @@ from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
 from .models import User, Data
 from app.exetensions import login_manager
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, EditForm
 from .actions import fetch_vcf_samples, async_fetch_vcf_samples
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
@@ -107,6 +107,21 @@ def register():
         login_user(user)
         return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
+
+
+@auth.route('/edit/', methods=['GET', 'POST'])
+def edit():
+    form = EditForm(username=current_user.username,
+                    email=current_user.email,
+                    institute=current_user.institute,
+                    telephone=current_user.phone)
+    if form.validate_on_submit():
+        current_user.institute = form.institute.data
+        current_user.phone = form.telephone.data
+        current_user.save()
+        flash('User Information Updated.', 'success')
+        return redirect(url_for('auth.account'))
+    return render_template('auth/edit.html', form=form, user=current_user)
 
 
 @auth.route('/login/', methods=['GET', 'POST'])

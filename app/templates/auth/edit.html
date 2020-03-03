@@ -1,0 +1,25 @@
+{% extends 'auth_base.html' %} 
+{% from 'auth/_authform.html' import render_field %} 
+{% block css %} 
+{% endblock %} 
+{% block content %}
+<div class="row">
+  <h3 style="text-align: center">Edit Information</h3>
+  <form
+    class="form form-register"
+    method="post"
+    action="{{ url_for('auth.edit') }}"
+  >
+    {{ form.csrf_token }} 
+    {{ render_field(form.username, class_="form-control", readonly="true") }} 
+    {{ render_field(form.email, class_="form-control", readonly="true")}} 
+    {{render_field(form.institute, class_="form-control") }}
+    {{ render_field(form.telephone, class_="form-control") }}
+    <p align="center">
+      <input class="btn btn-primary" type="submit" value="submit" />
+    </p>
+  </form>
+</div>
+{% endblock %} 
+{% block script %} 
+{% endblock %}

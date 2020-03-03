@@ -5,19 +5,17 @@ from app.auth.models import User
 
 
 class RegisterForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired()])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    institute = StringField('Institute',
-                            validators=[DataRequired()])
-    telephone = StringField('Telephone',
-                            validators=[DataRequired()])
-    password = PasswordField('Password',
-                             validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    institute = StringField('Institute', validators=[DataRequired()])
+    telephone = StringField('Telephone', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     confirm = PasswordField('Verify Password',
-                            validators=[DataRequired(), EqualTo('password',
-                                                                message='password must match')])
+                            validators=[
+                                DataRequired(),
+                                EqualTo('password',
+                                        message='password must match')
+                            ])
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -39,11 +37,21 @@ class RegisterForm(FlaskForm):
         return True
 
 
+class EditForm(FlaskForm):
+
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    institute = StringField('Institute', validators=[DataRequired()])
+    telephone = StringField('Telephone', validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super(EditForm, self).__init__(*args, **kwargs)
+        self.user = None
+
+
 class LoginForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired()])
-    password = PasswordField('Password',
-                             validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
