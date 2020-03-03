@@ -125,22 +125,7 @@ def login():
 @auth.route('/account/', methods=['GET'])
 @login_required
 def account():
-    stat = {}
-    pr_vcf = 0
-    pu_vcf = 0
-    pr_sample = len(
-        Data.query.filter_by(opened=0, sign=0,
-                             provider=current_user.username).all())
-    pu_sample = len(
-        Data.query.filter_by(opened=1, sign=0,
-                             provider=current_user.username).all())
-    stat = {
-        'pr_vcf': pr_vcf,
-        'pu_vcf': pu_vcf,
-        'pr_sample': pr_sample,
-        'pu_sample': pu_sample
-    }
-    return render_template('auth/account.html', stat=stat)
+    return render_template('auth/account.html')
 
 
 @auth.route('/tasks/', methods=['GET'])
@@ -187,11 +172,33 @@ def upload():
         return jsonify({'msg': 'check upload file(only *.vcf.gz suffix)'})
 
 
-@auth.route('/samples/', methods=['GET'])
+""" @auth.route('/samples/', methods=['GET'])
 @login_required
 def samples():
     #samples = Data.query.filter_by(provider=current_user.username).all()
-    return render_template("auth/samples.html")
+    return render_template("auth/samples.html") """
+
+
+@auth.route('/userData/', methods=['GET'])
+@login_required
+def userData():
+    stat = {}
+    pr_vcf = 0
+    pu_vcf = 0
+    pr_sample = len(
+        Data.query.filter_by(opened=0, sign=0,
+                             provider=current_user.username).all())
+    pu_sample = len(
+        Data.query.filter_by(opened=1, sign=0,
+                             provider=current_user.username).all())
+    stat = {
+        'pr_vcf': pr_vcf,
+        'pu_vcf': pu_vcf,
+        'pr_sample': pr_sample,
+        'pu_sample': pu_sample
+    }
+    #samples = Data.query.filter_by(provider=current_user.username).all()
+    return render_template("auth/userData.html", stat=stat)
 
 
 @auth.route('/fetch_samples/', methods=['GET', 'DELETE', 'PUT', 'POST'])

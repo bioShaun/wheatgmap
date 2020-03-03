@@ -1,60 +1,49 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="panel-body">
-<h2>User information</h2>
-{% if exists %}
-<table style="width=100%">
-  <tbody>
-  <tr>
-    <td valign="top"></td>
-      <br>
-      <table class="table">
-        <thead><b>General information</b></thead>
-        <tbody>
-          <tr>
-            <td><b>Profile of {{ username }}: </b></td>
-            <td>
-              <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td><b>Username: </b></td>
-            <td>{{ username }}</td>
-          </tr>
-          <tr>
-            <td><b>Institute: </b></td>
-            {% if institute %}
+  <h3>User Information</h3>
+  {% if exists %}
+  <table style="width=100%">
+    <tbody>
+      <tr>
+        <td valign="top"></td>
+        <br />
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><b>Username: </b></td>
+              <td>{{ username }}</td>
+            </tr>
+            <tr>
+              <td><b>Institute: </b></td>
+              {% if institute %}
               <td>{{ institute }}</td>
-            {% else %}
-              <td> - </td>
-            {% endif %}
-          </tr>
-          <tr>
-            <td><b>Telephone: </b></td>
-            {% if phone %}
+              {% else %}
+              <td>-</td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><b>Telephone: </b></td>
+              {% if phone %}
               <td>{{ phone }}</td>
-            {% else %}
-              <td> - </td>
-            {% endif %}
-          </tr>
-          <tr>
-            <td><b>Email: </b></td>
-            {% if email %}
+              {% else %}
+              <td>-</td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><b>Email: </b></td>
+              {% if email %}
               <td>{{ email }}</td>
-            {% else %}
-              <td> - </td>
-            {% endif %}
-          </tr>
-        </tbody>
-      </table>
-  </tbody>
-</table>
-{% else %}
-<br/>
-<h5>not find information for {{ username }}.</h5>
-{% endif %}
-{% endblock %}
-{% block js %}
-{% endblock %}
+              {% else %}
+              <td>-</td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </tr>
+    </tbody>
+  </table>
+  {% else %}
+  <br />
+  <h5>not find information for {{ username }}.</h5>
+  {% endif %} {% endblock %} {% block js %} {% endblock %}
+</div>
