@@ -218,3 +218,40 @@ class Comment(db.Model):
     def __repr__(self):
         return '<comment: {}>'.format(self.id)
 
+class VarietyDetail(db.Model):
+    __tablename__ = 'varietyDetail'
+    id = Column(db.Integer, primary_key=True)
+    variety_name = Column(db.String(45))
+    variety_type = Column(db.String(12))
+    geographic = Column(db.String(100))
+    country = Column(db.String(45))
+    province = Column(db.String(45))
+    affiliation = Column(db.String(45))
+    create_time = Column(db.DateTime)
+    provider = Column(db.String(45))
+
+
+    def __init__(self, content ,variety_name, provider, create_time=datetime.now()):
+        self.content = content
+        self.variety_name = variety_name
+        self.provider = provider
+        self.create_time =create_time
+
+    def save(self, commit=True):
+        db.session.add(self)
+        if commit:
+            db.session.commit()
+        return self
+
+    def update(self, commit=True, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        return commit and self.save() or self
+
+    def delete(self, commit=True):
+        db.session.delete(self)
+        return commit and db.session.commit()
+
+    def __repr__(self):
+        return '<variety: {}>'.format(self.id)
+
