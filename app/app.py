@@ -30,6 +30,7 @@ def register_blueprint(app):
     from app.variants import variants as variants_blueprint
     from app.data import data as data_blueprint
     from app.mapping import mapping as mapping_blueprint
+    from app.variety import variety as variety_blueprint
     #from .jbrowse import jbrowse as jbrowse_blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(variants_blueprint)
@@ -38,6 +39,7 @@ def register_blueprint(app):
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(data_blueprint)
     app.register_blueprint(mapping_blueprint)
+    app.register_blueprint(variety_blueprint)
     #app.register_blueprint(jbrowse_blueprint)
     return None
 

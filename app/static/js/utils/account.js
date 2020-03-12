@@ -38,6 +38,7 @@ function add_sample_href(){
 
 $(document).ready(function(){
   add_sample_href()
+
   $('#vcf-sub').click(function(){
     var index = layer.load(1);
     var formData = new FormData();
@@ -82,4 +83,25 @@ $(document).ready(function(){
         }}
     });
   });
+
+  // delete confirm
+  $(".delete-va").each(function() {
+    const that = $(this);
+    const vaName = that.attr("va-name");
+    $(this).on("click", function() {
+      $.confirm({
+        title: "Confirm!",
+        content: `Delete Variety ${vaName}?`,
+        buttons: {
+          confirm: function() {
+            window.location.href = that.attr("id");
+          },
+          cancel: function() {
+            $.alert("Canceled!");
+          }
+        }
+      });
+    });
+  });
+  
 });

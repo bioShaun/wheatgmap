@@ -8,7 +8,30 @@ from flask import current_app
 Column = db.Column
 
 
-class User(UserMixin, db.Model):
+class dbCRUD:
+
+    __tablename__ = ''
+
+    def save(self, commit=True):
+        db.session.add(self)
+        if commit:
+            db.session.commit()
+        return self
+
+    def update(self, commit=True, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        return commit and self.save() or self
+
+    def delete(self, commit=True):
+        db.session.delete(self)
+        return commit and db.session.commit()
+
+    def __repr__(self):
+        return f'<{self.__tablename__}: {self.id}>'
+
+
+class User(UserMixin, dbCRUD, db.Model):
     __tablename__ = 'user'
     id = Column(db.Integer, primary_key=True)
     username = Column(db.String(80), nullable=False, unique=True)
@@ -43,7 +66,6 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
-
     @classmethod
     def confirm(cls, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -53,21 +75,6 @@ class User(UserMixin, db.Model):
             return None
         user = cls.query.filter_by(id=data.get('confirm', '')).first()
         return user
-
-    def save(self, commit=True):
-        db.session.add(self)
-        if commit:
-            db.session.commit()
-        return self
-
-    def update(self, commit=True, **kwargs):
-        for attr, value in kwargs.items():
-            setattr(self, attr, value)
-        return commit and self.save() or self
-
-    def delete(self, commit=True):
-        db.session.delete(self)
-        return commit and db.session.commit()
 
     @property
     def password(self):
@@ -95,6 +102,7 @@ class Snptable(db.Model):
         return '<snp table {}>'.format(self.id)
 '''
 
+
 class Data(db.Model):
     __tablename__ = 'data'
     id = Column(db.Integer, primary_key=True)
@@ -118,6 +126,7 @@ class Data(db.Model):
     opened = Column(db.Boolean)
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
+
     def __init__(self,
                  tc_id,
                  provider,
@@ -133,6 +142,7 @@ class Data(db.Model):
         self.opened = opened
         self.sign = sign
         self.create_time = create_time
+
     def save(self, commit=True):
         db.session.add(self)
         if commit:
@@ -160,12 +170,15 @@ class Variety(db.Model):
     create_time = Column(db.DateTime)
     provider = Column(db.String(45))
 
-
-    def __init__(self, content ,variety_name, provider, create_time=datetime.now()):
+    def __init__(self,
+                 content,
+                 variety_name,
+                 provider,
+                 create_time=datetime.now()):
         self.content = content
         self.variety_name = variety_name
         self.provider = provider
-        self.create_time =create_time
+        self.create_time = create_time
 
     def save(self, commit=True):
         db.session.add(self)
@@ -194,11 +207,15 @@ class Comment(db.Model):
     provider = Column(db.String(45))
     create_time = Column(db.DateTime)
 
-    def __init__(self, parent_id, content, provider, create_time=datetime.now()):
+    def __init__(self,
+                 parent_id,
+                 content,
+                 provider,
+                 create_time=datetime.now()):
         self.parent_id = parent_id
         self.content = content
         self.provider = provider
-        self.create_time =create_time
+        self.create_time = create_time
 
     def save(self, commit=True):
         db.session.add(self)
@@ -218,40 +235,133 @@ class Comment(db.Model):
     def __repr__(self):
         return '<comment: {}>'.format(self.id)
 
-class VarietyDetail(db.Model):
+
+class VarietyComment(dbCRUD, db.Model):
+    __tablename__ = 'varietyComment'
+    id = Column(db.Integer, primary_key=True)
+    comment_type = Column(db.String(10))
+    provider = db.Column(db.Integer)
+    variety = db.Column(db.Integer)
+    content = Column(db.Text)
+    create_time = Column(db.DateTime)
+
+    def __init__(self,
+                 content,
+                 variety,
+                 provider,
+                 comment_type="commnet",
+                 create_time=datetime.now()):
+        self.content = content
+        self.variety = variety
+        self.provider = provider
+        self.comment_type = comment_type
+        self.create_time = create_time
+
+    @property
+    def provider_name(self):
+        provider_obj = User.query.get(self.provider)
+        return provider_obj.username
+
+    @property
+    def reply(self):
+        reply_obj = VarietyComment.query.filter_by(variety=self.id,
+                                                   comment_type="reply").all()
+        return reply_obj
+
+    def delete_reply(self, commit=True):
+        for reply_i in self.reply:
+            reply_i.delete(commit=commit)
+
+
+class VarietyDetail(dbCRUD, db.Model):
     __tablename__ = 'varietyDetail'
     id = Column(db.Integer, primary_key=True)
     variety_name = Column(db.String(45))
     variety_type = Column(db.String(12))
-    geographic = Column(db.String(100))
+    geographic = Column(db.String(45))
     country = Column(db.String(45))
     province = Column(db.String(45))
     affiliation = Column(db.String(45))
+    basic_info_sup = Column(db.String(1000))
+    provider = db.Column(db.Integer)
     create_time = Column(db.DateTime)
-    provider = Column(db.String(45))
+    flower_color = Column(db.String(45))
+    leaf_color = Column(db.String(45))
+    protein_content = Column(db.String(45))
+    starch_content = Column(db.String(45))
+    salt = Column(db.String(8))
+    high_temperature = Column(db.String(8))
+    low_temperature = Column(db.String(8))
+    sheath_blight = Column(db.String(45))
+    fusarium = Column(db.String(45))
+    total_erosion = Column(db.String(45))
+    powdery_mildew = Column(db.String(45))
+    leaf_rust = Column(db.String(45))
+    leaf_blight = Column(db.String(45))
+    stripe_rust = Column(db.String(45))
+    spinal_rust = Column(db.String(45))
+    smut = Column(db.String(45))
 
-
-    def __init__(self, content ,variety_name, provider, create_time=datetime.now()):
-        self.content = content
+    def __init__(self,
+                 variety_name,
+                 variety_type,
+                 geographic,
+                 country,
+                 province,
+                 affiliation,
+                 basic_info_sup,
+                 flower_color,
+                 leaf_color,
+                 protein_content,
+                 starch_content,
+                 salt,
+                 high_temperature,
+                 low_temperature,
+                 sheath_blight,
+                 fusarium,
+                 total_erosion,
+                 powdery_mildew,
+                 leaf_rust,
+                 leaf_blight,
+                 stripe_rust,
+                 spinal_rust,
+                 smut,
+                 provider,
+                 create_time=datetime.now()):
         self.variety_name = variety_name
+        self.variety_type = variety_type
+        self.geographic = geographic
+        self.country = country
+        self.province = province
+        self.affiliation = affiliation
+        self.basic_info_sup = basic_info_sup
         self.provider = provider
-        self.create_time =create_time
+        self.create_time = create_time
+        self.flower_color = flower_color
+        self.leaf_color = leaf_color
+        self.protein_content = protein_content
+        self.starch_content = starch_content
+        self.salt = salt
+        self.high_temperature = high_temperature
+        self.low_temperature = low_temperature
+        self.sheath_blight = sheath_blight
+        self.fusarium = fusarium
+        self.total_erosion = total_erosion
+        self.powdery_mildew = powdery_mildew
+        self.leaf_rust = leaf_rust
+        self.leaf_blight = leaf_blight
+        self.stripe_rust = stripe_rust
+        self.spinal_rust = spinal_rust
+        self.smut = smut
 
-    def save(self, commit=True):
-        db.session.add(self)
-        if commit:
-            db.session.commit()
-        return self
-
-    def update(self, commit=True, **kwargs):
-        for attr, value in kwargs.items():
-            setattr(self, attr, value)
-        return commit and self.save() or self
+    @property
+    def provider_obj(self):
+        return User.query.get(self.provider)
 
     def delete(self, commit=True):
-        db.session.delete(self)
-        return commit and db.session.commit()
-
-    def __repr__(self):
-        return '<variety: {}>'.format(self.id)
-
+        va_comment = VarietyComment.query.filter_by(provider=self.provider,
+                                                    variety=self.id).all()
+        for va_i in va_comment:
+            va_i.delete(commit=commit)
+            va_i.delete_reply(commit=commit)
+        return super().delete(commit=commit)

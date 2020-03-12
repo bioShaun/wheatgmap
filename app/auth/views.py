@@ -4,7 +4,7 @@ import json
 import time
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
-from .models import User, Data
+from .models import User, Data, VarietyDetail
 from app.exetensions import login_manager
 from .forms import RegisterForm, LoginForm, EditForm
 from .actions import fetch_vcf_samples, async_fetch_vcf_samples
@@ -110,6 +110,7 @@ def register():
 
 
 @auth.route('/edit/', methods=['GET', 'POST'])
+@login_required
 def edit():
     form = EditForm(username=current_user.username,
                     email=current_user.email,
@@ -147,7 +148,12 @@ def account():
 @login_required
 def tasks():
     my_tasks = redis_task.fetch_task(current_user.username)
-    return render_template("auth/tasks.html", tasks=my_tasks)
+    variety = VarietyDetail.query.filter_by(provider=current_user.id).all()
+    return render_template(
+        "auth/tasks.html",
+        tasks=my_tasks,
+        variety_items=variety,
+    )
 
 
 @auth.route('/upload/', methods=['POST'])
