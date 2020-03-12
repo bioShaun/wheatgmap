@@ -103,5 +103,18 @@ $(document).ready(function(){
       });
     });
   });
+
+    // variety bootstrap table
+    $("#table-variety").bootstrapTable({
+      sortable: false, //排序
+      search: true, //启用搜索
+      pagination: true, //是否显示分页条
+      pageSize: 10, //一页显示的行数
+      paginationLoop: false, //是否开启分页条无限循环，最后一页时点击下一页是否转到第一页
+      pageList: [5, 10, 20] //选择每页显示多少行，数据过少时可能会没有效果
+    });
   
+    $("#table-variety").bootstrapTable("hideLoading");
+  
+
 });

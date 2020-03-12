@@ -144,3 +144,20 @@ input {
   border-color: #fff;
   background-color: #fff;
 }
+
+.variety-view table {
+  width: 400px;
+}
+
+.variety-view th {
+  width: 200px;
+}
+
+.bootstrap-table .search input {
+  margin-bottom: 5px;
+}
+
+.va-info-table button {
+  margin-top: 5px;
+}
+

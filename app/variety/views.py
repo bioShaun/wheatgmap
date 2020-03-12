@@ -65,7 +65,7 @@ def detail(variety_id):
             v_comment.save()
             flash('Add a new comment.', 'success')
             return redirect(url_for('variety.detail', variety_id=variety_id))
-    return render_template('variety/variety_view.html',
+    return render_template('variety/variety_view_verticle.html',
                            variety_item=variety_item,
                            comments=comments,
                            form=form)

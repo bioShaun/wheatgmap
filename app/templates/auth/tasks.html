@@ -62,7 +62,7 @@
 
 
 <h3>Variety Information</h3>
-<div class="table-responsive">
+<div class="table-responsive va-info-table">
   <table
     id="table-variety"
     class="table "
@@ -119,5 +119,6 @@
 </div>
 
 {% endblock %} {% block js %}
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
 {% endblock %}
