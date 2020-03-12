@@ -9,7 +9,7 @@
         <th class="th-sm">Name</th>
         <th class="th-sm">Type</th>
         <th class="th-sm">Scientific</th>
-        <th class="th-sm">Variety</th>
+        <th class="th-sm">Variety ID</th>
         <th class="th-sm">High Level Tissue</th>
         <th class="th-sm">High Level Age</th>
         <th class="th-sm">Treatments</th>
@@ -38,7 +38,7 @@
         {% if sample.variety_name is none %}
         <td>-</td>
         {% else %}
-        <td><a href="/data/variety/{{ sample.variety_name}}/">{{ sample.variety_name }}</a></td>
+        <td><a href="/variety/detail/{{ sample.variety_name}}/">{{ sample.variety_name }}</a></td>
         {% endif %}
         {% if sample.high_level_tissue is none %}
         <td>-</td>

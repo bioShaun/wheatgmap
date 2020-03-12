@@ -1,0 +1,207 @@
+{% extends 'base.html' %} {% block content %}
+<div class="title" style="margin-bottom: 30px;">
+  <h3>{{variety_item.variety_name}}</h3>
+  <p>
+    ID: TC-Va-{{ variety_item.id }}, created at {{variety_item.create_time}}
+  </p>
+</div>
+
+<div class="variety-view">
+  <h4>Basic information</h4>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row">Type</th>
+        <td>{{variety_item.variety_type}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Geographic</th>
+        <td>{{variety_item.geographic}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Country</th>
+        <td>{{variety_item.country}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Province</th>
+        <td>{{variety_item.province}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Affiliation</th>
+        <td>{{variety_item.affiliation}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Provider</th>
+        <td>
+          <a
+            href="{{url_for( 'data.users', username=variety_item.provider_obj.username)}}"
+            >{{variety_item.provider_obj.username}}</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Morphological and Biological Characteristics</h4>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row">Flower Color</th>
+        <td>{{variety_item.flower_color}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Leaf Color</th>
+        <td>{{variety_item.leaf_color}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Quality Characteristics</h4>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row">Protein Content</th>
+        <td>{{variety_item.protein_content}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Starch Content</th>
+        <td>{{variety_item.starch_content}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Stress Resistance</h4>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row">Salt</th>
+        <td>{{variety_item.salt}}</td>
+      </tr>
+      <tr>
+        <th scope="row">High Temperature</th>
+        <td>{{variety_item.high_temperature}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Low Temperature</th>
+        <td>{{variety_item.low_temperature}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Insect Resistance</h4>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row">Sheath Blight</th>
+        <td>{{variety_item.sheath_blight}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Fusarium</th>
+        <td>{{variety_item.fusarium}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Total Erosion</th>
+        <td>{{variety_item.total_erosion}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Powdery Mildew</th>
+        <td>{{variety_item.powdery_mildew}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Leaf Rust</th>
+        <td>{{variety_item.leaf_rust}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Leaf Blight</th>
+        <td>{{variety_item.leaf_blight}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Stripe Rust</th>
+        <td>{{variety_item.stripe_rust}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Spinal Rust</th>
+        <td>{{variety_item.spinal_rust}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Smut</th>
+        <td>{{variety_item.smut}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="comment-input">
+  <form
+    method="post"
+    action="{{ url_for('variety.detail', variety_id=variety_item.id) }}"
+  >
+    {{ form.csrf_token }} {{ form.content(placeholder="Add your comment ......")
+    }}
+    <div class="form-group" style="text-align:right">
+      <button class="btn btn-default" type="submit" value="Add">Add</button>
+    </div>
+  </form>
+</div>
+
+<div class="comment-region">
+  <div class="comment-title">
+    <h3>
+      Comments
+    </h3>
+  </div>
+  {% for comm_i in comments %}
+  <div class="comment-body">
+    <div class="comment-top">
+      <div class="comment-author">
+        <p>
+          <a href="{{url_for( 'data.users', username=comm_i.provider_name)}}"
+            >{{ comm_i.provider_name }}</a
+          >
+        </p>
+      </div>
+      <div class="comment-time">
+        <p>{{ comm_i.create_time }}</p>
+      </div>
+    </div>
+    <div class="comment-content">
+      <p>{{comm_i.content}}</p>
+    </div>
+    <div class="comment-back">
+      <button
+        class="comment-back-btn"
+        id="{{ url_for('variety.reply', variety_id=variety_item.id, commentId=comm_i.id) }}"
+      >
+        <span class="glyphicon glyphicon-comment"></span>
+        Reply
+      </button>
+    </div>
+
+    {% for reply_i in comm_i.reply %}
+    <div class="reply-region">
+      <div class="reply-body">
+        <div class="reply-top">
+          <div class="reply-author">
+            <p>
+              <a
+                href="{{url_for( 'data.users', username=reply_i.provider_name)}}"
+                >{{ reply_i.provider_name }}</a
+              >
+            </p>
+          </div>
+          <div class="reply-time">
+            <p>{{ reply_i.create_time }}</p>
+          </div>
+        </div>
+        <div class="reply-content">
+          <p>{{reply_i.content}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/utils/reply.js') }}"></script>
+{% endblock %}

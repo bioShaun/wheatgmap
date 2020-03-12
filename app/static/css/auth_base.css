@@ -6,18 +6,18 @@ body {
   text-align: center;
 }
 .form-sigin {
-   max-width: 350px;
-   padding: 15px;
-   margin: 0 auto;
+  max-width: 350px;
+  padding: 15px;
+  margin: 0 auto;
 }
 
 .form-sigin p {
-   align: center;
+  align: center;
 }
 .form-register {
-   max-width: 400px;
-   padding: 15px;
-   margin: 0 auto;
+  max-width: 400px;
+  padding: 15px;
+  margin: 0 auto;
 }
 
 .form-register p {

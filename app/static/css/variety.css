@@ -28,3 +28,136 @@
 .user-info .create-time{
     float:right;
 }
+
+.comment-input {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+  
+  .comment-input textarea {
+    width: 100%;
+    height: 80px;
+  }
+  
+  .comment-title {
+    margin-bottom: 20px;
+  }
+  
+  .comment-body {
+    padding-top: 10px;
+  }
+  
+  .comment-top {
+    background-color: rgb(241, 250, 241);
+  }
+  
+  .comment-author p {
+    margin-bottom: 0px;
+    font-size: 15px;
+  }
+  
+  .comment-time p {
+    font-size: 12px;
+    color: darkgray;
+  }
+  
+  .comment-content p {
+    font-size: 16px;
+  }
+  
+  .comment-back button {
+    border: none;
+    color: darkgray;
+    background-color: #fff;
+    padding: 0;
+  }
+  
+  .comment-back span {
+    top: 3px !important;
+  }
+  
+  .reply-region {
+    padding-left: 60px;
+    margin-top: 20px;
+  }
+  
+  .reply-top {
+    background-color: #fff;
+  }
+  
+  .reply-author p {
+    margin-bottom: 0px;
+    font-size: 14px;
+  }
+  
+  .reply-time p {
+    font-size: 11px;
+    color: darkgray;
+  }
+  
+  .reply-content p {
+    font-size: 15px;
+  }
+  
+
+  .form-variety {
+  max-width: 600px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-variety .form-group {
+  margin-bottom: 0;
+}
+
+.form-variety label {
+  line-height: 35px;
+  font-size: 13px;
+}
+
+.va-edit .form-group-sm .va-form-select {
+  padding-left: 5px;
+}
+
+.va-edit .form-control,
+input {
+  border-width: 1px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.va-edit {
+  margin-top: 50px;
+}
+
+.va-edit label {
+  font-weight: normal;
+}
+
+.va-edit h4 {
+  font-size: 14px;
+  font-weight: 600 !important;
+}
+
+.va-edit button {
+  border-color: #fff;
+  background-color: #fff;
+}
+
+.variety-view table {
+  width: 400px;
+}
+
+.variety-view th {
+  width: 200px;
+}
+
+.bootstrap-table .search input {
+  margin-bottom: 5px;
+}
+
+.va-info-table button {
+  margin-top: 5px;
+}
+
