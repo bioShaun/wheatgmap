@@ -279,16 +279,97 @@ function select_plugin(){
   });
 }
 
+
+function single_select_plugin() {
+    // multiselect plugin
+  
+    var left_option_map = {};
+    var add_flag = true;
+  
+    $(".multi_d").multiselect({
+      right:
+        "#multi_d_to, #multi_d_to_2, #multi_d_to_3, #multi_d_to_4, #multi_d_to_5",
+      rightSelected:
+        "#multi_d_rightSelected, #multi_d_rightSelected_2, #multi_d_rightSelected_3, #multi_d_rightSelected_4, #multi_d_rightSelected_5",
+      leftAll:
+        "#multi_d_leftAll, #multi_d_leftAll_2, #multi_d_leftAll_3 #multi_d_leftAll_4, #multi_d_leftAll_5",
+  
+      search: {
+        left:
+          '<input type="text" name="q" class="form-control" placeholder="Search..." />'
+      },
+  
+      moveToRight: function(Multiselect, $options, event, silent, skipStack) {
+        var button = $(event.currentTarget).attr("id");
+  
+        if (!add_flag) {
+          var $right_options = Multiselect.$right.eq(0).children(":visible");
+          console.log($right_options);
+          let i = 0;
+          for (; i < $right_options.length; i++) {
+            left_option_map[$right_options[i].value].append($right_options[i]);
+          }
+          if (typeof Multiselect.callbacks.sort == "function" && !silent) {
+            Multiselect.$left
+              .find("> option")
+              .sort(Multiselect.callbacks.sort)
+              .appendTo(Multiselect.$left);
+          }
+          add_flag = true;
+        }
+  
+        if (button == "multi_d_rightSelected") {
+          var $left_options = Multiselect.$left.find("> option:selected");
+          left_option_map[$left_options[0].value] = Multiselect.$left;
+          /* left_option_map.set() */
+          Multiselect.$right.eq(0).append($left_options);
+  
+          if (typeof Multiselect.callbacks.sort == "function" && !silent) {
+            Multiselect.$right
+              .eq(0)
+              .find("> option")
+              .sort(Multiselect.callbacks.sort)
+              .appendTo(Multiselect.$right.eq(0));
+          }
+        }
+  
+        add_flag = false;
+      },
+  
+      moveToLeft: function(Multiselect, $options, event, silent, skipStack) {
+        var button = $(event.currentTarget).attr("id");
+  
+        if (button == "multi_d_leftAll") {
+          var $right_options = Multiselect.$right.eq(0).children(":visible");
+          let i = 0;
+          for (; i < $right_options.length; i++) {
+            left_option_map[$right_options[i].value].append($right_options[i]);
+          }
+          if (typeof Multiselect.callbacks.sort == "function" && !silent) {
+            Multiselect.$left
+              .find("> option")
+              .sort(Multiselect.callbacks.sort)
+              .appendTo(Multiselect.$left);
+          }
+        }
+        add_flag = true;
+      }
+    });
+  }
+
 function clear_select_plugin() {
     var multi_select_box1 = $("#multi_d");
     var multi_select_box2 = $("#multi_d2");
-    multi_select_box2.click(function () {
-        multi_select_box1.val([]);
+    var multi_select_to_box = $("#multi_d_to");
+    multi_select_box2.click(function() {
+      multi_select_box1.val([]);
+      multi_select_to_box.val([]);
     });
-    multi_select_box1.click(function () {
-        multi_select_box2.val([]);
+    multi_select_box1.click(function() {
+      multi_select_box2.val([]);
+      multi_select_to_box.val([]);
     });
-}
+  }
 
 function generate_plot(info){
   var myChart = echarts.init(document.getElementById('main'));

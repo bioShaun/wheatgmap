@@ -161,3 +161,6 @@ input {
   margin-top: 5px;
 }
 
+td {
+  vertical-align: middle !important;
+}

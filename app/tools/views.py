@@ -8,28 +8,36 @@ from flask import render_template, request, jsonify, session
 from werkzeug import secure_filename
 from settings import basedir
 from app.auth.models import Data
+from flask_login import current_user
 
 UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 VCF_ANNOTATION_DATABASE = ('wheat.hclc.v1.1', 'wheat.tcuni.v1.1')
+
 
 @tools.route('/blast/table/', methods=['POST'])
 def fetch_blast_table():
     if request.method == 'POST':
         info = json.loads(request.form['info'])
         if len(info['genes']) == 0:
-            return jsonify({'msg': 'no input genes.', 'result': []}) 
+            return jsonify({'msg': 'no input genes.', 'result': []})
         result = batch_query_gene(info['genes'])
         if result:
             return jsonify({'msg': 'ok', 'result': result})
-        return jsonify({'msg': 'not find in database or input too much (genes>1000).', 'result': result})
+        return jsonify({
+            'msg': 'not find in database or input too much (genes>1000).',
+            'result': result
+        })
+
 
 @tools.route('/blast/')
 def blast():
     return render_template('tools/blast.html')
 
+
 @tools.route('/jbrowse/')
 def jbrowse():
     return render_template('tools/jbrowse.html')
+
 
 @tools.route('/gene/information/')
 def gene_information():
@@ -45,20 +53,33 @@ def gene_information():
 @tools.route('/sample/sequence/')
 def get_sequence():
     #vcfDir = "/home/app/wheatDB/data/vcf_private_sample/"
-    pub_data = Data.query.filter_by(opened=1, sign=0).all()
+    pub_data = Data.query.filter(Data.opened == 1, Data.sign == 0).all()
     if pub_data:
-        pub_samples = ['.'.join([each.tc_id,each.sample_name]) for each in pub_data]
+        pub_samples = [
+            '.'.join([each.tc_id, each.sample_name]) for each in pub_data
+        ]
     else:
         pub_samples = []
-    username = session.get('username')
-    if username:
-        private_data = Data.query.filter_by(provider=username, opened=0, sign=0).all()
-        private_samples = ['.'.join([each.tc_id,each.sample_name]) for each in private_data]
+
+    if current_user.is_authenticated:
+        user_name = current_user.username
+    else:
+        user_name = None
+
+    #username = session.get('username')
+    if user_name:
+        private_data = Data.query.filter_by(provider=user_name,
+                                            opened=0,
+                                            sign=0).all()
+        private_samples = [
+            '.'.join([each.tc_id, each.sample_name]) for each in private_data
+        ]
     else:
         private_samples = []
-    samples = pub_samples + private_samples
     #samples = [file[:-7] for file in os.listdir(vcfDir) if file[-6:] == 'vcf.gz']
-    return render_template('tools/get_sequence.html', files=samples)
+    return render_template('tools/get_sequence.html',
+                           pub_samples=pub_samples,
+                           pri_samples=private_samples)
 
 
 @tools.route('/pca/plot/')
@@ -78,7 +99,12 @@ def fetch_sequence_by_vcf():
         results = fetch_sequence(table, chr, start_pos, end_pos)
         if results:
             return jsonify({'msg': 'ok', 'text': results})
-        return jsonify({'msg': 'not fetch sequence by vcf file: {0}.vcf.gz'.format(table), 'text': results})
+        return jsonify({
+            'msg':
+            'not fetch sequence by vcf file: {0}.vcf.gz'.format(table),
+            'text':
+            results
+        })
 
 
 @tools.route('/upload/expression/', methods=['POST'])
@@ -98,7 +124,8 @@ def upload_expression():
             file.save(os.path.join(UPLOAD_FOLDER, 'pca', filename))
             if sample_group and allowed_file(sample_group.filename):
                 sample_group_name = secure_filename(sample_group.filename)
-                sample_group.save(os.path.join(UPLOAD_FOLDER, 'pca', sample_group_name))
+                sample_group.save(
+                    os.path.join(UPLOAD_FOLDER, 'pca', sample_group_name))
                 #print('save it {0}'.format(sample_group_name))
             result = run_pca(filename, sample_group_name)
             return jsonify({'msg': 'ok', 'table': result})
@@ -126,7 +153,8 @@ def structure_pca():
 
 @tools.route('/vcf/annotation/', methods=['GET'])
 def vcf_annotation():
-    return render_template('tools/annotation.html', annotation_database=VCF_ANNOTATION_DATABASE)
+    return render_template('tools/annotation.html',
+                           annotation_database=VCF_ANNOTATION_DATABASE)
 
 
 @tools.route('/vcf/result/', methods=['POST'])
@@ -142,4 +170,3 @@ def fetch_annotation_result():
             return jsonify({'msg': 'async', 'task_id': task.id})
         result = run_annotation(filename, annotation_database)
         return jsonify({'msg': 'ok', 'result': result})
-
