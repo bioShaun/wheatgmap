@@ -4,91 +4,101 @@
 {% endblock %}
 {% block content %}
 <h2>Get Sequence:</h2>
-<br>
-    
-    <h4 >Select a file, chromosome and input a range:</h4>
-    <div class="row">
-      <div class="col-xs-6">
-          <div class="form-group">
-          <div class="input-group input-group-sm">
-              <span class="input-group-addon" style="padding: 0 11px;">Chromsome:</span>
-              <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
-                          <option value= selected="selected"></option>
-                          <option value=chr1A>chr1A</option>
-                          <option value=chr1B>chr1B</option>
-                          <option value=chr1D>chr1D</option>
-                          <option value=chr2A>chr2A</option>
-                          <option value=chr2B>chr2B</option>
-                          <option value=chr2D>chr2D</option>
-                          <option value=chr3A>chr3A</option>
-                          <option value=chr3B>chr3B</option>
-                          <option value=chr3D>chr3D</option>
-                          <option value=chr4A>chr4A</option>
-                          <option value=chr4B>chr4B</option>
-                          <option value=chr4D>chr4D</option>
-                          <option value=chr5A>chr5A</option>
-                          <option value=chr5B>chr5B</option>
-                          <option value=chr5D>chr5D</option>
-                          <option value=chr6A>chr6A</option>
-                          <option value=chr6B>chr6B</option>
-                          <option value=chr6D>chr6D</option>
-                          <option value=chr7A>chr7A</option>
-                          <option value=chr7B>chr7B</option>
-                          <option value=chr7D>chr7D</option>
-                          <option value=chrUn>chrUn</option>
-              </select>
-          </div>
-          <br>
-          <div class="input-group input-group-sm">
-            <span class="input-group-addon" style="padding: 0 13px;">Start position:</span>
-            <input type="text" id="pos-start" class="form-control input-group-sm"  name="pos_start" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-        </div>
-        <br>
-        <div class="input-group input-group-sm">
-          <span class="input-group-addon" style="padding: 0 15px;">End position:</span>
-          <input type="text" id="pos-end" class="form-control input-group-sm"  name="pos_end" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-      </div>
-      </div>
-        </div>
 
+<div class="panel-heading">
+  <h3 class="panel-title">This tool will help you extract the sequencing from you won sample.</h3></br>
+  <h3 class="panel-title">Tt's base on IWGSC RefSeq V1.0 and will replace all varitant sites with your sample.</h3></br>
+  <h3 class="panel-title">If you do not found the sample you want, you may need login and upload it.</h3>
+</br>
+  <img src="{{ url_for('static', filename='images/getSeq.png')}}" width="559" height="63" >
+</div>
+
+<div class="row">
+  <div class="col-xs-6">
+    <div class="form-group">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" style="padding: 0 11px;">Chromsome:</span>
+        <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
+          <option value=selected="selected"></option>
+          <option value=chr1A>chr1A</option>
+          <option value=chr1B>chr1B</option>
+          <option value=chr1D>chr1D</option>
+          <option value=chr2A>chr2A</option>
+          <option value=chr2B>chr2B</option>
+          <option value=chr2D>chr2D</option>
+          <option value=chr3A>chr3A</option>
+          <option value=chr3B>chr3B</option>
+          <option value=chr3D>chr3D</option>
+          <option value=chr4A>chr4A</option>
+          <option value=chr4B>chr4B</option>
+          <option value=chr4D>chr4D</option>
+          <option value=chr5A>chr5A</option>
+          <option value=chr5B>chr5B</option>
+          <option value=chr5D>chr5D</option>
+          <option value=chr6A>chr6A</option>
+          <option value=chr6B>chr6B</option>
+          <option value=chr6D>chr6D</option>
+          <option value=chr7A>chr7A</option>
+          <option value=chr7B>chr7B</option>
+          <option value=chr7D>chr7D</option>
+          <option value=chrUn>chrUn</option>
+        </select>
       </div>
+      <br>
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" style="padding: 0 13px;">Start position:</span>
+        <input type="text" id="pos-start" class="form-control input-group-sm" name="pos_start"
+          onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+      </div>
+      <br>
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" style="padding: 0 15px;">End position:</span>
+        <input type="text" id="pos-end" class="form-control input-group-sm" name="pos_end"
+          onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <h4>Select a Samples:</h4>
 <div class="row">
-    {% if pri_samples %}
-    <div class="col-xs-3">        
-        <h3 class="panel-title">Private samples</h3>
-        <select name="from[]" id="multi_d" class="form-control multi_d" size="20" >
-            {% for sample in pri_samples %}
-                <option value="private">{{ sample }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% endif %}
+  {% if pri_samples %}
+  <div class="col-xs-3">
+    <h3 class="panel-title">Private samples</h3>
+    <select name="from[]" id="multi_d" class="form-control multi_d" size="20">
+      {% for sample in pri_samples %}
+      <option value="private">{{ sample }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% endif %}
 
-    {% if pub_samples %}
-    <div class="col-xs-3">
-        <h3 class="panel-title">Public samples</h3>
-        <select name="from[]" id="multi_d2" class="form-control multi_d" size="20" >
-            {% for sample in pub_samples %}
-                <option value="public">{{ sample }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% endif %}
+  {% if pub_samples %}
+  <div class="col-xs-3">
+    <h3 class="panel-title">Public samples</h3>
+    <select name="from[]" id="multi_d2" class="form-control multi_d" size="20">
+      {% for sample in pub_samples %}
+      <option value="public">{{ sample }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% endif %}
 
-    <div class="col-xs-2" style="margin-top: 50px;">
-        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-    </div>
-    <div class="col-xs-4">
-        <h3 class="panel-title">Selected Sample</h3>
-        <select name="to[]" id="multi_d_to" class="form-control" size="10" multiple="multiple"></select>
-    </div>
+  <div class="col-xs-2" style="margin-top: 50px;">
+    <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i
+        class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+    <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i
+        class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+  </div>
+  <div class="col-xs-4">
+    <h3 class="panel-title">Selected Sample</h3>
+    <select name="to[]" id="multi_d_to" class="form-control" size="10" multiple="multiple"></select>
+  </div>
 </div>
 
 <div style="margin: 15px 0 30px 0;">
-  <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
+  <input class="btn btn-primary btn-sm" id="submit" type="submit" value="Submit">
 </div>
 <!-- add loading hint -->
 <div id="query_hint"></div>

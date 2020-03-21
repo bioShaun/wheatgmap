@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="row">
-    <h2>Gene Mapping by groups:</h2>
+    <h2>Gene Mapping by groups</h2>
+
+    <div class="panel-heading">
+        <p> 1: Input one or more gene ID <B>OR</B> select a chromsome and region.</p>
+        <p> 2: Select the samples in the left boxes and add to right box. </p>
+        <p> 3: Click the "Submit"</p>
+    </div>
+
     <div class="row">
-        <div  class="col-xs-6">
+        <div class="col-xs-6">
             <form role="search" method="" action="#">
                 <div class="input-group">
                     <table class="table">
                         <tr>
                             <td>
-                             Gene ID/Symbol/Name<textarea id="gene_list" row="5" class="form-control" value="" placeholder="Input one Gene Symbol/Name"></textarea>
+                                <textarea id="gene_list" rows="5" cols="80" class="form-control" value=""
+                                    placeholder="Input Gene ID.(e.g TraesCS1D01G311400)"></textarea>
                             </td>
                         </tr>
                     </table>
@@ -21,7 +29,7 @@
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">Chromsome:</span>
                     <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
-                        <option value= selected="selected"></option>
+                        <option value=selected="selected"></option>
                         <option value=chr1A>chr1A</option>
                         <option value=chr1B>chr1B</option>
                         <option value=chr1D>chr1D</option>
@@ -44,123 +52,143 @@
                         <option value=chr7B>chr7B</option>
                         <option value=chr7D>chr7D</option>
                         <option value=chrUn>chrUn</option>
-                </select>
+                    </select>
                 </div>
                 <br>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">Start position:</span>
-                    <input type="text" id="pos-start" class="form-control input-group-sm"  name="pos_start" >
+                    <input type="text" id="pos-start" class="form-control input-group-sm" name="pos_start">
                 </div>
                 <br>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">End position:</span>
-                    <input type="text" id="pos-end" class="form-control input-group-sm"  name="pos_end" >
+                    <input type="text" id="pos-end" class="form-control input-group-sm" name="pos_end">
                 </div>
             </div>
         </div>
     </div>
-  <h2>Gene Compare divide groups:</h2>
-  <div class="panel-heading">
-  <h3 class="panel-title">Divide samples which showed below to groups.</h3>
-  </div>
-  <div class="row">
+    <h2>Gene Compare divide groups:</h2>
+    <div class="panel-heading">
+        <h3 class="panel-title">Divide samples which showed below to groups.</h3>
+    </div>
+    <div class="row">
 
-    {% if pri_samples %}
-    <div class="col-xs-3">
-        <h3 class="panel-title">Private samples</h3>
-        <select name="from[]" id="multi_d" class="form-control multi_d" size="67" multiple="multiple">
-            {% for sample in pri_samples %}
+        {% if pri_samples %}
+        <div class="col-xs-3">
+            <h3 class="panel-title">Private samples</h3>
+            <select name="from[]" id="multi_d" class="form-control multi_d" size="67" multiple="multiple">
+                {% for sample in pri_samples %}
                 <option value="private">{{ sample }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
 
-    {% if pub_samples %}
-    <div class="col-xs-3">
-        <h3 class="panel-title">Public samples</h3>
-        <select name="from[]" id="multi_d2" class="form-control multi_d" size="67" multiple="multiple">
-            {% for sample in pub_samples %}
+        {% if pub_samples %}
+        <div class="col-xs-3">
+            <h3 class="panel-title">Public samples</h3>
+            <select name="from[]" id="multi_d2" class="form-control multi_d" size="67" multiple="multiple">
+                {% for sample in pub_samples %}
                 <option value="public">{{ sample }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% endif %}
-
-    <div class="col-xs-2">
-        <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-        <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-        <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-        <hr style="margin: 40px 0 60px;" />
-
-        <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-        <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-        <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-        <hr style="margin: 40px 0 60px;" />
-
-        <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-        <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-        <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-        <hr style="margin: 40px 0 60px;" />
-
-        <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-        <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-        <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-        <hr style="margin: 40px 0 60px;" />
-
-        <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-        <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-        <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-        <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-    </div>
-
-    <div class="col-xs-4">
-        <div class="input-group">
-            <span class="input-group-addon">Group name</span>
-            <input id="g1" type="text" class="form-control" placeholder="">
+                {% endfor %}
+            </select>
         </div>
-        <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
-       
-        <hr style="margin: 28px 0 50px;" />
+        {% endif %}
 
-        <div class="input-group">
-            <span class="input-group-addon">Group name</span>
-            <input id="g2" type="text" class="form-control" placeholder="">
+        <div class="col-xs-2">
+            <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i
+                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+            <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+            <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+            <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+            <hr style="margin: 40px 0 60px;" />
+
+            <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+            <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+            <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+            <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+            <hr style="margin: 40px 0 60px;" />
+
+            <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+            <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+            <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+            <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+            <hr style="margin: 40px 0 60px;" />
+
+            <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+            <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+            <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+            <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+            <hr style="margin: 40px 0 60px;" />
+
+            <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+            <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+            <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+            <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i
+                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
         </div>
-        <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
 
-        <hr style="margin: 20px 0 45px;">
+        <div class="col-xs-4">
+            <div class="input-group">
+                <span class="input-group-addon">Group name</span>
+                <input id="g1" type="text" class="form-control" placeholder="">
+            </div>
+            <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
 
-        <div class="input-group">
-            <span class="input-group-addon">Group name</span>
-            <input id="g3" type="text" class="form-control" placeholder="">
+            <hr style="margin: 28px 0 50px;" />
+
+            <div class="input-group">
+                <span class="input-group-addon">Group name</span>
+                <input id="g2" type="text" class="form-control" placeholder="">
+            </div>
+            <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
+
+            <hr style="margin: 20px 0 45px;">
+
+            <div class="input-group">
+                <span class="input-group-addon">Group name</span>
+                <input id="g3" type="text" class="form-control" placeholder="">
+            </div>
+            <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
+
+            <hr style="margin: 20px 0 45px;">
+
+            <div class="input-group">
+                <span class="input-group-addon">Group name</span>
+                <input id="g4" type="text" class="form-control" placeholder="">
+            </div>
+            <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
+
+            <hr style="margin: 20px 0 50px;">
+
+            <div class="input-group">
+                <span class="input-group-addon">Group name</span>
+                <input id="g5" type="text" class="form-control" placeholder="">
+            </div>
+            <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
         </div>
-        <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
-        
-        <hr style="margin: 20px 0 45px;">   
-
-        <div class="input-group">
-            <span class="input-group-addon">Group name</span>
-            <input id="g4" type="text" class="form-control" placeholder="">
-        </div>
-        <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
-         
-        <hr style="margin: 20px 0 50px;">
-
-        <div class="input-group">
-            <span class="input-group-addon">Group name</span>
-            <input id="g5" type="text" class="form-control" placeholder="">
-        </div>
-        <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
-    </div>
-    <!--
+        <!--
     <div class="col-xs-3">
       <br/><br/>
       <table>
@@ -209,17 +237,17 @@
       </table>
     </div>
    -->
-   </div>
-    <br/><br/>
-   </div>
-   <div class="panel-body">
-     <input class="btn btn-primary btn-sm"  id="submit" type="submit"  value="Submit">
-   </div>
-   <hr/>
-   <!-- add loading hint -->
-   <div id="query_hint"></div>
-   <h2>Results:</h2>
-   <div id="result"></div>
+    </div>
+    <br /><br />
+</div>
+<div class="panel-body">
+    <input class="btn btn-primary btn-sm" id="submit" type="submit" value="Submit">
+</div>
+<hr />
+<!-- add loading hint -->
+<div id="query_hint"></div>
+<h2>Results:</h2>
+<div id="result"></div>
 </div>
 {% endblock %}
 

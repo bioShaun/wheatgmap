@@ -59,6 +59,7 @@ js_base = Bundle(js_comment,
                  filters='jsmin',
                  output='js/all.min.js')
 
+js_sup = Bundle('js/sup.js', filters='jsmin', output='js/sup.min.js')
 
 def init_app(app):
     webassets = Environment(app)
@@ -69,6 +70,7 @@ def init_app(app):
     webassets.register('js_comment', js_comment)
     webassets.register('js_all', js_base)
     webassets.register('js_fancybox', js_fancybox)
+    webassets.register('js_sup', js_sup)
     webassets.manifest = 'cache' if not app.debug else False
     webassets.cache = not app.debug
     webassets.debug = app.debug

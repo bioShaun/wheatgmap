@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+<div class="title" style="margin-bottom: 30px;"> 
+  <h3>Gene Mapping Workflow</h3>
+  <div>
+	<img class="img" src="{{ url_for('static', filename='images/documents/WorkFlow.png')}}" alt="Workflow"  width="916" height="576">
+	<!-- --> <p type="text-align: center">The typical workflow for BSA gene mapping </p> <!-- -->
+  </div>
+
+<div class="panel-body">
+	<h4>1. Upload your VCF</h4>
+
+	<img class="img" src="{{ url_for('static', filename='images/documents/upload.png')}}" alt="upload vcf"  width="1142" height="412">
+		  
+	<p>a)The VCF format should flow the GATK Best Practice or our suggest pipeline. If you try to provide vcf from other tools, please make sure that the “Format” column should be “GT:AD:DP:GQ:PL” or at least contain “GT:AD:DP”.</br>
+		<img class="img" src="{{ url_for('static', filename='images/documents/VCF_Demo.png')}}" alt="vcf_format"  width="1065" height="125"></br>
+	b)The genome for call variation pipeline must be IWGSC RefSeq V1.0.</br>
+	c)The VCF file size was limited as lease than 1G. If you have large VCF file, please split into small one by each sample.</br>
+	d)When you finished upload your VCF, the system will take a several minutes to process the file in the background. You can check the status by Tasks page.</br>
+	</p>
+</div>
+
+<div class="panel-body">
+	<h4>2. BSA</h4>
+    <p>
+		a)	Wild Bulk and Mutant Bulk are required.</br>
+		b)	Wild Parent and Mutant Parent are suggested if available.</br>
+		c)	Background could help you filter out some false positive variants, but you should be much careful the genetic background of sample you selected. </br>
+		d)	Optional parameters are much important for different sample, if the default parameters do not work well, you can change the number. SNP window size was suggested as 10~50, SNP step size was suggested as 5~20.</br>
+	</p>
+</div>
+
+<div class="panel-body">
+	<h4>3. Donwload</h4>
+    <p>
+		<img class="img" src="{{ url_for('static', filename='images/documents/mapping_results.png')}}" alt="mapping_results"  width="1034" height="657"></br>
+		a)	After jobs finish, you can download all the results by a zip package.</br>
+		b)	If the figure not very well, then run mapping again with other parameters.</br>
+	</p>
+</div>
+
+
+</div>
+
+{% endblock %}

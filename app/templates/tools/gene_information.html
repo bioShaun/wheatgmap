@@ -2,15 +2,16 @@
 {% block content %}
 <div class="panel-body">
 <div class="panel">
-  <h2>Query gene annotaion by Gene ID:</h2>
+  <h2>Gene Annotaion</h2>
     <div class="panel-heading">
-        <h3 class="panel-title">Obtain a table of a coding regin by locus identifier(e.g.TraesCS1D01G311400)</h3>
+        <h3 class="panel-title">All gene annotion were from IWGSC RefSeq Annotation V1.0 and V1.1.</h3></br>
+        <h3 class="panel-title">You can query one or more genes by input your gene list.</h3></br>
+        <h3 class="panel-title">Demo: TraesCS1D01G311400,TraesCS1A02G164300</h3>
     </div>
     <div class="panel-body">
         <div class="form-group">
                 <span>
-                    <label>Locus Identifier:(now,you can input many genes to searching!)</label>
-                    <textarea id="genes" rows="5" class="form-control" value="" placeholder="Input Gene Symbol/Name"></textarea> 
+                    <textarea id="genes" rows="5" class="form-control" value="" placeholder="e.g. TraesCS1D02G311400"></textarea> 
                 </span>
                     <br>
                     <button type="submit" class="btn btn-sm btn-success" id="submit">Search</button>

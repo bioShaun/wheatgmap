@@ -15,7 +15,7 @@ split_vcf_sample_script = os.path.join(Config.SCRIPT_PATH, Config.SPLIT_VCF_SAMP
 def tc_map(vcf, vcf_type, samples):
     tc_series = []
     last_id = len(Data.query.all())
-    _trans = {"WES": "E", "WGS": "G", "RNAse": "R"}
+    _trans = {"WES": "E", "WGS": "G", "RNAseq": "R"}
     f = open(os.path.join(Config.VCF_FILE_PATH, vcf + '.idmap'), 'w')
     for i in range(len(samples)):
         tmp = last_id + 1 + i

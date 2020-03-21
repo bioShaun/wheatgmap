@@ -13,7 +13,7 @@ from flask import render_template, \
 from settings import Config
 from werkzeug import secure_filename
 from app.mail import send_mail
-from app.utils import redis_task
+from app.utils import redis_task, vcfValidator
 
 
 @login_manager.user_loader
@@ -174,6 +174,9 @@ def upload():
                  secure_filename(vcf_file.filename)])
             filepath = os.path.join(Config.VCF_FILE_PATH, filename)
             vcf_file.save(filepath)
+            vcf_check_msg = vcfValidator(filepath)
+            if vcf_check_msg:
+                return jsonify({'msg': vcf_check_msg, 'table': []})
             if os.stat(filepath).st_size > 1 * 1000:
                 task = async_fetch_vcf_samples.delay(filename,
                                                      current_user.username,

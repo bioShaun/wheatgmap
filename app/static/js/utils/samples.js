@@ -157,8 +157,8 @@ $(document).ready(function(){
    pageNumber:1,//初始化加载第一页，默认第一页
    pageSize:10,   //每页的记录行数
    pageList:[10, 25, 50, 100],//可选择的每页行数
-   paginationPreText: "上一页",
-   paginationNextText: "下一页",
+   //paginationPreText: "pre",
+   //paginationNextText: "下一页",
    paginationFirstText: "First",
    paginationLastText: "Last",
    showExport: true,  //是否显示导出按钮
@@ -239,4 +239,28 @@ $(document).ready(function(){
     switchable: true
     }],
   });
+
+  $("#sample-table").on('load-success.bs.table',function(data){
+    const documentHeight = Math.max(
+        document.body["scrollHeight"],
+        document.documentElement["scrollHeight"]
+      );
+      const windowHeight = $(window).height();
+    
+      if (windowHeight === documentHeight) {
+        $("#footer").show();
+      } else {
+        $("#footer").hide();
+      }
+    
+      $(window).scroll(function() {
+
+        if (scrollY + windowHeight === documentHeight) {
+          $("#footer").fadeIn();
+        } else {
+          $("#footer").hide();
+        }
+      });
+ });
+
 });

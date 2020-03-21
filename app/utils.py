@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # 集成 celery
-import math
-import random
-import subprocess
-from app.db import DB
 import re
+import math
 import redis
+import vcfpy
+import random
 import requests
+import subprocess
+import pandas as pd
+from app.db import DB
+from settings import Config
 
 
 def fetch_sample(table, fixed_column_num):
@@ -128,6 +131,39 @@ class redisTask(object):
 
 redis_task = redisTask()
             
+def vcfValidator(vcf):
+    try:
+        reader = vcfpy.Reader.from_path(vcf)
+    except FileNotFoundError as e:
+        return 'Upload Failed.'
+    except Exception as e:
+        return str(e)
+    else:
+        if 'AD' not in reader.header._indices['FORMAT']:
+            print("ad wrong")
+            return 'Allelic depths information is missing from vcf.'
+
+        chr_size_df = pd.read_csv(Config.CHROM_SIZE,
+                                  sep='\t',
+                                  header=None,
+                                  names=['chrom_len'],
+                                  index_col=0)
+        contig_info = reader.header.get_lines(key='contig')
+        if contig_info:
+            for chr_i in contig_info:
+                if chr_i.id not in chr_size_df.index:
+                    return f'Invalid chromosome [{chr_i.id}].'
+                else:
+                    iwgsc_chr_len = chr_size_df.loc[chr_i.id].chrom_len
+                    if int(chr_i.length) != iwgsc_chr_len:
+                        error_msg = (
+                            f'Wrong chromosome length for {chr_i.id}'
+                            f'[vcf: {chr_i.length}; IWGSC(v1.0): {iwgsc_chr_len}].'
+                        )
+                        return error_msg
+        else:
+            return 'Chromosome information is missing from vcf file.'
+    return False
 
 
         
