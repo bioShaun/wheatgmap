@@ -479,3 +479,27 @@ function createPlot(files, name) {
     var allStr = "<div class='row'>" + textStr + plotStr + "</div>";
     return allStr;
 }
+
+
+function setFooter () {
+    const documentHeight = Math.max(
+        document.body["scrollHeight"],
+        document.documentElement["scrollHeight"]
+      );
+      const windowHeight = $(window).height();
+    
+      if (windowHeight === documentHeight) {
+        $("#footer").show();
+      } else {
+        $("#footer").hide();
+      }
+    
+      $(window).scroll(function() {
+
+        if (scrollY + windowHeight === documentHeight) {
+          $("#footer").fadeIn();
+        } else {
+          $("#footer").hide();
+        }
+      });
+}

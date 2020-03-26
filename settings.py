@@ -21,6 +21,8 @@ class Config(object):
     VCF_FILE_PATH = '/data/wheatdb/data/vcf_private'
     VCF_TABLE_PATH = '/data/wheatdb/data/vcf_private_table'
     VCF_SAMPLE_PATH = '/data/wheatdb/data/vcf_private_sample'
+    VCF_TABLE_BYCHR_PATH = '/data/wheatdb/data/vcfTablePkl/'
+    VCF_ANN_BYCHR_PATH = '/data/wheatdb/data/vcfannDB/'
     CHROM_SIZE = '/data/wheatdb/data/ref/chr.size'
     SCRIPT_PATH = '/home/scripts'
     EXTRACT_VCF_SAMPLE = 'extract_vcf_sample_name.sh'

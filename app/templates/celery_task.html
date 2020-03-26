@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_bst.html' %}
 {% block css %}
 <link rel="stylesheet" href="{{url_for('static',filename='fancybox/jquery.fancybox.css')}}">
 <link rel="stylesheet" href="{{url_for('static',filename='fancybox/fancybox.css')}}">
@@ -7,7 +7,7 @@
 <h2>Task Information:</h2>
 <p id='task-id'>task id:{{ task_id }}</p>
 <p id='task-state'>task state:{{ state }}</p>
-<div id="result">
+<div id="result" style="height: 600px;">
 </div>
 {% endblock %}
 {% block js %}

@@ -8,6 +8,12 @@ function get_input_data(){
   var wild_parent = [];
   var mutant_parent = [];
   var background = [];
+  var ed = 'ed';
+  var qtlseqr = 'qtlseqr';
+  var ref_freq =$("input[name='ref_freq']:checked").val()
+  var p_ref_freq = $("input[name='p_ref_freq']:checked").val()
+  var background_ref_freq = $("input[name='background_ref_freq']:checked").val()
+
   $("#multi_d_to option").each(function(){
     wild_bulk.push($(this).text());
   });
@@ -33,7 +39,12 @@ function get_input_data(){
       'mutant': mutant_bulk,
       'wild_parent': wild_parent,
       'mutant_parent': mutant_parent,
-      'background': background
+      'background': background,
+      'ed': ed,
+      'qtlseqr': qtlseqr,
+      'ref_freq': ref_freq,
+      'p_ref_freq': p_ref_freq,
+      'background_ref_freq': background_ref_freq,
   };
   return all_info;
 

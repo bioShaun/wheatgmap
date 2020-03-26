@@ -145,7 +145,7 @@ $(document).ready(function(){
    striped: true, //隔行换色
    cache: false, //禁用缓存
    pagination: true, //关闭分页
-   showFooter: true, //是否显示列脚
+   showFooter: false, //是否显示列脚
    showPaginationSwitch: true,//是否显示 数据条数选择框
    sortable: false,//排序
    search: true,//启用搜索

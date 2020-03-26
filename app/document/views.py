@@ -18,3 +18,7 @@ def dataSharing():
 @document.route('/contactUS/', methods=['GET'])
 def contactUS():
     return render_template('document/contactUS.html')
+
+@document.route('/cite/', methods=['GET'])
+def cite():
+    return render_template('document/cite.html')

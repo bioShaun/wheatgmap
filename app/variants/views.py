@@ -1,7 +1,7 @@
 # coding=utf-8
 import json
 from . import variants
-from .actions import snp_info
+from .actions import snp_info, snp_info_by_chr
 from flask import render_template, jsonify, request, session
 from app.auth.models import Data
 from app.utils import parseInput, redis_task
@@ -34,7 +34,7 @@ def fetch_query_result():
     if request.method == 'POST':
         info = request.form['info']
         info = json.loads(info)
-        task = snp_info.delay(info)
+        task = snp_info_by_chr.delay(info)
         if current_user.is_authenticated:
             user_name = current_user.username
         else:
@@ -42,5 +42,4 @@ def fetch_query_result():
         redis_task.push_task(user_name, task.id)
         return jsonify({'msg': 'ok', 'task_id': task.id})
     return jsonify({'msg': 'method not allowed'})
-
 

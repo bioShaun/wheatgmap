@@ -15,7 +15,7 @@ $(document).ready(function() {
       if (scrollY + windowHeight === documentHeight) {
         $("#footer").fadeIn();
       } else {
-        $("#footer").fadeOut();
+        $("#footer").hide();
       }
     });
   });

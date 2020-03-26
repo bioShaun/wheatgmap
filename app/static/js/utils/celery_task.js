@@ -41,7 +41,9 @@ $(document).ready(function(){
     }, 'POST');
   }
  var index = layer.load(1);
- var status = setInterval(connResult, 10000);
+ var status = setInterval(connResult, 2000);
+
+ setFooter()
 });
 
 function uploadTask(result){

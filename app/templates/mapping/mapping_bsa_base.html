@@ -3,15 +3,13 @@
 <div class="row">
   <h2>Gene Mapping Via BSA(Bulked Segregant Analysis)</h2>
   <div class="panel-heading">
-    <p>1. Wild Bulk and Mutant Bulk are required.</p>
+    <p>1. Wild Bulk and Mutant Bulk are <b>required</b>.</p>
     <p>2. Wild Parent and Mutant Parent are suggested if available.</p>
-    <p>3. Background could help you filter out some false positive variants, but you should be much careful the genetic
-      background of sample you selected.</p>
+    <p>3. Background could help you filter out some variants, but you should be much careful the genetic
+      background and phenotype of sample you selected.</p>
     <h3 class="panel-title">Please login and upload your vcf file if you not find the sample you want in the boxes
       below.</h3>
   </div></br>
-
-
 
   <div class="row">
 
@@ -123,19 +121,64 @@
   <br>
   <form>
     <div class="form-group row">
-      <label for="w-snp-num" class="col-xs-2" style="font-weight:normal;">SNP window size</label>
-      <div class="col-xs-10">
+      <label for="w-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Window Size</label>
+      <div class="col-xs-7">
         <input id="w-snp-num" type="input" value="" placeholder="20"></input></td>
       </div>
     </div>
 
     <div class="form-group row">
-      <label for="s-snp-num" class="col-xs-2" style="font-weight:normal;">SNP step size</label>
-      <div class="col-xs-10">
+      <label for="s-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Step Size</label>
+      <div class="col-xs-7">
         <input id="s-snp-num" type="input" value="" placeholder="5"></input>
       </div>
     </div>
-  </form>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq1" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant Parent</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq1" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>    
+    
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Background</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq1" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>  
+</form>
 
   <div class="panel-body">
     <input class="btn btn-primary btn-sm" id="submit" type="submit" value="Submit">

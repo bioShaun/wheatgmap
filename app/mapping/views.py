@@ -17,7 +17,6 @@ def bsa_base():
     pub_samples, private_samples = fetch_vcf()
     return render_template('mapping/mapping_bsa_base.html', pub_samples=pub_samples, pri_samples=private_samples)
 
-
 @mapping.route('/bsa/', methods=['GET'])
 def bsa():
     pub_samples, private_samples = fetch_vcf() 
@@ -37,7 +36,6 @@ def fetch_bsa():
         task = run_bsa.delay(info)
         redis_task.push_task(current_username(), task.id)
         return jsonify({'msg': 'ok', 'task_id': task.id})
-
 
 @mapping.route('/compare/run/', methods=['POST'])
 def fetch_compare():
