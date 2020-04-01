@@ -47,8 +47,8 @@ class VarietyForm(FlaskForm):
     leaf_rust = StringField('Leaf Rust')
     leaf_blight = StringField('Leaf Blight')
     stripe_rust = StringField('Stripe Rust')
-    spinal_rust = StringField('Stripe Rust')
-    smut = StringField('Stripe Rust')
+    spinal_rust = StringField('Spinal Rust')
+    smut = StringField('Smut')
 
     def __init__(self, *args, **kwargs):
         super(VarietyForm, self).__init__(*args, **kwargs)

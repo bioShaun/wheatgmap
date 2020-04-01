@@ -37,7 +37,7 @@ class User(UserMixin, dbCRUD, db.Model):
     username = Column(db.String(80), nullable=False, unique=True)
     password_hash = Column(db.String(128))
     email = Column(db.String(50), unique=True)
-    phone = Column(db.String(11))
+    phone = Column(db.String(20))
     institute = Column(db.String(80))
     create_at = Column(db.DateTime)
     is_active = Column(db.Boolean)
@@ -122,7 +122,7 @@ class Data(db.Model):
     mixed_sample = Column(db.Text)
     mutant_transgenosis = Column(db.Text)
     other_inf = Column(db.Text)
-    type = Column(db.String(5))
+    type = Column(db.String(6))
     opened = Column(db.Boolean)
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
@@ -281,7 +281,7 @@ class VarietyDetail(dbCRUD, db.Model):
     geographic = Column(db.String(45))
     country = Column(db.String(45))
     province = Column(db.String(45))
-    affiliation = Column(db.String(45))
+    affiliation = Column(db.String(200))
     basic_info_sup = Column(db.String(1000))
     provider = db.Column(db.Integer)
     create_time = Column(db.DateTime)
@@ -300,7 +300,7 @@ class VarietyDetail(dbCRUD, db.Model):
     leaf_blight = Column(db.String(45))
     stripe_rust = Column(db.String(45))
     spinal_rust = Column(db.String(45))
-    smut = Column(db.String(45))
+    smut = Column(db.String(45))    
 
     def __init__(self,
                  variety_name,
