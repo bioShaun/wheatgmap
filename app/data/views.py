@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from . import data
-from app.auth.models import Data, User, Variety, Comment
+from app.auth.models import Data, User, Variety, Comment, VarietyDetail
 from flask_login import login_required, current_user
 from flask import render_template, request, jsonify, redirect, url_for
 
@@ -9,6 +9,13 @@ from flask import render_template, request, jsonify, redirect, url_for
 def samples():
     samples = Data.query.filter_by(opened=1, sign=0).all()
     return render_template('/data/data.html', samples=samples)
+
+
+@data.route('/varieties/')
+def variety():
+    va = VarietyDetail.query.all()
+    #print(va)
+    return render_template('/data/variety.html', va=va)
 
 
 @data.route('/user/<username>/')

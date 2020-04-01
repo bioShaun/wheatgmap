@@ -82,14 +82,14 @@
     <tbody>
       {% for va_i in variety_items %}
       <tr>
-        <td style=" vertical-align: middle;">TC-Va-{{va_i.id}}</td>
-        <td style=" vertical-align: middle;">{{va_i.variety_name}}</td>
-        <td style=" vertical-align: middle;">{{va_i.variety_type}}</td>
-        <td style=" vertical-align: middle;">{{va_i.geographic}}</td>
-        <td style=" vertical-align: middle;">{{va_i.country}}</td>
-        <td style=" vertical-align: middle;">{{va_i.province}}</td>
-        <td style=" vertical-align: middle;">{{va_i.affiliation}}</td>
-        <td style=" vertical-align: middle;">{{va_i.create_time}}</td>
+        <td>TC-Va-{{va_i.id}}</td>
+        <td>{{va_i.variety_name}}</td>
+        <td>{{va_i.variety_type}}</td>
+        <td>{{va_i.geographic}}</td>
+        <td>{{va_i.country}}</td>
+        <td>{{va_i.province}}</td>
+        <td>{{va_i.affiliation}}</td>
+        <td>{{va_i.create_time}}</td>
         <td>
           <a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
             <button class="btn btn-info btn-sm">Detail</button>
