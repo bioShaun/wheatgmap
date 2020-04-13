@@ -139,11 +139,13 @@ def edit():
 @login_required
 def upload_photo():
     for f in request.files.getlist('file'):
+        print(f)
         fileSfx = PurePath(f.filename).suffix
         timestamp = str(time.time()).replace('.', '-')
         filename = f'{timestamp}-{f.filename}'
         url = os.path.join(Config.UPLOADED_PHOTOS_DEST, filename)
         filePath = f'{basedir}/app/{url}'
+        print(filePath)
         f.save(filePath)
         oldUrl = current_user.photo
         if oldUrl != Config.DEFAULT_USER_PHOTO:

@@ -27,7 +27,7 @@ def users(username):
         exists = True
     else:
         exists = False
-    va = VarietyDetail.query.filter_by(provider=current_user.id).all()
+    va = VarietyDetail.query.filter_by(provider=user.id).all()
     samples = Data.query.filter_by(opened=1, sign=0, provider=username).all()
     return render_template('data/user.html',
                            user=user,
