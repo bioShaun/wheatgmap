@@ -33,10 +33,6 @@ def fetch_blast_table():
                 'Can not find gene in input gene list or genome region.',
                 'result': []
             })
-        else:
-            # for test
-            genes = '|'.join(gene_list)
-            return jsonify({'msg': genes, 'result': []})
         result = batch_query_gene(gene_list)
         if result:
             return jsonify({'msg': 'ok', 'result': result})
