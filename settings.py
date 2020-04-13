@@ -24,7 +24,7 @@ class Config(object):
     VCF_TABLE_BYCHR_PATH = '/data/wheatdb/data/vcfTablePkl/'
     VCF_ANN_BYCHR_PATH = '/data/wheatdb/data/vcfannDB/'
     CHROM_SIZE = '/data/wheatdb/data/ref/chr.size'
-GENE_POS = '/mnt/e/web/flask/data/IWGSC_v1.1.gene.bed.gz'
+    GENE_POS = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
     IMG_PATH = '/static/download/imgs'
     UPLOADED_PHOTOS_DEST = '/static/download/photos'
     DEFAULT_USER_PHOTO = '/static/images/user.svg'    

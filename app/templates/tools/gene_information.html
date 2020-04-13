@@ -1,34 +1,141 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="panel-body">
-<div class="panel">
-  <h2>Gene Annotaion</h2>
-    <div class="panel-heading">
-        <h3 class="panel-title">All gene annotion were from IWGSC RefSeq Annotation V1.0 and V1.1.</h3></br>
-        <h3 class="panel-title">You can query one or more genes by input your gene list.</h3></br>
-        <h3 class="panel-title">Demo: TraesCS1D01G311400,TraesCS1A02G164300</h3>
-    </div>
-    <div class="panel-body">
+  <div class="panel">
+    <h2>Query gene annotaion:</h2>
+
+    <div class="row">
+      <div class="panel-heading" style="margin-bottom: 30px;">
+        <h3 class="panel-title">
+          Obtain a table of a coding regin by locus
+          identifier(e.g.TraesCS1D01G311400) or location.
+        </h3>
+      </div>
+      <div class="col-xs-6">
         <div class="form-group">
-                <span>
-                    <textarea id="genes" rows="5" class="form-control" value="" placeholder="e.g. TraesCS1D02G311400"></textarea> 
-                </span>
-                    <br>
-                    <button type="submit" class="btn btn-sm btn-success" id="submit">Search</button>
-                    <button type="reset" class="btn btn-sm btn-warning">Reset</button>
+          <textarea
+            id="genes"
+            rows="6"
+            class="form-control"
+            value=""
+            placeholder="Gene ID"
+          ></textarea>
+          <br />
+          <button type="submit" class="btn btn-sm btn-success" id="submit">
+            Search
+          </button>
+          <button type="reset" class="btn btn-sm btn-warning">Reset</button>
         </div>
-        <div id="results-table"></div>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="form-group">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="padding: 0 11px;"
+              >Chromsome:</span
+            >
+            <select
+              class="selectpicker"
+              data-width="25%"
+              name="chr"
+              id="select-chr"
+            >
+              <option value="selected" ="selected"></option>
+              <option value="chr1A">chr1A</option>
+              <option value="chr1B">chr1B</option>
+              <option value="chr1D">chr1D</option>
+              <option value="chr2A">chr2A</option>
+              <option value="chr2B">chr2B</option>
+              <option value="chr2D">chr2D</option>
+              <option value="chr3A">chr3A</option>
+              <option value="chr3B">chr3B</option>
+              <option value="chr3D">chr3D</option>
+              <option value="chr4A">chr4A</option>
+              <option value="chr4B">chr4B</option>
+              <option value="chr4D">chr4D</option>
+              <option value="chr5A">chr5A</option>
+              <option value="chr5B">chr5B</option>
+              <option value="chr5D">chr5D</option>
+              <option value="chr6A">chr6A</option>
+              <option value="chr6B">chr6B</option>
+              <option value="chr6D">chr6D</option>
+              <option value="chr7A">chr7A</option>
+              <option value="chr7B">chr7B</option>
+              <option value="chr7D">chr7D</option>
+              <option value="chrUn">chrUn</option>
+            </select>
+          </div>
+          <br />
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="padding: 0 13px;"
+              >Start position:</span
+            >
+            <input
+              type="text"
+              id="pos-start"
+              class="form-control input-group-sm"
+              name="pos_start"
+              onkeyup="this.value=this.value.replace(/\D/g,'')"
+              onafterpaste="this.value=this.value.replace(/\D/g,'')"
+            />
+          </div>
+          <br />
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="padding: 0 15px;"
+              >End position:</span
+            >
+            <input
+              type="text"
+              id="pos-end"
+              class="form-control input-group-sm"
+              name="pos_end"
+              onkeyup="this.value=this.value.replace(/\D/g,'')"
+              onafterpaste="this.value=this.value.replace(/\D/g,'')"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-{% endblock %}
-{% block js %}
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-<script src="{{ url_for('static', filename='js/utils/tools.js') }}"></script>
-{% endblock %}
+
+    <!--     <div class="panel-heading">
+      <h3 class="panel-title">
+        Obtain a table of a coding regin by locus
+        identifier(e.g.TraesCS1D01G311400)
+      </h3>
+    </div> -->
+    <div class="panel-body">
+      <!-- <div class="form-group">
+        <span>
+          <label
+            >Locus Identifier:(now,you can input many genes to
+            searching!)</label
+          >
+          <textarea
+            id="genes"
+            rows="5"
+            class="form-control"
+            value=""
+            placeholder="Input Gene Symbol/Name"
+          ></textarea>
+        </span>
+        <br />
+        <button type="submit" class="btn btn-sm btn-success" id="submit">
+          Search
+        </button>
+        <button type="reset" class="btn btn-sm btn-warning">Reset</button>
+      </div> -->
+      <div id="results-table"></div>
+    </div>
+    {% endblock %} {% block js %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+    <script src="{{ url_for('static', filename='js/utils/tools.js') }}"></script>
+    {% endblock %}
+  </div>
+</div>

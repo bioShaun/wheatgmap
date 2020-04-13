@@ -1,10 +1,16 @@
+import os
+import time
 from . import variety
 from .forms import VarietyForm, VarietyCommentForm
-from app.auth.models import VarietyDetail, VarietyComment
+from app.auth.models import VarietyDetail, VarietyComment, VarietyFigure, VarietyFigureExample
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
 from flask import jsonify
+from settings import Config, basedir
+import random
+import shutil
+
 
 @variety.route('/create/', methods=['GET', 'POST'])
 @login_required
@@ -52,6 +58,11 @@ def detail(variety_id):
     variety_id = variety_item.id
     comments = VarietyComment.query.filter_by(variety=variety_id,
                                               comment_type="commnet").all()
+    figs = variety_item.figures
+    leftFigNum = 10 - len(figs)
+    exampleFig = VarietyFigureExample()
+    isProvider = current_user.id == variety_item.provider_obj.id
+
     form = VarietyCommentForm(content="")
     if form.validate_on_submit():
         if current_user.is_anonymous:
@@ -68,7 +79,11 @@ def detail(variety_id):
     return render_template('variety/variety_view_verticle.html',
                            variety_item=variety_item,
                            comments=comments,
-                           form=form)
+                           form=form,
+                           figs=figs,
+                           leftFigNum=leftFigNum,
+                           exampleFig=exampleFig,
+                           isProvider=isProvider)
 
 
 @variety.route('/reply/<variety_id>/<commentId>/', methods=['GET', 'POST'])
@@ -89,7 +104,7 @@ def update(variety_id):
     variety_item = VarietyDetail.query.get(variety_id)
     if current_user.id != variety_item.provider:
         flash('Not authorized!', 'warning')
-        return redirect(url_for('auth.account'))    
+        return redirect(url_for('auth.account'))
     form = VarietyForm(variety_name=variety_item.variety_name,
                        variety_type=variety_item.variety_type,
                        geographic=variety_item.geographic,
@@ -130,7 +145,30 @@ def remove(variety_id):
     variety_item = VarietyDetail.query.get(variety_id)
     if current_user.id != variety_item.provider:
         flash('Not authorized!', 'warning')
-        return redirect(url_for('auth.account'))    
+        return redirect(url_for('auth.account'))
     variety_item.delete()
     return redirect(url_for('auth.tasks'))
 
+
+@variety.route('/upload-img/<variety_id>/', methods=['POST'])
+@login_required
+def upload_img(variety_id):
+    for f in request.files.getlist('file'):
+        timestamp = str(time.time()).replace('.', '-')
+        filename = f'{timestamp}-{f.filename}'
+        url = os.path.join(Config.IMG_PATH, filename)
+        filePath = f'{basedir}/app/{url}'
+        f.save(filePath)
+        vaFig = VarietyFigure(url=url, variety=variety_id).save()
+        return jsonify({"id": vaFig.id, 'figUrl': url})
+
+
+@variety.route('/del-img/<fig_id>/', methods=['GET'])
+@login_required
+def delete_img(fig_id):
+    vaFig = VarietyFigure.query.get(fig_id)
+    filePath = os.path.join(basedir, 'app', vaFig.url)
+    if os.path.isfile(filePath):
+        os.remove(filePath)
+    vaFig.delete()
+    return jsonify({"msg": "success"})

@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField,SelectField
+from wtforms import StringField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length, Email
 from app.auth.models import User
+
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -42,6 +43,11 @@ class EditForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     institute = StringField('Institute', validators=[DataRequired()])
     telephone = StringField('Telephone', validators=[DataRequired()])
+    pub_phone = SelectField('Public Telephone',
+                            choices=[(0, "No"), (1, "Yes")],
+                            coerce=int)
+    research = TextAreaField('Research Direction')
+    profile = TextAreaField('Description')
 
     def __init__(self, *args, **kwargs):
         super(EditForm, self).__init__(*args, **kwargs)

@@ -10,10 +10,11 @@ from .forms import RegisterForm, LoginForm, EditForm
 from .actions import fetch_vcf_samples, async_fetch_vcf_samples
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
-from settings import Config
+from settings import Config, basedir
 from werkzeug import secure_filename
 from app.mail import send_mail
 from app.utils import redis_task, vcfValidator
+from pathlib import PurePath
 
 
 @login_manager.user_loader
@@ -112,17 +113,45 @@ def register():
 @auth.route('/edit/', methods=['GET', 'POST'])
 @login_required
 def edit():
+    if not current_user.photo:
+        current_user.photo = Config.DEFAULT_USER_PHOTO
+        current_user.save()
     form = EditForm(username=current_user.username,
                     email=current_user.email,
                     institute=current_user.institute,
-                    telephone=current_user.phone)
+                    telephone=current_user.phone,
+                    pub_phone=current_user.pub_phone,
+                    research=current_user.research,
+                    profile=current_user.profile)
     if form.validate_on_submit():
         current_user.institute = form.institute.data
         current_user.phone = form.telephone.data
+        current_user.pub_phone = form.pub_phone.data
+        current_user.research = form.research.data
+        current_user.profile = form.profile.data
         current_user.save()
         flash('User Information Updated.', 'success')
-        return redirect(url_for('auth.account'))
+        return redirect(url_for('auth.edit'))
     return render_template('auth/edit.html', form=form, user=current_user)
+
+
+@auth.route('/upload_photo/', methods=['GET', 'POST'])
+@login_required
+def upload_photo():
+    for f in request.files.getlist('file'):
+        fileSfx = PurePath(f.filename).suffix
+        timestamp = str(time.time()).replace('.', '-')
+        filename = f'{timestamp}-{f.filename}'
+        url = os.path.join(Config.UPLOADED_PHOTOS_DEST, filename)
+        filePath = f'{basedir}/app/{url}'
+        f.save(filePath)
+        oldUrl = current_user.photo
+        if oldUrl != Config.DEFAULT_USER_PHOTO:
+            oldFilePath = f'{basedir}/app/{oldUrl}'
+            os.remove(oldFilePath)
+        current_user.photo = url
+        current_user.save()
+        return jsonify({"msg": "success", 'PhotoUrl': url})
 
 
 @auth.route('/login/', methods=['GET', 'POST'])

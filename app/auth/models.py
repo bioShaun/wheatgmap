@@ -1,11 +1,15 @@
+import os
 from app.exetensions import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from flask import current_app
+import random
+from settings import basedir
 
 Column = db.Column
+VA_IMG_DIR = os.path.join(basedir, 'app', 'static/images/variety')
 
 
 class dbCRUD:
@@ -38,7 +42,11 @@ class User(UserMixin, dbCRUD, db.Model):
     password_hash = Column(db.String(128))
     email = Column(db.String(50), unique=True)
     phone = Column(db.String(20))
+    pub_phone = Column(db.Boolean)
     institute = Column(db.String(80))
+    photo = Column(db.String(300))
+    research = Column(db.String(300))
+    profile = Column(db.String(1000))
     create_at = Column(db.DateTime)
     is_active = Column(db.Boolean)
     is_admin = Column(db.Boolean)
@@ -300,7 +308,8 @@ class VarietyDetail(dbCRUD, db.Model):
     leaf_blight = Column(db.String(45))
     stripe_rust = Column(db.String(45))
     spinal_rust = Column(db.String(45))
-    smut = Column(db.String(45))    
+    smut = Column(db.String(45))
+    figures = db.relationship('VarietyFigure', backref='fig', lazy=True)
 
     def __init__(self,
                  variety_name,
@@ -365,3 +374,24 @@ class VarietyDetail(dbCRUD, db.Model):
             va_i.delete(commit=commit)
             va_i.delete_reply(commit=commit)
         return super().delete(commit=commit)
+
+
+class VarietyFigure(dbCRUD, db.Model):
+    __tablename__ = 'varietyFig'
+    id = Column(db.Integer, primary_key=True)
+    url = Column(db.String(500))
+    variety = db.Column(db.Integer,
+                        db.ForeignKey('varietyDetail.id'),
+                        nullable=True)
+
+    def __init__(self, url, variety):
+        self.url = url
+        self.variety = variety
+
+
+class VarietyFigureExample():
+    def __init__(self):
+        randomPhoto = random.choice(os.listdir(VA_IMG_DIR))
+        self.id = 'example'
+        self.url = f'/static/images/variety/{randomPhoto}'
+        self.variety = 'example'

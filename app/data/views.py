@@ -4,6 +4,8 @@ from . import data
 from app.auth.models import Data, User, Variety, Comment, VarietyDetail
 from flask_login import login_required, current_user
 from flask import render_template, request, jsonify, redirect, url_for
+from settings import Config
+
 
 @data.route('/samples/')
 def samples():
@@ -23,13 +25,16 @@ def users(username):
     user = User.query.filter_by(username=username).first()
     if user:
         exists = True
-        institute = user.institute
-        phone = user.phone
-        email = user.email
     else:
         exists = False
-        institute, phone, email = ('', '', '')
-    return render_template('data/user.html', username=username, institute=institute, phone=phone, email=email, exists=exists)
+    va = VarietyDetail.query.filter_by(provider=current_user.id).all()
+    samples = Data.query.filter_by(opened=1, sign=0, provider=username).all()
+    return render_template('data/user.html',
+                           user=user,
+                           exists=exists,
+                           va=va,
+                           default_photo=Config.DEFAULT_USER_PHOTO,
+                           samples=samples)
 
 
 @data.route('/variety/<varietyname>/')
@@ -86,4 +91,3 @@ def fetch_variety():
                           provider=provider)
         comment.save()
         return jsonify({'msg': 'ok'})
-

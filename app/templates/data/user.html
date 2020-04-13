@@ -1,49 +1,199 @@
 {% extends 'base.html' %} {% block content %}
-<div class="panel-body">
-  <h3>User Information</h3>
+<div class="panel-body d-flex">
   {% if exists %}
-  <table style="width=100%">
-    <tbody>
-      <tr>
-        <td valign="top"></td>
-        <br />
-        <table class="table">
-          <tbody>
-            <tr>
-              <td><b>Username: </b></td>
-              <td>{{ username }}</td>
-            </tr>
-            <tr>
-              <td><b>Institute: </b></td>
-              {% if institute %}
-              <td>{{ institute }}</td>
-              {% else %}
-              <td>-</td>
-              {% endif %}
-            </tr>
-            <tr>
-              <td><b>Telephone: </b></td>
-              {% if phone %}
-              <td>{{ phone }}</td>
-              {% else %}
-              <td>-</td>
-              {% endif %}
-            </tr>
-            <tr>
-              <td><b>Email: </b></td>
-              {% if email %}
-              <td>{{ email }}</td>
-              {% else %}
-              <td>-</td>
-              {% endif %}
-            </tr>
-          </tbody>
-        </table>
-      </tr>
-    </tbody>
-  </table>
+  <div class="user-profile" style="width: 300px;">
+    <div class="photo">
+    {% if user.photo %}
+      <img src="{{ user.photo }}" alt="" width="260px" />
+      {% else %}
+      <img src="{{ default_photo }}" alt="" width="230px" />
+      {% endif %}
+    </div>
+    <div class="profile">
+      <h3>{{user.username}}</h3>
+      {% if user.research %}
+      <div class="user-info-item" style="font-size: 16px;">
+        <p>{{user.research}}</p>
+      </div>
+      {% endif %}
+      {% if user.institute %}
+      <div class="user-info-item">
+        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+        &nbsp;{{user.institute}}
+      </div>
+      {% endif %}      
+      <div class="user-info-item">
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        &nbsp;{{user.email}}
+      </div>
+      {% if user.phone and user.pub_phone%}
+      <div class="user-info-item">
+        <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+        &nbsp;{{user.phone}}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="detail flex-1" style="margin-left: 30px; max-width: 800px;">
+    {% if user.profile %}
+    <div class="bio user-info-main">
+      <h4>Profile</h4>
+      <pre>{{user.profile}}</pre>
+    </div>
+    {% endif %}
+    <div class="variety user-info-main ">
+      <h4>Varieties</h4>
+      <div class="user-info-table">
+      </div>
+      <table id="varieties" class="table cell-border" cellspacing="0">
+        <thead>
+            <th>Accession No.</th>
+            <th>Variety Name</th>
+            <th>Type</th>
+            <th>Geographic</th>
+            <th>Country</th>
+            <th>Province</th>
+            <th>Affiliation</th>
+            <th>Create Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for va_i in va %}
+          <tr>
+            <td><a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
+                TC-Va-{{va_i.id}}
+              </a></td>
+            <td>{{va_i.variety_name}}</td>
+            <td>{{va_i.variety_type}}</td>
+            <td>{{va_i.geographic}}</td>
+            <td>{{va_i.country}}</td>
+            <td>{{va_i.province}}</td>
+            <td>
+              {{va_i.affiliation}}
+            </td>
+            <td>{{va_i.create_time}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>       
+    </div>
+    <div class="data user-info-main">
+      <h4>Public Samples</h4>
+      <div class="user-info-table">
+    </div>
+    <table id="samples" class="table cell-border" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="th-sm">TC ID</th>
+            <th class="th-sm">Name</th>
+            <th class="th-sm">Type</th>
+            <th class="th-sm">Scientific</th>
+            <th class="th-sm">Variety</th>
+            <th class="th-sm">High Level Tissue</th>
+            <th class="th-sm">High Level Age</th>
+            <th class="th-sm">Treatments</th>
+            <th class="th-sm">Tissue</th>
+            <th class="th-sm">Age</th>
+            <th class="th-sm">Stress Disease</th>
+            <th class="th-sm">DOI</th>
+            <th class="th-sm">Bulked Segregant</th>
+            <th class="th-sm">Mixed Sample</th>
+            <th class="th-sm">Mutant Transgenosis</th>
+            <th class="th-sm">Other Inf</th>
+            <th class="th-sm">Provider</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sample in samples %}
+          <tr>
+            <td>{{ sample.tc_id }}</td>
+            <td>{{ sample.sample_name }}</td>
+            <td>{{ sample.type }}</td>
+            {% if sample.scientific_name is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.scientific_name }}</td>
+            {% endif %} {% if sample.variety_name is none %}
+            <td>-</td>
+            {% else %}
+            <td>
+              <a href="/variety/detail/{{ sample.variety_name}}/"
+                >{{ sample.variety_name }}</a
+              >
+            </td>
+            {% endif %} {% if sample.high_level_tissue is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.high_level_tissue }}</td>
+            {% endif %} {% if sample.high_level_age is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.high_level_age }}</td>
+            {% endif %} {% if sample.treatments is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.treatments }}</td>
+            {% endif %} {% if sample.tissue is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.tissue }}</td>
+            {% endif %} {% if sample.age is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.age }}</td>
+            {% endif %} {% if sample.stress_disease is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.stress_disease }}</td>
+            {% endif %} {% if sample.dol is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.dol }}</td>
+            {% endif %} {% if sample.bulked_segregant is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.bulked_segregant }}</td>
+            {% endif %} {% if sample.mixed_sample is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.mixed_sample }}</td>
+            {% endif %} {% if sample.mutant_transgenosis is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.mutant_transgenosis }}</td>
+            {% endif %} {% if sample.other_inf is none %}
+            <td>-</td>
+            {% else %}
+            <td>{{ sample.other_inf }}</td>
+            {% endif %}
+            <td>
+              <a href="/data/user/{{ sample.provider }}/">{{ sample.provider }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
   {% else %}
   <br />
-  <h5>not find information for {{ username }}.</h5>
-  {% endif %} {% endblock %} {% block js %} {% endblock %}
+  <h5>{{ user.username }} no longer exists.</h5>
+  {% endif %} 
 </div>
+{% endblock %} 
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+      $("#varieties").DataTable({
+        dom: "lBfrtip",
+        scrollX: true,
+      });
+      $("#samples").DataTable({
+      dom: "lBfrtip",
+      scrollX: true
+    });
+    });
+  </script>
+{% endblock %}

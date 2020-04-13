@@ -7,9 +7,11 @@ datatable = Bundle(
     filters='cssmin',
     output='css/data_table.min.css')
 
-css_base = Bundle('css/main.css',
+css_base = Bundle('css/lightbox.min.css',
+                  'css/dropzone.css',
                   'css/bootstrap-select.css',
                   'css/jquery-confirm.min.css',
+                  'css/main.css',
                   'css/variety.css',
                   datatable,
                   filters='cssmin',
@@ -60,6 +62,7 @@ js_base = Bundle(js_comment,
                  output='js/all.min.js')
 
 js_sup = Bundle('js/sup.js', filters='jsmin', output='js/sup.min.js')
+
 
 def init_app(app):
     webassets = Environment(app)

@@ -6,6 +6,70 @@
   </p>
 </div>
 
+<div class="va-img-display">
+  <div
+    class="img-set-example"
+    figId="{{exampleFig.id}}"
+    figNum="{{leftFigNum}}"
+  >
+    <div>
+      <a href="{{exampleFig.url}}" data-lightbox="TC-Va-{{ variety_item.id }}">
+        <img class="va-img" src="{{exampleFig.url}}" />
+      </a>
+    </div>
+    <div>
+      <button
+        figId="{{exampleFig.id}}"
+        class="delete-img-btn btn btn-danger btn-xs"
+      >
+        delete
+      </button>
+    </div>
+  </div>
+  <div class="va-img-set">
+    {% for fig in figs %}
+    <div class="img-set-item" setFigId="{{fig.id}}">
+      <div>
+        <a href="{{fig.url}}" data-lightbox="TC-Va-{{ variety_item.id }}">
+          <img class="va-img" src="{{fig.url}}" />
+        </a>
+      </div>
+      {% if isProvider %}
+      <div>
+        <button figId="{{fig.id}}" class="delete-img-btn btn btn-danger btn-xs">
+          delete
+        </button>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% if isProvider %}
+  <div>
+    <button
+      id="add-fig-btn"
+      class="btn btn-sm btn-success"
+      figNum="{{leftFigNum}}"
+    >
+      Add Photos
+    </button>
+  </div>
+  {% endif %}
+</div>
+
+<div class="va-img-upload">
+  <form
+    action="{{ url_for('variety.upload_img', variety_id=variety_item.id) }}"
+    id="my-dropzone"
+    class="dropzone"
+    method="POST"
+    enctype="multipart/form-data"
+  ></form>
+  <button id="upload-btn" class="btn btn-warning">
+    Confirm
+  </button>
+</div>
+
 <div class="variety-view">
   <h4>Basic information</h4>
   <table class="table table-bordered">
@@ -138,7 +202,7 @@
   >
     {{ form.csrf_token }} {{ form.content(placeholder="Add your comment ......")
     }}
-    <div class="form-group" style="text-align:right">
+    <div class="form-group" style="text-align: right;">
       <button class="btn btn-default" type="submit" value="Add">Add</button>
     </div>
   </form>
@@ -203,5 +267,7 @@
   {% endfor %}
 </div>
 {% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lightbox.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils/reply.js') }}"></script>
 {% endblock %}

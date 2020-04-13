@@ -13,7 +13,8 @@ from settings import Config
 
 
 def fetch_sample(table, fixed_column_num):
-    cmd = "select COLUMN_NAME from information_schema.COLUMNS where table_name='{table}';".format(table=table)
+    cmd = "select COLUMN_NAME from information_schema.COLUMNS where table_name='{table}';".format(
+        table=table)
     db = DB()
     results = db.execute(cmd)
     results = [each[0] for each in results]
@@ -80,7 +81,7 @@ def parseInput(listStr, max_input=100):
         for gene_part in genes:
             gene_list += gene_part
     else:
-        gene_list = listStr.split()   
+        gene_list = listStr.split()
     if len(gene_list) > max_input:
         return []
     return gene_list
@@ -92,7 +93,7 @@ def printPretty(String, max_row_len=25, sep='\n'):
         over_len = math.ceil(len(String) / max_row_len) * max_row_len
         tmp_str = ""
         while i < over_len:
-            tmp_str += String[i:i+max_row_len] + sep
+            tmp_str += String[i:i + max_row_len] + sep
             i += max_row_len
         return tmp_str
     return String
@@ -101,41 +102,52 @@ def printPretty(String, max_row_len=25, sep='\n'):
 class redisTask(object):
     def __init__(self, task_len=5):
         self._task_length = task_len
-        self._rdp = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
+        self._rdp = redis.ConnectionPool(host='localhost',
+                                         port=6379,
+                                         decode_responses=True)
         self.conn = redis.StrictRedis(connection_pool=self._rdp)
         self.flower_url = 'http://127.0.0.1:5555'
         self.redis_celery_pattern = r'celery-task-meta-*'
 
     def fetch_task(self, username):
         backtasks = []
-        all_celery_tasks = [re.sub(self.redis_celery_pattern, '', key) for key in self.conn.keys() if re.match(self.redis_celery_pattern, key)]
+        all_celery_tasks = [
+            re.sub(self.redis_celery_pattern, '', key)
+            for key in self.conn.keys()
+            if re.match(self.redis_celery_pattern, key)
+        ]
         try:
-            user_tasks = self.conn.lrange(username, 0, -1) # get all task uuid
+            user_tasks = self.conn.lrange(username, 0, -1)  # get all task uuid
             tasks = list(set(all_celery_tasks) & set(user_tasks))
         except:
             tasks = []
-        tasks = tasks if len(tasks) <= self._task_length else tasks[:self._task_length]
+        tasks = tasks if len(
+            tasks) <= self._task_length else tasks[:self._task_length]
         if tasks:
             for task in tasks:
                 tmp = {}
-                url = '{root_url}/api/task/result/{id}'.format(root_url=self.flower_url, id=task)
+                url = '{root_url}/api/task/result/{id}'.format(
+                    root_url=self.flower_url, id=task)
                 reply = requests.get(url).json()
                 tmp['id'] = task
                 tmp['state'] = reply['state']
                 backtasks.append(tmp)
         return backtasks
-    
+
     def push_task(self, username, task_id):
         return self.conn.rpush(username, task_id)
 
 
 redis_task = redisTask()
-            
+
+
 def vcfValidator(vcf):
     try:
         reader = vcfpy.Reader.from_path(vcf)
     except FileNotFoundError as e:
         return 'Upload Failed.'
+    except vcfpy.VCFPyException as e:
+        return f'VCF format Error: [{e}]'
     except Exception as e:
         return str(e)
     else:
@@ -164,10 +176,4 @@ def vcfValidator(vcf):
         else:
             return 'Chromosome information is missing from vcf file.'
     return False
-
-
-        
-
-
-
 

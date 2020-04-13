@@ -1,12 +1,13 @@
 import os
 import json
+import itertools
 from . import tools
 from .actions import fetch_blast_result, get_locus_result, \
     batch_query_gene, fetch_sequence, allowed_file, run_pca, \
-        run_vcf, run_annotation, async_run_annotation
+        run_vcf, run_annotation, async_run_annotation, query_gene_by_pos
 from flask import render_template, request, jsonify, session
 from werkzeug import secure_filename
-from settings import basedir
+from settings import basedir, Config
 from app.auth.models import Data
 from flask_login import current_user
 
@@ -18,9 +19,25 @@ VCF_ANNOTATION_DATABASE = ('wheat.hclc.v1.1', 'wheat.tcuni.v1.1')
 def fetch_blast_table():
     if request.method == 'POST':
         info = json.loads(request.form['info'])
-        if len(info['genes']) == 0:
-            return jsonify({'msg': 'no input genes.', 'result': []})
-        result = batch_query_gene(info['genes'])
+        if ',' in info['genes']:
+            gene_list1 = list(
+                itertools.chain(*[each.split(',') for each in a.split()]))
+        else:
+            gene_list1 = info['genes'].split()
+        print(info)
+        gene_list2 = query_gene_by_pos(**info)
+        gene_list = list(set(gene_list1 + gene_list2))
+        if len(gene_list) == 0:
+            return jsonify({
+                'msg':
+                'Can not find gene in input gene list or genome region.',
+                'result': []
+            })
+        else:
+            # for test
+            genes = '|'.join(gene_list)
+            return jsonify({'msg': genes, 'result': []})
+        result = batch_query_gene(gene_list)
         if result:
             return jsonify({'msg': 'ok', 'result': result})
         return jsonify({
