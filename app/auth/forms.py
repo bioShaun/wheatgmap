@@ -41,17 +41,40 @@ class EditForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm = PasswordField('Verify Password',
+                            validators=[
+                                DataRequired(),
+                                EqualTo('password',
+                                        message='password must match')
+                            ])
     institute = StringField('Institute', validators=[DataRequired()])
     telephone = StringField('Telephone', validators=[DataRequired()])
     pub_phone = SelectField('Public Telephone',
                             choices=[(0, "No"), (1, "Yes")],
                             coerce=int)
+    photo = StringField('Photo')
     research = TextAreaField('Research Direction')
     profile = TextAreaField('Description')
 
     def __init__(self, *args, **kwargs):
         super(EditForm, self).__init__(*args, **kwargs)
         self.user = None
+
+    def validate(self):
+        initial_validation = super(EditForm, self).validate()
+        if not initial_validation:
+            return False
+
+        self.user = User.query.filter_by(username=self.username.data).first()
+        if self.user:
+            self.username.errors.append('Username already registered')
+            return False
+        self.user = User.query.filter_by(email=self.email.data).first()
+        if self.user:
+            self.email.errors.append('Email already registerd')
+            return False
+        return True
 
 
 class LoginForm(FlaskForm):

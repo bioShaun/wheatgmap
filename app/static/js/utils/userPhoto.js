@@ -6,6 +6,8 @@ $(document).ready(function () {
     wrapAround: true,
   });
 
+  $("#user-photo-item").parent().hide();
+
   const btnUploadText = "Upload a photo";
   $("#uploadButton").text(btnUploadText);
   $("#uploadButton").click(function () {
@@ -25,6 +27,7 @@ $(document).ready(function () {
       success: function (data) {
         $("#display-photo").find("a").attr("href", data.PhotoUrl);
         $("#display-photo").find("img").attr("src", data.PhotoUrl);
+        $("#user-photo-item").attr("value", data.PhotoUrl);
       },
       error: function () {
         alert("Upload failed!");
