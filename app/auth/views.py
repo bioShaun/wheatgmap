@@ -88,13 +88,17 @@ def confirm(token):
 
 @auth.route('/register/', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
+    form = EditForm()
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
                     password=form.password.data,
                     institute=form.institute.data,
-                    phone=form.telephone.data)
+                    phone=form.telephone.data,
+                    pub_phone=form.pub_phone.data,
+                    research=form.research.data,
+                    profile=form.profile.data,
+                    photo=form.photo.data)
         user.save()
         token = user.generate_confirmation_token()
         send_mail(user.email,
@@ -107,7 +111,9 @@ def register():
             'success')
         login_user(user)
         return redirect(url_for('main.index'))
-    return render_template('auth/register.html', form=form)
+    return render_template('auth/edit.html',
+                           form=form,
+                           defaultPhoto=Config.DEFAULT_USER_PHOTO)
 
 
 @auth.route('/edit/', methods=['GET', 'POST'])
@@ -147,12 +153,13 @@ def upload_photo():
         filePath = f'{basedir}/app/{url}'
         print(filePath)
         f.save(filePath)
-        oldUrl = current_user.photo
-        if oldUrl != Config.DEFAULT_USER_PHOTO:
-            oldFilePath = f'{basedir}/app/{oldUrl}'
-            os.remove(oldFilePath)
-        current_user.photo = url
-        current_user.save()
+        if not current_user.is_anonymous:
+            oldUrl = current_user.photo
+            if oldUrl != Config.DEFAULT_USER_PHOTO:
+                oldFilePath = f'{basedir}/app/{oldUrl}'
+                os.remove(oldFilePath)
+            current_user.photo = url
+            current_user.save()
         return jsonify({"msg": "success", 'PhotoUrl': url})
 
 

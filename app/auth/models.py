@@ -56,7 +56,11 @@ class User(UserMixin, dbCRUD, db.Model):
                  email,
                  password,
                  phone,
+                 pub_phone,
+                 photo,
                  institute,
+                 research,
+                 profile,
                  is_active=False,
                  is_admin=False,
                  create_at=datetime.now()):
@@ -64,6 +68,10 @@ class User(UserMixin, dbCRUD, db.Model):
         self.email = email
         self.institute = institute
         self.phone = phone
+        self.pub_phone = pub_phone
+        self.photo = photo
+        self.research = research
+        self.profile = profile
         self.is_active = is_active
         self.is_admin = is_admin
         self.create_at = create_at
