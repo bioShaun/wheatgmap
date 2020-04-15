@@ -28,17 +28,17 @@ def allowed_file(filename):
 
 
 def query_gene_by_pos(chrom, start, end, **kargs):
-    print(chrom, start, end)
-    print(kargs)
-    gene_bed_df = pd.read_csv(Config.GENE_POS,
-                              sep='\t',
-                              header=None,
-                              names=['chrom', 'start', 'end', 'gene'])
-    filter1 = gene_bed_df.chrom == chrom
-    filter2 = gene_bed_df.start >= int(start)
-    filter3 = gene_bed_df.end <= int(end)
-    region_gene_df = gene_bed_df[filter1 & filter2 & filter3]
-    return list(region_gene_df.gene)
+    if chrom and start and end:
+        gene_bed_df = pd.read_csv(Config.GENE_POS,
+                                  sep='\t',
+                                  header=None,
+                                  names=['chrom', 'start', 'end', 'gene'])
+        filter1 = gene_bed_df.chrom == chrom
+        filter2 = gene_bed_df.start >= int(start)
+        filter3 = gene_bed_df.end <= int(end)
+        region_gene_df = gene_bed_df[filter1 & filter2 & filter3]
+        return list(region_gene_df.gene)
+    return []
 
 
 def batch_query_gene(gene_list, max_input=1000):

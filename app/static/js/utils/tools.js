@@ -4,20 +4,30 @@ $(document).ready(function () {
     var chr = $("#select-chr").find("option:selected").text();
     var startPos = $("#pos-start").val();
     var endPos = $("#pos-end").val();
-    const posMsg = check_location(
-      {
-        chromsome: chr,
-        "start-position": startPos,
-        "end-position": endPos,
-      },
-      (maxRange = null)
-    );
-    if (posMsg) {
-      $.alert({
-        title: "Location Error!",
-        content: posMsg,
-      });
-      return;
+    if (chr || startPos || endPos) {
+      const posMsg = check_location(
+        {
+          chromsome: chr,
+          "start-position": startPos,
+          "end-position": endPos,
+        },
+        (maxRange = null)
+      );
+      if (posMsg) {
+        $.alert({
+          title: "Location Error!",
+          content: posMsg,
+        });
+        return;
+      }
+    } else {
+      if (!genes) {
+        $.alert({
+          title: "Empty Input!",
+          content: "[Gene IDs]/[Genome region] is needed.",
+        });
+        return;
+      }
     }
     var info = { genes: genes, chrom: chr, start: startPos, end: endPos };
 

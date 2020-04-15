@@ -24,13 +24,12 @@ def fetch_blast_table():
                 itertools.chain(*[each.split(',') for each in a.split()]))
         else:
             gene_list1 = info['genes'].split()
-        print(info)
         gene_list2 = query_gene_by_pos(**info)
         gene_list = list(set(gene_list1 + gene_list2))
         if len(gene_list) == 0:
             return jsonify({
                 'msg':
-                'Can not find gene in input gene list or genome region.',
+                'Can not find matched gene in input gene list or genome region.',
                 'result': []
             })
         result = batch_query_gene(gene_list)
