@@ -1,31 +1,49 @@
 {% extends 'base.html' %} {% from 'auth/_authform.html' import render_field %}
 {% block css %} {% endblock %} {% block content %}
 <div class="main" style="margin: 30px 0;">
+  {% if current_user.is_anonymous %}
+  <h3>Register</h3>
+  {% else %}
   <h3>Public profile</h3>
+  {% endif %}
   <div style="margin-bottom: 10px; border-bottom: 1px solid #e1e4e8;"></div>
   <div class="user-profile d-flex">
     <div class="info flex-1">
       <form
         class="form form-register"
         method="post"
-        action="{{ url_for('auth.edit') }}"
+        action="{% if current_user.is_anonymous %}{{ url_for('auth.register') }}{% else %}{{ url_for('auth.edit') }}{% endif %}"
         style="max-width: none; padding: 15px 0;"
       >
-        {{ form.csrf_token }} {{ render_field(form.username,
-        class_="form-control", readonly="true") }} {{ render_field(form.email,
-        class_="form-control", readonly="true")}} {{
-        render_field(form.institute, class_="form-control") }} {{
+        {{ form.csrf_token }} {% if current_user.is_anonymous %} {{
+        render_field(form.username, class_="form-control") }} {{
+        render_field(form.email, class_="form-control")}} {{
+        render_field(form.password, placeholder="Password",
+        class_="form-control") }} {{ render_field(form.confirm,
+        placeholder="Verify Password", class_="form-control") }} {% else %} {{
+        render_field(form.username, class_="form-control", readonly="true") }}
+        {{ render_field(form.email, class_="form-control", readonly="true")}} {%
+        endif %} {{ render_field(form.institute, class_="form-control") }} {{
         render_field(form.telephone, class_="form-control") }} {{
         render_field(form.pub_phone, class_="form-control") }} {{
         render_field(form.research, class_="form-control") }} {{
         render_field(form.profile, class_="form-control", rows="10") }}
+        {{render_field(form.photo, class_="form-control user-photo-form",
+        id="user-photo-item")}} {% if current_user.is_anonymous %}
+        <input class="btn btn-primary" type="submit" value="submit" />
+        {% else %}
         <input class="btn btn-success" type="submit" value="update" />
+        {% endif %}
       </form>
     </div>
     <div class="photo-upload d-flex flex-column ai-center">
       <div id="display-photo" class="display" style="margin-bottom: 5px;">
         <a href="{{current_user.photo}}" data-lightbox="user-info">
+          {% if current_user.photo %}
           <img class="user-img" src="{{current_user.photo}}" />
+          {% else %}
+          <img class="user-img" src="{{defaultPhoto}}" />
+          {% endif %}
         </a>
       </div>
       <div>
