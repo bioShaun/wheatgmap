@@ -37,9 +37,9 @@ def fetch_vcf():
 def run_bsa(info):
     freq_pattern = 'snp.freq.plot.jpg'
     score_pattern = 'var.score.plot.jpg'
-    qtlseqr_pattern1 = 'qtlSeqr.deltaSNP.png'
-    qtlseqr_pattern2 = 'qtlSeqr.Gprime.png'
-    ed_pattern = 'ED.png'
+    qtlseqr_pattern1 = 'snpIndex.plot.png'
+    qtlseqr_pattern2 = 'Gprime.plot.jpg'
+    ed_pattern = 'ED.plot.png'
 
     print(info)
     cmd = (f"snpScore-mp -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
@@ -51,17 +51,19 @@ def run_bsa(info):
     result = processor.shRun(cmd)
     result_base = result[0]
     result_path = os.path.join(result_base, 'results')
-    processor.Run(cmd='cd {dir} && zip -r {zip_file} results -x "results/split/*"'.format(
-        zip_file=os.path.join(result_base, 'results.zip'), dir=result_base))
+    processor.Run(
+        cmd='cd {dir} && zip -r {zip_file} results -x "results/split/*"'.
+        format(zip_file=os.path.join(result_base, 'results.zip'),
+               dir=result_base))
     all_files = os.listdir(result_path)
     path = result_path.split('/home/app/vcfweb/wheatdb/app')[-1]
-    
+
     def findFiles(pattern):
         nonlocal all_files
         return [
-        os.path.join(path, file_i) for file_i in all_files
-        if file_i[-len(pattern):] == pattern
-        ]        
+            os.path.join(path, file_i) for file_i in all_files
+            if file_i[-len(pattern):] == pattern
+        ]
 
     freq_files = findFiles(freq_pattern)
     score_files = findFiles(score_pattern)
@@ -72,8 +74,11 @@ def run_bsa(info):
     return {
         'task': 'bsa',
         'result': {
-            'path': os.path.join(path, '../results.zip'),
-            'files': freq_files + score_files + qtlseqr_gpime + qtlseqr_deltasnp + ed_files
+            'path':
+            os.path.join(path, '../results.zip'),
+            'files':
+            freq_files + score_files + qtlseqr_gpime + qtlseqr_deltasnp +
+            ed_files
         }
     }
 
