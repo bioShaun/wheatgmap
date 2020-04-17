@@ -86,8 +86,8 @@ def detail(variety_id):
                            isProvider=isProvider)
 
 
-@variety.route('/reply/<variety_id>/<commentId>/', methods=['GET', 'POST'])
-def reply(variety_id, commentId):
+@variety.route('/reply/<commentId>/', methods=['GET', 'POST'])
+def reply(commentId):
     reply_content = request.json
     comment_reply = VarietyComment(content=reply_content['reply'],
                                    provider=current_user.id,

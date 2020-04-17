@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 <div class="title" style="margin-bottom: 30px;">
-  <h3>{{variety_item.variety_name}}</h3>
+  <h3>{{data.sample_name}}</h3>
   <p>
-    ID: TC-Va-{{ variety_item.id }}, created at {{variety_item.create_time}}
+    ID: {{ data.tc_id }}, created at {{data.create_time}}
   </p>
 </div>
 
@@ -13,7 +13,7 @@
     figNum="{{leftFigNum}}"
   >
     <div>
-      <a href="{{exampleFig.url}}" data-lightbox="TC-Va-{{ variety_item.id }}">
+      <a href="{{exampleFig.url}}" data-lightbox="sample-img">
         <img class="va-img" src="{{exampleFig.url}}" />
       </a>
     </div>
@@ -30,14 +30,14 @@
     {% for fig in figs %}
     <div class="img-set-item" setFigId="{{fig.id}}">
       <div>
-        <a href="{{fig.url}}" data-lightbox="TC-Va-{{ variety_item.id }}">
+        <a href="{{fig.url}}" data-lightbox="sample-img">
           <img class="va-img" src="{{fig.url}}" />
         </a>
       </div>
       {% if isProvider %}
       <div>
         <button
-          imgDb="variety"
+          imgDb="data"
           figId="{{fig.id}}"
           class="delete-img-btn btn btn-danger btn-xs"
         >
@@ -63,7 +63,7 @@
 
 <div class="va-img-upload">
   <form
-    action="{{ url_for('variety.upload_img', variety_id=variety_item.id) }}"
+    action="{{ url_for('data.upload_img', data_id=data.id) }}"
     id="my-dropzone"
     class="dropzone"
     method="POST"
@@ -75,125 +75,80 @@
 </div>
 
 <div class="variety-view">
-  <h4>Basic information</h4>
+  <h4>Data information</h4>
   <table class="table table-bordered">
     <tbody>
       <tr>
-        <th scope="row">Type</th>
-        <td>{{variety_item.variety_type}}</td>
+        <th scope="row">Data Type</th>
+        <td>{{data.type}}</td>
       </tr>
       <tr>
-        <th scope="row">Geographic</th>
-        <td>{{variety_item.geographic}}</td>
+        <th scope="row">Scientific</th>
+        <td>{{data.scientific_name}}</td>
       </tr>
       <tr>
-        <th scope="row">Country</th>
-        <td>{{variety_item.country}}</td>
+        <th scope="row">Variety</th>
+        <td>
+          {% if va_name %}
+          <a
+            href="{{ url_for('variety.detail', variety_id=data.variety_name) }}"
+          >
+            {{data.variety_name}} ({{va_name}})
+          </a>
+          {% else %} {{data.variety_name}} {% endif %}
+        </td>
       </tr>
       <tr>
-        <th scope="row">Province</th>
-        <td>{{variety_item.province}}</td>
+        <th scope="row">High Level Tissue</th>
+        <td>{{data.high_level_tissue}}</td>
       </tr>
       <tr>
-        <th scope="row">Affiliation</th>
-        <td>{{variety_item.affiliation}}</td>
+        <th scope="row">High Level Age</th>
+        <td>{{data.high_level_age}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Treatments</th>
+        <td>{{data.treatments}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Tissue</th>
+        <td>{{data.tissue}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Age</th>
+        <td>{{data.age}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Stress Disease</th>
+        <td>{{data.stress_disease}}</td>
+      </tr>
+      <tr>
+        <th scope="row">DOI</th>
+        <td>{{data.dol}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Bulked Segregant</th>
+        <td>{{data.bulked_segregant}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Mixed Sample</th>
+        <td>{{data.mixed_sample}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Mutant Transgenosis</th>
+        <td>{{data.mutant_transgenosis}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Other Inf</th>
+        <td>{{data.other_inf}}</td>
       </tr>
       <tr>
         <th scope="row">Provider</th>
         <td>
-          <a
-            href="{{url_for( 'data.users', username=variety_item.provider_obj.username)}}"
-            >{{variety_item.provider_obj.username}}</a
+          <a href="{{url_for( 'data.users', username=data.provider)}}"
+            >{{data.provider}}</a
           >
         </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Morphological and Biological Characteristics</h4>
-  <table class="table table-bordered">
-    <tbody>
-      <tr>
-        <th scope="row">Flower Color</th>
-        <td>{{variety_item.flower_color}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Leaf Color</th>
-        <td>{{variety_item.leaf_color}}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Quality Characteristics</h4>
-  <table class="table table-bordered">
-    <tbody>
-      <tr>
-        <th scope="row">Protein Content</th>
-        <td>{{variety_item.protein_content}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Starch Content</th>
-        <td>{{variety_item.starch_content}}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Stress Resistance</h4>
-  <table class="table table-bordered">
-    <tbody>
-      <tr>
-        <th scope="row">Salt</th>
-        <td>{{variety_item.salt}}</td>
-      </tr>
-      <tr>
-        <th scope="row">High Temperature</th>
-        <td>{{variety_item.high_temperature}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Low Temperature</th>
-        <td>{{variety_item.low_temperature}}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Insect Resistance</h4>
-  <table class="table table-bordered">
-    <tbody>
-      <tr>
-        <th scope="row">Sheath Blight</th>
-        <td>{{variety_item.sheath_blight}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Fusarium</th>
-        <td>{{variety_item.fusarium}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Total Erosion</th>
-        <td>{{variety_item.total_erosion}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Powdery Mildew</th>
-        <td>{{variety_item.powdery_mildew}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Leaf Rust</th>
-        <td>{{variety_item.leaf_rust}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Leaf Blight</th>
-        <td>{{variety_item.leaf_blight}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Stripe Rust</th>
-        <td>{{variety_item.stripe_rust}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Spinal Rust</th>
-        <td>{{variety_item.spinal_rust}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Smut</th>
-        <td>{{variety_item.smut}}</td>
       </tr>
     </tbody>
   </table>
@@ -202,7 +157,7 @@
 <div class="comment-input">
   <form
     method="post"
-    action="{{ url_for('variety.detail', variety_id=variety_item.id) }}"
+    action="{{ url_for('data.dataDetail', tc_id=data.tc_id) }}"
   >
     {{ form.csrf_token }} {{ form.content(placeholder="Add your comment ......")
     }}

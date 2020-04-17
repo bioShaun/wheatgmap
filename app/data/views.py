@@ -1,16 +1,86 @@
 # -*- coding: utf-8 -*-
+import os
 import json
+import time
 from . import data
-from app.auth.models import Data, User, Variety, Comment, VarietyDetail
+from app.auth.models import Data, User, Variety, Comment, VarietyDetail, VarietyComment, VarietyFigureExample, DataFigure
+from app.variety.forms import VarietyCommentForm
 from flask_login import login_required, current_user
 from flask import render_template, request, jsonify, redirect, url_for
-from settings import Config
+from settings import Config, basedir
 
 
 @data.route('/samples/')
 def samples():
     samples = Data.query.filter_by(opened=1, sign=0).all()
     return render_template('/data/data.html', samples=samples)
+
+
+@data.route('/samples/<tc_id>/', methods=['GET', 'POST'])
+def dataDetail(tc_id):
+    data = Data.query.filter_by(tc_id=tc_id).first()
+    comments = VarietyComment.query.filter_by(variety=data.id,
+                                              comment_type="data_comm").all()
+    if data.variety_name:
+        va_id = int(data.variety_name.replace('TC-Va-', ""))
+        va_name = VarietyDetail.query.get(va_id).variety_name
+    else:
+        va_name = ""
+    figs = data.figures
+    leftFigNum = 10 - len(figs)
+    exampleFig = VarietyFigureExample()
+    provider_obj = User.query.filter_by(username=data.provider).first()
+    isProvider = current_user.id == provider_obj.id
+
+    form = VarietyCommentForm(content="")
+    if form.validate_on_submit():
+        if current_user.is_anonymous:
+            flash('You need to Login first.', "error")
+            return redirect(url_for('auth.login'))
+        else:
+            provider = current_user.id
+            v_comment = VarietyComment(
+                content=form.content.data,
+                provider=provider,
+                variety=data.id,
+                comment_type="data_comm",
+            )
+            v_comment.save()
+            flash('Add a new comment.', 'success')
+            return redirect(url_for('data.dataDetail', tc_id=tc_id))
+    return render_template('/data/data_view.html',
+                           data=data,
+                           comments=comments,
+                           form=form,
+                           figs=figs,
+                           leftFigNum=leftFigNum,
+                           exampleFig=exampleFig,
+                           isProvider=isProvider,
+                           va_name=va_name)
+
+
+@data.route('/upload-img/<data_id>/', methods=['POST'])
+@login_required
+def upload_img(data_id):
+    for f in request.files.getlist('file'):
+        timestamp = str(time.time()).replace('.', '-')
+        filename = f'{timestamp}-{f.filename}'
+        url = os.path.join(Config.IMG_PATH, filename)
+        filePath = f'{basedir}/app/{url}'
+        f.save(filePath)
+        vaFig = DataFigure(url=url, data=data_id).save()
+        return jsonify({"id": vaFig.id, 'figUrl': url})
+
+
+@data.route('/del-img/<fig_id>/', methods=['GET'])
+@login_required
+def delete_img(fig_id):
+    vaFig = DataFigure.query.get(fig_id)
+    filePath = os.path.join(basedir, 'app', vaFig.url)
+    if os.path.isfile(filePath):
+        os.remove(filePath)
+    vaFig.delete()
+    return jsonify({"msg": "success"})
 
 
 @data.route('/varieties/')

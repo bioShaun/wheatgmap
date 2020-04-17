@@ -3,7 +3,7 @@
 (Only latest 5 tasks saved.)
 <table
   class="table"
-  style="border-bottom:1px solid #e6e6e6; margin-bottom: 50px;"
+  style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;"
 >
   <tbody>
     {% for task in tasks %}
@@ -18,8 +18,17 @@
 </table>
 
 <h3>Upload VCF</h3>
-<p><b>Please read the VCF format <a href="{{ url_for('document.dataAnalysis')}}" >REQUIRMENT</a> before upload. VCF is allowed less than 1G.</b></p>
-<table  class="table"  style="border-bottom:1px solid #e6e6e6; margin-bottom: 50px;">
+<p>
+  <b
+    >Please read the VCF format
+    <a href="{{ url_for('document.dataAnalysis')}}">REQUIRMENT</a> before
+    upload. VCF is allowed less than 1G.</b
+  >
+</p>
+<table
+  class="table"
+  style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;"
+>
   <tbody>
     <tr>
       <td>
@@ -38,7 +47,12 @@
         </div>
       </td>
       <td>
-        <select id="vcf-type" class="form-control" data-width="20%" style="margin:10px;">
+        <select
+          id="vcf-type"
+          class="form-control"
+          data-width="20%"
+          style="margin: 10px;"
+        >
           <option value="WGS">WES</option>
           <option value="WES">WGS</option>
           <option value="RNAseq">RNAseq</option>
@@ -50,25 +64,29 @@
           id="vcf-sub"
           type="submit"
           value="Upload"
-          style="margin:10px;"
+          style="margin: 10px;"
         />
       </td>
     </tr>
   </tbody>
 </table>
 
-
 <h3>Variety Information</h3>
 <div class="table-responsive va-info-table">
   <table
     id="table-variety"
-    class="table "
-    style="border-bottom:1px solid #e6e6e6; border-top:1px solid #e6e6e6;
-    margin-bottom: 10px; word-break:break-all;table-layout:fixed;"
+    class="table"
+    style="
+      border-bottom: 1px solid #e6e6e6;
+      border-top: 1px solid #e6e6e6;
+      margin-bottom: 10px;
+      word-break: break-all;
+      table-layout: fixed;
+    "
   >
     <thead>
       <tr>
-        <th>Accession No.</th>
+        <th>Variety ID</th>
         <th>Variety Name</th>
         <th>Type</th>
         <th>Geographic</th>

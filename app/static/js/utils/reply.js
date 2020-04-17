@@ -120,6 +120,7 @@ $(document).ready(function () {
   // 删除上传图片
   function delete_img(el) {
     const figID = el.attr("figID");
+    const dbType = el.attr("imgDb");
     const that = el;
     $.confirm({
       title: "Confirm!",
@@ -127,7 +128,7 @@ $(document).ready(function () {
       buttons: {
         confirm: function () {
           $.ajax({
-            url: `/variety/del-img/${figID}`,
+            url: `/${dbType}/del-img/${figID}`,
             success: function () {
               that.parent().parent().hide();
               figNum = figNum + 1;

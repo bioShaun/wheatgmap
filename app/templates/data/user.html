@@ -106,7 +106,7 @@
         <tbody>
           {% for sample in samples %}
           <tr>
-            <td>{{ sample.tc_id }}</td>
+            <td><a href="/data/samples/{{ sample.tc_id}}/">{{ sample.tc_id }}</a></td>
             <td>{{ sample.sample_name }}</td>
             <td>{{ sample.type }}</td>
             {% if sample.scientific_name is none %}

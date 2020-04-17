@@ -142,6 +142,7 @@ class Data(db.Model):
     opened = Column(db.Boolean)
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
+    figures = db.relationship('DataFigure', backref='fig', lazy=True)
 
     def __init__(self,
                  tc_id,
@@ -403,3 +404,14 @@ class VarietyFigureExample():
         self.id = 'example'
         self.url = f'/static/images/variety/{randomPhoto}'
         self.variety = 'example'
+
+
+class DataFigure(dbCRUD, db.Model):
+    __tablename__ = 'dataFig'
+    id = Column(db.Integer, primary_key=True)
+    url = Column(db.String(500))
+    data = db.Column(db.Integer, db.ForeignKey('data.id'), nullable=True)
+
+    def __init__(self, url, data):
+        self.url = url
+        self.data = data
