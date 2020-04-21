@@ -60,4 +60,12 @@ $(document).ready(function () {
       "POST"
     );
   });
+
+  $("#reset").click(function () {
+    $("input[type='text']").val("");
+    $("#genes").val("");
+    document.getElementById("select-chr").options.selectedIndex = 0;
+    $("#select-chr").selectpicker("refresh");
+    $("results-table").empty();
+  });
 });
