@@ -40,10 +40,13 @@ def run_bsa(info):
     qtlseqr_pattern1 = 'snpIndex.plot.png'
     qtlseqr_pattern2 = 'Gprime.plot.jpg'
     ed_pattern = 'ED.plot.png'
+    circos_pattern = '.circos.png'
 
     print(info)
-    cmd = (f"snpScore-mp -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
-           f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH}")
+    cmd = (
+        f"snpScore-mp -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
+        f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
+    )
 
     # test
     print(cmd)
@@ -52,9 +55,10 @@ def run_bsa(info):
     result_base = result[0]
     result_path = os.path.join(result_base, 'results')
     processor.Run(
-        cmd='cd {dir} && zip -r {zip_file} results -x "results/split/*"'.
-        format(zip_file=os.path.join(result_base, 'results.zip'),
-               dir=result_base))
+        cmd=
+        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*"'
+        .format(zip_file=os.path.join(result_base, 'results.zip'),
+                dir=result_base))
     all_files = os.listdir(result_path)
     path = result_path.split('/home/app/vcfweb/wheatdb/app')[-1]
 
@@ -70,6 +74,7 @@ def run_bsa(info):
     qtlseqr_gpime = findFiles(qtlseqr_pattern1)
     qtlseqr_deltasnp = findFiles(qtlseqr_pattern2)
     ed_files = findFiles(ed_pattern)
+    circos_files = findFiles(circos_pattern)
 
     return {
         'task': 'bsa',
@@ -78,7 +83,7 @@ def run_bsa(info):
             os.path.join(path, '../results.zip'),
             'files':
             freq_files + score_files + qtlseqr_gpime + qtlseqr_deltasnp +
-            ed_files
+            ed_files + circos_files
         }
     }
 
