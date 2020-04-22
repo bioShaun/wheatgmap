@@ -21,7 +21,7 @@ $(document).ready(function () {
     formData.append("file", formFile);
     console.log(formData);
     $.ajax({
-      url: "/auth/upload_photo",
+      url: "/auth/upload_photo/",
       type: "POST",
       data: formData,
       processData: false,
