@@ -24,6 +24,8 @@ $(document).ready(function () {
       url: "/auth/upload_photo",
       type: "POST",
       data: formData,
+      processData: false,
+      contentType: false,
       success: function (data) {
         $("#display-photo").find("a").attr("href", data.PhotoUrl);
         $("#display-photo").find("img").attr("src", data.PhotoUrl);
