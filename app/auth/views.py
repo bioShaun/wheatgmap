@@ -88,7 +88,7 @@ def confirm(token):
 
 @auth.route('/register/', methods=['GET', 'POST'])
 def register():
-    form = EditForm()
+    form = RegisterForm()
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
