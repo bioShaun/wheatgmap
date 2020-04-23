@@ -141,7 +141,7 @@ function EditSample() {
 
 $(document).ready(function () {
   function linkFormatter(value, row, index) {
-    if (value) {
+    if (typeof value === "string") {
       let baseUrl = "/data/samples/";
       if (value.startsWith("TC-Va")) {
         baseUrl = "/variety/detail/";
