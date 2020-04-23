@@ -141,11 +141,15 @@ function EditSample() {
 
 $(document).ready(function () {
   function linkFormatter(value, row, index) {
-    let baseUrl = "/data/samples/";
-    if (value.startsWith("TC-Va")) {
-      baseUrl = "/variety/detail/";
+    if (value) {
+      let baseUrl = "/data/samples/";
+      if (value.startsWith("TC-Va")) {
+        baseUrl = "/variety/detail/";
+      }
+      return `<a href="${baseUrl}${value}" target='_blank'>${value}</a>`;
+    } else {
+      return value;
     }
-    return `<a href="${baseUrl}${value}" target='_blank'>${value}</a>`;
   }
   // 初始化Table
   $("#sample-table").bootstrapTable({
