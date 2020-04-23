@@ -10,7 +10,10 @@
       {% endif %}
     </div>
     <div class="profile">
-      <h3>{{user.username}}</h3>
+        {% if validName %}
+        <h3>{{validName}}</h3>
+        {% endif %}
+        <h4>{{user.username}}</h4>
       {% if user.research %}
       <div class="user-info-item" style="font-size: 16px;">
         <p>{{user.research}}</p>

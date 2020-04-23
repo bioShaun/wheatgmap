@@ -97,6 +97,9 @@ def users(username):
         exists = True
     else:
         exists = False
+    nameList = [user.first_name, user.middle_name, user.family_name]
+    validNameList = [name for name in nameList if name]
+    validName = ' '.join(validNameList)
     va = VarietyDetail.query.filter_by(provider=user.id).all()
     samples = Data.query.filter_by(opened=1, sign=0, provider=username).all()
     return render_template('data/user.html',
@@ -104,7 +107,8 @@ def users(username):
                            exists=exists,
                            va=va,
                            default_photo=Config.DEFAULT_USER_PHOTO,
-                           samples=samples)
+                           samples=samples,
+                           validName=validName)
 
 
 @data.route('/variety/<varietyname>/')

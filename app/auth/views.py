@@ -91,6 +91,9 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         user = User(username=form.username.data,
+                    first_name=form.first_name.data,
+                    middle_name=form.middle_name.data,
+                    family_name=form.family_name.data,
                     email=form.email.data,
                     password=form.password.data,
                     institute=form.institute.data,
@@ -122,19 +125,27 @@ def edit():
     if not current_user.photo:
         current_user.photo = Config.DEFAULT_USER_PHOTO
         current_user.save()
-    form = EditForm(username=current_user.username,
-                    email=current_user.email,
-                    institute=current_user.institute,
-                    telephone=current_user.phone,
-                    pub_phone=current_user.pub_phone,
-                    research=current_user.research,
-                    profile=current_user.profile)
+    form = EditForm(
+        username=current_user.username,
+        email=current_user.email,
+        institute=current_user.institute,
+        telephone=current_user.phone,
+        pub_phone=current_user.pub_phone,
+        research=current_user.research,
+        profile=current_user.profile,
+        first_name=current_user.first_name,
+        middle_name=current_user.middle_name,
+        family_name=current_user.family_name,
+    )
     if form.validate_on_submit():
         current_user.institute = form.institute.data
         current_user.phone = form.telephone.data
         current_user.pub_phone = form.pub_phone.data
         current_user.research = form.research.data
         current_user.profile = form.profile.data
+        current_user.first_name = form.first_name.data
+        current_user.middle_name = form.middle_name.data
+        current_user.family_name = form.family_name.data
         current_user.save()
         flash('User Information Updated.', 'success')
         return redirect(url_for('auth.edit'))

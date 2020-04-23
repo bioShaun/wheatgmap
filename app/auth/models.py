@@ -39,6 +39,9 @@ class User(UserMixin, dbCRUD, db.Model):
     __tablename__ = 'user'
     id = Column(db.Integer, primary_key=True)
     username = Column(db.String(80), nullable=False, unique=True)
+    first_name = Column(db.String(50))
+    middle_name = Column(db.String(50))
+    family_name = Column(db.String(50))
     password_hash = Column(db.String(128))
     email = Column(db.String(50), unique=True)
     phone = Column(db.String(20))
@@ -53,6 +56,9 @@ class User(UserMixin, dbCRUD, db.Model):
 
     def __init__(self,
                  username,
+                 first_name,
+                 middle_name,
+                 family_name,
                  email,
                  password,
                  phone,
@@ -65,6 +71,9 @@ class User(UserMixin, dbCRUD, db.Model):
                  is_admin=False,
                  create_at=datetime.now()):
         self.username = username
+        self.first_name = first_name
+        self.middle_name = middle_name
+        self.family_name = family_name
         self.email = email
         self.institute = institute
         self.phone = phone
