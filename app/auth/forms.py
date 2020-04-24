@@ -20,12 +20,7 @@ class RegisterForm(FlaskForm):
     pub_phone = SelectField('Public Telephone',
                             choices=[(0, "No"), (1, "Yes")],
                             coerce=int)
-    first_name = StringField('First Name')
-    middle_name = StringField('Middle Name')
-    family_name = StringField('Family Name')
     photo = StringField('Photo')
-    research = TextAreaField('Research Direction')
-    profile = TextAreaField('Description')
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)

@@ -91,16 +91,11 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         user = User(username=form.username.data,
-                    first_name=form.first_name.data,
-                    middle_name=form.middle_name.data,
-                    family_name=form.family_name.data,
                     email=form.email.data,
                     password=form.password.data,
                     institute=form.institute.data,
                     phone=form.telephone.data,
                     pub_phone=form.pub_phone.data,
-                    research=form.research.data,
-                    profile=form.profile.data,
                     photo=form.photo.data)
         user.save()
         token = user.generate_confirmation_token()

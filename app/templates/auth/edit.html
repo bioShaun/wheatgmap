@@ -20,17 +20,23 @@
         render_field(form.email, class_="form-control")}} {{
         render_field(form.password, placeholder="Password",
         class_="form-control") }} {{ render_field(form.confirm,
-        placeholder="Verify Password", class_="form-control") }} {% else %} {{
-        render_field(form.username, class_="form-control", readonly="true") }}
-        {{ render_field(form.email, class_="form-control", readonly="true")}} {%
-        endif %} {{ render_field(form.institute, class_="form-control") }} {{
+        placeholder="Verify Password", class_="form-control") }} {% else %}
+        <div class="d-flex ai-center">
+          {{ render_field(form.first_name, class_="form-control") }}
+          <span>&nbsp&nbsp</span>
+          {{ render_field(form.middle_name, class_="form-control") }}
+          <span>&nbsp&nbsp</span>
+          {{ render_field(form.family_name, class_="form-control") }}
+        </div>
+
+        {{ render_field(form.username, class_="form-control", readonly="true")
+        }} {{ render_field(form.email, class_="form-control", readonly="true")}}
+        {% endif %} {{ render_field(form.institute, class_="form-control") }} {{
         render_field(form.telephone, class_="form-control") }} {{
-        render_field(form.pub_phone, class_="form-control") }} {{
-        render_field(form.first_name, class_="form-control") }} {{
-        render_field(form.middle_name, class_="form-control") }} {{
-        render_field(form.family_name, class_="form-control") }} {{
-        render_field(form.research, class_="form-control") }} {{
-        render_field(form.profile, class_="form-control", rows="10") }}
+        render_field(form.pub_phone, class_="form-control") }} {% if not
+        current_user.is_anonymous %} {{ render_field(form.research,
+        class_="form-control") }} {{ render_field(form.profile,
+        class_="form-control", rows="10") }} {% endif %}
         {{render_field(form.photo, class_="form-control user-photo-form",
         id="user-photo-item")}} {% if current_user.is_anonymous %}
         <input class="btn btn-primary" type="submit" value="submit" />
