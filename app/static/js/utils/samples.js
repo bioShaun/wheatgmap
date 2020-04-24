@@ -146,7 +146,7 @@ $(document).ready(function () {
       if (value.startsWith("TC-Va")) {
         baseUrl = "/variety/detail/";
       }
-      return `<a href="${baseUrl}${value}" target='_blank'>${value}</a>`;
+      return `<a href="${baseUrl}${value}/" target='_blank'>${value}</a>`;
     } else {
       return value;
     }
