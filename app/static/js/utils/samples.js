@@ -151,6 +151,15 @@ $(document).ready(function () {
       return value;
     }
   }
+
+  function pubFormatter(value) {
+    if (typeof value === "boolean") {
+      return value ? "Yes" : "No";
+    } else {
+      return value;
+    }
+  }
+
   // 初始化Table
   $("#sample-table").bootstrapTable({
     url: "/auth/fetch_samples/",
@@ -190,6 +199,7 @@ $(document).ready(function () {
         title: "Public",
         switchable: true,
         sortable: true,
+        formatter: pubFormatter,
       },
       {
         field: "tc_id",
