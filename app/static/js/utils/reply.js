@@ -110,7 +110,7 @@ $(document).ready(function () {
     /* Maybe display some more file information on your page */
     if (file.hasOwnProperty("varietyID")) {
       $.ajax({
-        url: `/${dbType}/del-img/${file.varietyID}`,
+        url: `/${dbType}/del-img/${file.varietyID}/`,
       });
       $(`[setFigId$=${file.varietyID}]`).hide();
       figNum = figNum + 1;
@@ -128,7 +128,7 @@ $(document).ready(function () {
       buttons: {
         confirm: function () {
           $.ajax({
-            url: `/${dbType}/del-img/${figID}`,
+            url: `/${dbType}/del-img/${figID}/`,
             success: function () {
               that.parent().parent().hide();
               figNum = figNum + 1;
