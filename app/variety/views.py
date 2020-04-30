@@ -61,21 +61,20 @@ def detail(variety_id):
     figs = variety_item.figures
     leftFigNum = 10 - len(figs)
     exampleFig = VarietyFigureExample()
-    isProvider = current_user.id == variety_item.provider_obj.id
+    if current_user.is_anonymous:
+        isProvider = False
+    else:
+        isProvider = current_user.id == variety_item.provider_obj.id
 
     form = VarietyCommentForm(content="")
     if form.validate_on_submit():
-        if current_user.is_anonymous:
-            flash('You need to Login first.', "error")
-            return redirect(url_for('auth.login'))
-        else:
-            provider = current_user.id
-            v_comment = VarietyComment(content=form.content.data,
-                                       provider=provider,
-                                       variety=variety_id)
-            v_comment.save()
-            flash('Add a new comment.', 'success')
-            return redirect(url_for('variety.detail', variety_id=variety_id))
+        provider = current_user.id
+        v_comment = VarietyComment(content=form.content.data,
+                                   provider=provider,
+                                   variety=variety_id)
+        v_comment.save()
+        flash('Add a new comment.', 'success')
+        return redirect(url_for('variety.detail', variety_id=variety_id))
     return render_template('variety/variety_view_verticle.html',
                            variety_item=variety_item,
                            comments=comments,
@@ -83,7 +82,8 @@ def detail(variety_id):
                            figs=figs,
                            leftFigNum=leftFigNum,
                            exampleFig=exampleFig,
-                           isProvider=isProvider)
+                           isProvider=isProvider,
+                           isAnonymous=current_user.is_anonymous)
 
 
 @variety.route('/reply/<commentId>/', methods=['GET', 'POST'])
