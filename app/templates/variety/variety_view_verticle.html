@@ -6,7 +6,7 @@
   </p>
 </div>
 
-<div class="va-img-display">
+<div class="va-img-display" id="va-img-display" imgDb="variety">
   <div
     class="img-set-example"
     figId="{{exampleFig.id}}"
@@ -36,11 +36,7 @@
       </div>
       {% if isProvider %}
       <div>
-        <button
-          imgDb="variety"
-          figId="{{fig.id}}"
-          class="delete-img-btn btn btn-danger btn-xs"
-        >
+        <button figId="{{fig.id}}" class="delete-img-btn btn btn-danger btn-xs">
           delete
         </button>
       </div>

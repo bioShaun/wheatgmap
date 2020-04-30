@@ -10,6 +10,7 @@ $(document).ready(function () {
   //添加照片按钮动画
   const addFigBtn = $("#add-fig-btn");
   const exampleDiv = $(".img-set-example");
+  const dbType = $("#va-img-display").attr("imgDb");
   let figNum = Number(exampleDiv.attr("figNum"));
 
   // 示例图片
@@ -109,7 +110,7 @@ $(document).ready(function () {
     /* Maybe display some more file information on your page */
     if (file.hasOwnProperty("varietyID")) {
       $.ajax({
-        url: `/variety/del-img/${file.varietyID}`,
+        url: `/${dbType}/del-img/${file.varietyID}`,
       });
       $(`[setFigId$=${file.varietyID}]`).hide();
       figNum = figNum + 1;
@@ -120,7 +121,6 @@ $(document).ready(function () {
   // 删除上传图片
   function delete_img(el) {
     const figID = el.attr("figID");
-    const dbType = el.attr("imgDb");
     const that = el;
     $.confirm({
       title: "Confirm!",
