@@ -30,24 +30,23 @@ def dataDetail(tc_id):
     leftFigNum = 10 - len(figs)
     exampleFig = VarietyFigureExample()
     provider_obj = User.query.filter_by(username=data.provider).first()
-    isProvider = current_user.id == provider_obj.id
+    if current_user.is_anonymous:
+        isProvider = False
+    else:
+        isProvider = current_user.id == provider_obj.id
 
     form = VarietyCommentForm(content="")
     if form.validate_on_submit():
-        if current_user.is_anonymous:
-            flash('You need to Login first.', "error")
-            return redirect(url_for('auth.login'))
-        else:
-            provider = current_user.id
-            v_comment = VarietyComment(
-                content=form.content.data,
-                provider=provider,
-                variety=data.id,
-                comment_type="data_comm",
-            )
-            v_comment.save()
-            flash('Add a new comment.', 'success')
-            return redirect(url_for('data.dataDetail', tc_id=tc_id))
+        provider = current_user.id
+        v_comment = VarietyComment(
+            content=form.content.data,
+            provider=provider,
+            variety=data.id,
+            comment_type="data_comm",
+        )
+        v_comment.save()
+        flash('Add a new comment.', 'success')
+        return redirect(url_for('data.dataDetail', tc_id=tc_id))
     return render_template('/data/data_view.html',
                            data=data,
                            comments=comments,
@@ -56,7 +55,8 @@ def dataDetail(tc_id):
                            leftFigNum=leftFigNum,
                            exampleFig=exampleFig,
                            isProvider=isProvider,
-                           va_name=va_name)
+                           va_name=va_name,
+                           isAnonymous=current_user.is_anonymous)
 
 
 @data.route('/upload-img/<data_id>/', methods=['POST'])

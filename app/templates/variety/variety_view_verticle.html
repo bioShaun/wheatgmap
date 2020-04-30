@@ -200,6 +200,21 @@
 </div>
 
 <div class="comment-input">
+  {% if isAnonymous %}
+  <form method="post" action="">
+    <textarea
+      cols="30"
+      rows="5"
+      placeholder="Login to comment or reply."
+      disabled
+    ></textarea>
+    <div class="form-group" style="text-align: right;">
+      <button class="btn btn-default disabled" type="submit" value="Add">
+        Add
+      </button>
+    </div>
+  </form>
+  {% else %}
   <form
     method="post"
     action="{{ url_for('variety.detail', variety_id=variety_item.id) }}"
@@ -210,6 +225,7 @@
       <button class="btn btn-default" type="submit" value="Add">Add</button>
     </div>
   </form>
+  {% endif %}
 </div>
 
 <div class="comment-region">
@@ -235,6 +251,7 @@
     <div class="comment-content">
       <p>{{comm_i.content}}</p>
     </div>
+    {% if not isAnonymous %}
     <div class="comment-back">
       <button
         class="comment-back-btn"
@@ -244,8 +261,7 @@
         Reply
       </button>
     </div>
-
-    {% for reply_i in comm_i.reply %}
+    {% endif %} {% for reply_i in comm_i.reply %}
     <div class="reply-region">
       <div class="reply-body">
         <div class="reply-top">
