@@ -19,3 +19,5 @@ gunicorn.pid
 
 # vscode
 .vscode
+*min.css
+*min.js
