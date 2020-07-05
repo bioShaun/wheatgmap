@@ -17,7 +17,7 @@ function get_input_data(){
 }
 
 function check_input_data(info){
-  var pos_max = 1000000;
+  var pos_max = 5000000;
   keys = Object.keys(info);
   var msg = '';
   for(var i=0; i<keys.length; i++){
@@ -27,7 +27,7 @@ function check_input_data(info){
     }
   }
   if(info['end_pos'] - info['start_pos'] > pos_max){
-    msg = 'range length not allowed > 1000kb!';
+    msg = 'range length not allowed > 5000kb!';
     return msg;
   }
   return msg;

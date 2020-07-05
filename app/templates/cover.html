@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -92,17 +92,19 @@
 
       <div class="col-lg-3">
         <h2>Tools</h2>
-        <p><a href="{{ url_for('tools.gene_information') }}" role="button">Gene Annotation &raquo;</a></p>
-        <p><a href="{{ url_for('tools.get_sequence') }}" role="button">Variaty Sequencing &raquo;</a></p>
+	<p><a href="{{ url_for('tools.blast') }}" role="button">Blast &raquo;</a></p>
+        <p><a href="{{ url_for('tools.gene_information') }}" role="button">Gene &raquo;</a></p>
+        <p><a href="{{ url_for('tools.get_sequence') }}" role="button">Sequencing &raquo;</a></p>
         <p><a href="{{ url_for('expression.expression_by_gene') }}" role="button">Expression &raquo;</a></p>
         <p><a href="{{ url_for('expression.enrichment') }}" role="button">Enrichment &raquo;</a></p>
       </div>
 
       <div class="col-lg-3">
         <h2>Document</h2>
-        <p><a href="{{ url_for('document.geneMapping') }}" role="button">Gene Mapping&raquo;</a></p>
-        <p><a href="{{ url_for('document.dataAnalysis') }}"  role="button">Data Prepare&raquo;</a></p>
-        <p><a href="{{ url_for('document.dataSharing') }}" role="button">Data Share&raquo;</a></p>
+        <p><a href="{{ url_for('document.geneMapping') }}" role="button">Gene Mapping &raquo;</a></p>
+        <p><a href="{{ url_for('document.dataAnalysis') }}"  role="button">Data Prepare &raquo;</a></p>
+        <p><a href="{{ url_for('document.dataSharing') }}" role="button">Data Share &raquo;</a></p>
+	<p><a href="{{ url_for('document.gallery') }}" role="button">Gallery &raquo;</a></p>
       </div>
     </div><!-- / Main tools on cover -->
 

@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% block content %}
+<div class="panel-body">
+  <h2>Varieties:</h2>
+
+  <table id="varieties" class="table table-striped" cellspacing="0" width="100%">
+    <thead>
+        <th>Variety ID</th>
+        <th>Variety Name</th>
+        <th>Provider</th>
+        <th>Type</th>
+        <th>Geographic</th>
+        <th>Country</th>
+        <th>Province</th>
+        <th>Affiliation</th>
+        <th>Create Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for va_i in va %}
+      <tr>
+        <td><a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
+            TC-Va-{{va_i.id}}
+          </a></td>
+        <td>{{va_i.variety_name}}</td>
+        <td>
+            <a
+              href="{{url_for( 'data.users', username=va_i.provider_obj.username)}}"
+              >{{va_i.provider_obj.username}}</a
+            >
+          </td>
+        <td>{{va_i.variety_type}}</td>
+        <td>{{va_i.geographic}}</td>
+        <td>{{va_i.country}}</td>
+        <td>{{va_i.province}}</td>
+        <td>
+          {{va_i.affiliation}}
+        </td>
+        <td>{{va_i.create_time}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table> 
+</div>
+{% endblock %} {% block js %}
+ <script>
+  $(document).ready(function() {
+    $("#varieties").DataTable({
+      dom: "lBfrtip",
+      scrollX: true
+    });
+  });
+</script>
+{% endblock %}

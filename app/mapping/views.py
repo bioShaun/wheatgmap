@@ -1,10 +1,10 @@
 from . import mapping
-from . actions import fetch_vcf, run_bsa, compare_info
+from . actions import run_bsa, compare_info
 from flask import render_template, url_for, request, jsonify, redirect
 from flask_login import current_user, login_required
 import requests
 import json
-from app.utils import redis_task
+from app.utils import redis_task, fetch_vcf
 
 def current_username():
     if current_user.is_authenticated:
@@ -12,20 +12,25 @@ def current_username():
     else:
         return 'anonymous'
 
+
 @mapping.route('/bsa-base/', methods=['GET'])
 def bsa_base():
-    pub_samples, private_samples = fetch_vcf()
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
     return render_template('mapping/mapping_bsa_base.html', pub_samples=pub_samples, pri_samples=private_samples)
+
 
 @mapping.route('/bsa/', methods=['GET'])
 def bsa():
-    pub_samples, private_samples = fetch_vcf() 
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
     return render_template('mapping/mapping_bsa.html', pub_samples=pub_samples, pri_samples=private_samples)
 
 
 @mapping.route('/compare/group/', methods=['GET'])
 def compare_group():
-    pub_samples, private_samples = fetch_vcf()
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
     return render_template('mapping/compare_group.html', pub_samples=pub_samples, pri_samples=private_samples)
 
     

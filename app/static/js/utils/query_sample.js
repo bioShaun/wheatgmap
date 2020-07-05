@@ -18,8 +18,8 @@ function check_info(info){
       layer.alert('end must bigger than start.');
       return false;
    }
-   if (pos_end - pos_start > 1000000){
-      layer.alert('regin too long (regin < 1M).');
+   if (pos_end - pos_start > 5000000){
+      layer.alert('regin too long (regin < 5M).');
       return false;
    }
    return true;

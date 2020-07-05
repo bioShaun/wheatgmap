@@ -9,9 +9,48 @@ import requests
 import subprocess
 import pandas as pd
 from app.db import DB
+from app.mc import cached
 from settings import Config
+from flask_login import current_user
+from app.auth.models import Data
+import logging
+
+CACHE_PREFIX = Config.CACHE_PREFIX
 
 
+def logger(log_file=''):
+    _logger = logging.getLogger(__name__)
+    _logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    if log_file:
+        handler = logging.FileHandler(log_file)
+    else:
+        handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    _logger.addHandler(handler)
+    return _logger
+
+
+@cached('wheatgmap.{name}.data', expire=3600)
+def fetch_vcf(name):
+    pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
+    pub_samples = [
+        '.'.join([each.tc_id, each.sample_name]) for each in pub_vcf
+    ]
+    if name != 'anonymous':
+        own_vcf = Data.query.filter_by(provider=name,
+                                       opened=0,
+                                       sign=0).all()
+        private_samples = [
+            '.'.join([each.tc_id, each.sample_name]) for each in own_vcf
+        ]
+    else:
+        private_samples = []
+
+    return pub_samples, private_samples
+
+
+@cached('wheatgmap.sample.{table}',expire=3600)
 def fetch_sample(table, fixed_column_num):
     cmd = "select COLUMN_NAME from information_schema.COLUMNS where table_name='{table}';".format(
         table=table)
@@ -103,6 +142,7 @@ class redisTask(object):
     def __init__(self, task_len=5):
         self._task_length = task_len
         self._rdp = redis.ConnectionPool(host='localhost',
+                                         password='wheatdb',
                                          port=6379,
                                          decode_responses=True)
         self.conn = redis.StrictRedis(connection_pool=self._rdp)

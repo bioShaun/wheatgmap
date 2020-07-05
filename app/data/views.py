@@ -3,17 +3,46 @@ import os
 import json
 import time
 from . import data
-from app.auth.models import Data, User, Variety, Comment, VarietyDetail, VarietyComment, VarietyFigureExample, DataFigure
+from app.auth.models import Data, User, Variety, Comment, VarietyDetail, VarietyComment, VarietyFigureExample, DataFigure, generateDTcls, filter_null
 from app.variety.forms import VarietyCommentForm
 from flask_login import login_required, current_user
 from flask import render_template, request, jsonify, redirect, url_for
 from settings import Config, basedir
+# from .actions import DT
+
+DT1 = generateDTcls(Data)
+DT2 = generateDTcls(VarietyDetail)
+
+class dataDT(DT1):
+    def to_list(self):
+        return [c.name for c in self.__table__.columns][1:-3]
+
+
+class varietyDT(DT2):
+    def to_list(self):
+        return ['id','variety_name','provider',
+                'variety_type', 'geographic', 'country',
+                'province', 'affiliation', 'create_time']
+
+    @staticmethod
+    def get_attr(obj, attr):
+        if attr == 'provider':
+            return obj.provider_obj.username
+        return filter_null(getattr(obj, attr))
+
+
+@data.route('/datatable/data/', methods=['GET', 'POST'])
+def data_dt():
+    if request.method == 'POST':
+        playload = json.loads(request.form['data'])
+        data = dataDT(**playload)
+        res = data.result(opened=1, sign=0)
+        return jsonify(res)
 
 
 @data.route('/samples/')
 def samples():
-    samples = Data.query.filter_by(opened=1, sign=0).all()
-    return render_template('/data/data.html', samples=samples)
+    return render_template('/data/data.html')
 
 
 @data.route('/samples/<tc_id>/', methods=['GET', 'POST'])
@@ -85,9 +114,18 @@ def delete_img(fig_id):
 
 @data.route('/varieties/')
 def variety():
-    va = VarietyDetail.query.all()
+    #va = VarietyDetail.query.all()
     #print(va)
-    return render_template('/data/variety.html', va=va)
+    return render_template('/data/variety.html')
+
+
+@data.route('/datatable/variety/', methods=['GET','POST'])
+def variety_dt():
+    if request.method == 'POST':
+        playload = json.loads(request.form['data'])
+        data = varietyDT(**playload)
+        res = data.result()
+        return jsonify(res)
 
 
 @data.route('/user/<username>/')

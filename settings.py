@@ -14,8 +14,8 @@ class Config(object):
     MAIL_SUBJECT_PREFIX = '[WheatDB]'
     MAIL_SENDER = 'WheatDB <{0}>'.format(MAIL_USERNAME)
     # Celery
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://:wheatdb@localhost:6379/0'
+    CELERY_BROKER_URL = 'redis://:wheatdb@localhost:6379/0'
     CELERY_POOL_RESTARTS = True
     # VCF file
     VCF_FILE_PATH = '/data/wheatdb/data/vcf_private'
@@ -37,7 +37,13 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     MAIL_MAP = {'qq.com': 'https://mail.qq.com',
                 '163.com': 'https://mail.163.com'}
-    
+    CACHE = {'CACHE_TYPE': 'redis',
+             'CACHE_REDIS_HOST': '127.0.0.1',
+             'CACHE_REDIS_PORT': 6379,
+             'CACHE_REDIS_PASSWORD': 'wheatdb',
+             'CACHE_REDIS_DB': 0
+            }
+    CACHE_PREFIX = 'wheatgmap'
     @staticmethod
     def init_app(app):
         pass

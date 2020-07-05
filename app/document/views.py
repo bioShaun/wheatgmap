@@ -5,15 +5,17 @@ from flask import render_template
 def geneMapping():
     return render_template('document/geneMapping.html')
 
-
 @document.route('/dataAnalysis/', methods=['GET'])
 def dataAnalysis():
     return render_template('document/dataAnalysis.html')
 
-
 @document.route('/dataSharing/', methods=['GET'])
 def dataSharing():
     return render_template('document/dataSharing.html')
+
+@document.route('/gallery/', methods=['GET'])
+def gallery():
+    return render_template('document/gallery.html')
 
 @document.route('/contactUS/', methods=['GET'])
 def contactUS():

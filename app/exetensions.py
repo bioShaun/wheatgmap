@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_cache import Cache
+from settings import Config
 
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -17,3 +19,4 @@ db = SQLAlchemy(use_native_unicode='utf8mb4',
                 metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 login_manager = LoginManager()
+cache = Cache(config=Config.CACHE)

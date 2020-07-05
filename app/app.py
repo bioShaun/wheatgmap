@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from . import assets
-from .exetensions import db, migrate, login_manager, mail
+from .exetensions import db, migrate, login_manager, mail, cache
 from settings import config, Config
 
 from celery import Celery
@@ -52,6 +52,7 @@ def register_exetensions(app):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     assets.init_app(app)
+    cache.init_app(app)
     return None
 
 

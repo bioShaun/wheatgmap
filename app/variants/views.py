@@ -4,35 +4,21 @@ from . import variants
 from .actions import snp_info, snp_info_by_chr
 from flask import render_template, jsonify, request, session
 from app.auth.models import Data
-from app.utils import parseInput, redis_task
+from app.utils import parseInput, redis_task, fetch_vcf
 from flask_login import current_user, login_required
+
+
+def current_username():
+    if current_user.is_authenticated:
+        return current_user.username
+    else:
+        return 'anonymous'
 
 
 @variants.route('/query/sample/')
 def query_sample():
-    pub_data = Data.query.filter(Data.opened == 1, Data.sign == 0).all()
-    if pub_data:
-        pub_samples = [
-            '.'.join([each.tc_id, each.sample_name]) for each in pub_data
-        ]
-    else:
-        pub_samples = []
-
-    if current_user.is_authenticated:
-        user_name = current_user.username
-    else:
-        user_name = None
-
-    #username = session.get('username')
-    if user_name:
-        private_data = Data.query.filter_by(provider=user_name,
-                                            opened=0,
-                                            sign=0).all()
-        private_samples = [
-            '.'.join([each.tc_id, each.sample_name]) for each in private_data
-        ]
-    else:
-        private_samples = []
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
     return render_template('variants/query_sample.html',
                            pub_samples=pub_samples,
                            pri_samples=private_samples)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body">
   <h2>Public Samples:</h2>
-  <table id="samples" class="table table-striped" cellspacing="0" width="100%">
+   <table id="samples" class="table table-striped" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th class="th-sm">TC ID</th>
@@ -24,84 +24,101 @@
       </tr>
     </thead>
     <tbody>
-      {% for sample in samples %}
-      <tr>
-        <td>
-          <a href="/data/samples/{{ sample.tc_id}}/">{{ sample.tc_id }}</a>
-        </td>
-        <td>{{ sample.sample_name }}</td>
-        <td>{{ sample.type }}</td>
-        {% if sample.scientific_name is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.scientific_name }}</td>
-        {% endif %} {% if sample.variety_name is none %}
-        <td>-</td>
-        {% else %}
-        <td>
-          <a href="/variety/detail/{{ sample.variety_name}}/"
-            >{{ sample.variety_name }}</a
-          >
-        </td>
-        {% endif %} {% if sample.high_level_tissue is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.high_level_tissue }}</td>
-        {% endif %} {% if sample.high_level_age is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.high_level_age }}</td>
-        {% endif %} {% if sample.treatments is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.treatments }}</td>
-        {% endif %} {% if sample.tissue is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.tissue }}</td>
-        {% endif %} {% if sample.age is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.age }}</td>
-        {% endif %} {% if sample.stress_disease is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.stress_disease }}</td>
-        {% endif %} {% if sample.dol is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.dol }}</td>
-        {% endif %} {% if sample.bulked_segregant is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.bulked_segregant }}</td>
-        {% endif %} {% if sample.mixed_sample is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.mixed_sample }}</td>
-        {% endif %} {% if sample.mutant_transgenosis is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.mutant_transgenosis }}</td>
-        {% endif %} {% if sample.other_inf is none %}
-        <td>-</td>
-        {% else %}
-        <td>{{ sample.other_inf }}</td>
-        {% endif %}
-        <td>
-          <a href="/data/user/{{ sample.provider }}/">{{ sample.provider }}</a>
-        </td>
-      </tr>
-      {% endfor %}
     </tbody>
-  </table>
+ </table>
 </div>
 {% endblock %} {% block js %}
 <script>
-  $(document).ready(function () {
+ $(document).ready(function () {
     $("#samples").DataTable({
-      dom: "lBfrtip",
-      scrollX: true,
+        serverSide: true,
+        processing: true,
+        pageLength: 20,
+        paging: true,
+        ordering: true,
+        searchable: true,
+        pagingType: "full_numbers",
+        scrollX: true,
+        dom: "lBfrtip",
+        columns: [
+            {"data": "tc_id", "bSortable": true, "title": "TC ID"},
+            {"data": "sample_name", "bSortable": true, "title": "Name"},
+            {"data": "type", "bSortable": true, "title": "Type"},
+            {"data": "scientific_name", "bSortable": true, "title": "Scientific"},
+            {"data": "variety_name", "bSortable": true, "title": "Variety ID"},
+            {"data": "high_level_tissue", "bSortable": true, "title": "High Level Tissue"},
+            {"data": "high_level_age", "bSortable": true, "title": "High Level Age"},
+            {"data": "treatments", "bSortable": true, "title": "Treatments"},
+            {"data": "tissue", "bSortable": true, "title": "Tissue"},
+            {"data": "age", "bSortable": true, "title": "Age"},
+            {"data": "stress_disease", "bSortable": true, "title": "Stress Disease"},
+            {"data": "dol", "bSortable": true, "title": "DOI"},
+            {"data": "bulked_segregant", "bSortable": true, "title": "Bulked Segregant"},
+            {"data": "mixed_sample", "bSortable": true, "title": "Mixed Sample"},
+            {"data": "mutant_transgenosis", "bSortable": true, "title": "Mutant Transgenosis"},
+            {"data": "other_inf", "bSortable": true, "title": "Other Inf"},
+            {"data": "provider", "bSortable": true, "title": "Provider"},
+        ],
+        columnDefs: [{
+            title: 'TC ID',
+            name: 'tc_id_1',
+            data: 'tc_id',
+            targets: [0],
+            render: function (data) {
+                return "<a href='/data/samples/" + data + "/'>" + data + "</a>";
+            }
+        },
+            {
+                title: 'Variety ID',
+                name: 'variety_name_5',
+                data: 'variety_name',
+                targets: [4],
+                render: function (data) {
+                    if(data != '-') {
+                        return "<a href='/variety/detail/" + data + "/'>" + data + "</a>";
+                    }
+                    else{
+                        return data;
+                    }
+                }
+            }, {
+                title: 'Provider',
+                name: 'provider_17',
+                data: 'provider',
+                targets: [-1],
+                render: function (data) {
+                    return "<a href='/data/user/" + data + "/'>" + data + "</a>";
+                }
+            }],
+        ajax: function (data, callback) {
+            var param = {};
+            param.draw = data.draw;
+            param.start = data.start;
+            param.length = data.length;
+            param.search = data.search.value;
+            param.page = param.start / param.length + 1;
+            if(data.order) {
+                param.order = data.order[0]['dir'] + ' ' + data.order[0]['column']
+            }else{
+                param.order = '';
+            }
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for('data.data_dt') }}",
+                data: {data: JSON.stringify(param)},
+                success: function (res) {
+                    var returnData = {};
+                    returnData.draw = res.draw;
+                    returnData.recordsTotal = res.recordsTotal;
+                    returnData.recordsFiltered = res.recordsFiltered;
+                    returnData.data = res.data;
+                    callback(returnData);
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+        }
     });
   });
 </script>

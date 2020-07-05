@@ -10,10 +10,12 @@ from werkzeug import secure_filename
 from settings import basedir, Config
 from app.auth.models import Data
 from flask_login import current_user
+from app.utils import fetch_vcf
 
 UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 VCF_ANNOTATION_DATABASE = ('wheat.hclc.v1.1', 'wheat.tcuni.v1.1')
 
+current_name = lambda: current_user.username if current_user.is_authenticated else 'anonymous'
 
 @tools.route('/blast/table/', methods=['POST'])
 def fetch_blast_table():
@@ -64,31 +66,8 @@ def gene_information():
 
 @tools.route('/sample/sequence/')
 def get_sequence():
-    #vcfDir = "/home/app/wheatDB/data/vcf_private_sample/"
-    pub_data = Data.query.filter(Data.opened == 1, Data.sign == 0).all()
-    if pub_data:
-        pub_samples = [
-            '.'.join([each.tc_id, each.sample_name]) for each in pub_data
-        ]
-    else:
-        pub_samples = []
-
-    if current_user.is_authenticated:
-        user_name = current_user.username
-    else:
-        user_name = None
-
-    #username = session.get('username')
-    if user_name:
-        private_data = Data.query.filter_by(provider=user_name,
-                                            opened=0,
-                                            sign=0).all()
-        private_samples = [
-            '.'.join([each.tc_id, each.sample_name]) for each in private_data
-        ]
-    else:
-        private_samples = []
-    #samples = [file[:-7] for file in os.listdir(vcfDir) if file[-6:] == 'vcf.gz']
+    name = current_name()
+    pub_samples, private_samples = fetch_vcf(name)
     return render_template('tools/get_sequence.html',
                            pub_samples=pub_samples,
                            pri_samples=private_samples)

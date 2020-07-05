@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-from app.utils import processor
+from app.utils import processor, logger
 from settings import Config
 from .models import Data
 from app.app import celery
 from redis import Redis
-
+from app.mc import mc
 
 TC_MAX_NUM = 6
 extract_vcf_sample_script = os.path.join(Config.SCRIPT_PATH, Config.EXTRACT_VCF_SAMPLE)
@@ -65,5 +65,7 @@ def async_fetch_vcf_samples(vcf, username, vcf_type="WES"):
         vcf=vcf,
         map_file=vcf + '.idmap')
     processor.shRun(split_vcf_cmd)
+    mc.delete('wheatgmap.{0}.data'.format(username))  # 删除在redis的旧缓存
+    logger().info('cache delete: wheatgmap.{0}.data'.format(username))
     return {'task': 'vcf_upload', 'result': '{0} upload success...'.format(vcf)}
 

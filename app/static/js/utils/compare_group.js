@@ -106,8 +106,8 @@ function check_input_data(info, params){
       layer.alert('end must bigger than start.');
       return false;
     }
-    if(Number(info['chrom_end']) - Number(info['chrom_start']) > 1000000){
-      layer.alert('regin too long (regin < 1M).');
+    if(Number(info['chrom_end']) - Number(info['chrom_start']) > 5000000){
+      layer.alert('regin too long (regin < 5M).');
       return false;
     }
     params['chrom'] = info['chrom'];

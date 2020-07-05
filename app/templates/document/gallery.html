@@ -1,0 +1,170 @@
+{% extends 'base.html' %} 
+{% block css %}
+<link rel="stylesheet" href={{ url_for('static', filename='viewerjs/dist/viewer.css') }}>
+{% endblock %}
+{% block content %}
+
+<div class="title" style="margin-bottom: 30px;">
+  <h3>Gallery</h3>
+  </br>
+  </br>
+
+<table>
+<tr>
+<td width="600">
+	<p>
+	Wild Phenotype : Resistance </br>
+	Mutant Phenotype : Susceptible </br>
+	Wild Bulk : TCE000001.ERR3790808 </br>
+	Mutant Bulk : TCE000002.ERR3790809 </br>
+	Wild Parent : None </br>
+	Mutant Parent : None </br>
+	Background : None </br>
+	Data type : <b>WES</b> </br>
+	Parameters :  Default
+	</p>
+</td>
+<td>
+   <div class="imgline">
+     <ul id="images-1">
+    	<li><img  data-original="/static/images/gallary/1/circos.png" src="/static/images/gallary/1/s.circos.png" alt="circos"></li>
+	<li><img  data-original="/static/images/gallary/1/freq.jpg" src="/static/images/gallary/1/s.freq.jpg" alt="freq"></li>
+	<li><img  data-original="/static/images/gallary/1/ED.png" src="/static/images/gallary/1/s.ED.png" alt="ED" ></li>
+	<li><img  data-original="/static/images/gallary/1/Gprime.jpg" src="/static/images/gallary/1/s.Gprime.jpg" alt="Gprime" ></li>
+	<li><img  data-original="/static/images/gallary/1/score.jpg" src="/static/images/gallary/1/s.score.jpg" alt="varBCore" ></li>
+	<li><img  data-original="/static/images/gallary/1/snpIndex.png" src="/static/images/gallary/1/s.snpIndex.png" alt="snpIndex" ></li>
+     </ul>
+   </div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<p>Gardiner, L. J., Bansept-Basler, P., El-Soda, M., Hall, A., & O’Sullivan, D. M. (2020). A framework for gene mapping in wheat demonstrated using the Yr7 yellow rust resistance gene. PLoS ONE, 15(4), 1–16. https://doi.org/10.1371/journal.pone.0231157<p>
+</td>
+</tr>
+</table>
+
+</br>
+</br>
+
+<table>
+<tr>
+<td width="600">
+<p>
+Wild Phenotype : Normal </br>
+Mutant Phenotype : Dwarf </br>
+Wild Bulk : TCE000003.N_CD_188 </br>
+Mutant Bulk : TCE000004.N_CH_188 </br>
+Wild Parent : None </br>
+Mutant Parent : None </br>
+Background : None </br>
+Data type : <b>WES</b> </br>
+Parameters :  Default </br>
+</p>
+</td>
+<td>
+   <div class="imgline">
+     <ul id="images-2">
+        <li><img  data-original="/static/images/gallary/2/circos.png" src="/static/images/gallary/2/s.circos.png" alt="circos"></li>
+        <li><img  data-original="/static/images/gallary/2/freq.jpg" src="/static/images/gallary/2/s.freq.jpg" alt="freq"></li>
+        <li><img  data-original="/static/images/gallary/2/ED.png" src="/static/images/gallary/2/s.ED.png" alt="ED" ></li>
+        <li><img  data-original="/static/images/gallary/2/Gprime.jpg" src="/static/images/gallary/2/s.Gprime.jpg" alt="Gprime" ></li>
+        <li><img  data-original="/static/images/gallary/2/score.jpg" src="/static/images/gallary/2/s.score.jpg" alt="varBCore" ></li>
+        <li><img  data-original="/static/images/gallary/2/snpIndex.png" src="/static/images/gallary/2/s.snpIndex.png" alt="snpIndex" ></li>
+     </ul>
+   </div>
+</td>
+</tr>
+</table>
+
+</br>
+</br>
+
+<table>
+<tr>
+<td width="600">
+<p>
+Wild Phenotype : Green leaf </br>
+Mutant Phenotype : Yellow leaf </br>
+Wild Bulk : TCE000006.BNLH </br>
+Mutant Bulk : TCE000005.BNHH </br>
+Wild Parent : None </br>
+Mutant Parent : None </br>
+Background : None </br>
+Data type : <b>WES</b> </br>
+Parameters :  Default </br>
+</p>
+</td>
+<td>
+   <div class="imgline">
+     <ul id="images-3">
+        <li><img  data-original="/static/images/gallary/3/circos.png" src="/static/images/gallary/3/s.circos.png" alt="circos"></li>
+        <li><img  data-original="/static/images/gallary/3/freq.jpg" src="/static/images/gallary/3/s.freq.plot.jpg" alt="freq"></li>
+        <li><img  data-original="/static/images/gallary/3/ED.png" src="/static/images/gallary/3/s.ED.plot.png" alt="ED" ></li>
+        <li><img  data-original="/static/images/gallary/3/Gprime.jpg" src="/static/images/gallary/3/s.Gprime.plot.jpg" alt="Gprime" ></li>
+        <li><img  data-original="/static/images/gallary/3/score.jpg" src="/static/images/gallary/3/s.score.plot.jpg" alt="varBCore" ></li>
+        <li><img  data-original="/static/images/gallary/3/snpIndex.png" src="/static/images/gallary/3/s.snpIndex.plot.png" alt="snpIndex" ></li>
+     </ul>
+   </div>
+</td>
+</tr>
+</table>
+
+</br>
+</br>
+
+<table>
+<tr>
+<td width="600">
+<p>
+Wild Phenotype : Normal </br>
+Mutant Phenotype : Dwarf </br>
+Wild Bulk : TCR000008.R_188_4_H_P_1,TCR000010,R_188_4_H_P_2 </br>
+Mutant Bulk : TCR000007.R_188_4_D_P_2,TCR000009.R_188_4_D_P_1 </br>
+Wild Parent : None </br>
+Mutant Parent : None </br>
+Background : None </br>
+Data type : <b>BSR</b> </br>
+Parameters :  Default </br>
+</p>
+</td>
+<td>
+   <div class="imgline">
+     <ul id="images-4">
+        <li><img  data-original="/static/images/gallary/4/circos.png" src="/static/images/gallary/4/s.circos.png" alt="circos"></li>
+        <li><img  data-original="/static/images/gallary/4/freq.jpg" src="/static/images/gallary/4/s.freq.plot.jpg" alt="freq"></li>
+        <li><img  data-original="/static/images/gallary/4/ED.png" src="/static/images/gallary/4/s.ED.plot.png" alt="ED" ></li>
+        <li><img  data-original="/static/images/gallary/4/Gprime.jpg" src="/static/images/gallary/4/s.Gprime.plot.jpg" alt="Gprime" ></li>
+        <li><img  data-original="/static/images/gallary/4/score.jpg" src="/static/images/gallary/4/s.score.plot.jpg" alt="varBCore" ></li>
+        <li><img  data-original="/static/images/gallary/4/snpIndex.png" src="/static/images/gallary/4/s.snpIndex.plot.png" alt="snpIndex" ></li>
+     </ul>
+   </div>
+</td>
+</tr>
+</table>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='viewerjs/dist/viewer.js') }}"></script>
+<script>
+    var gallery1 = new Viewer(document.getElementById('images-1'), {
+           url: 'data-original',
+         },
+    );
+    var gallery2 = new Viewer(document.getElementById('images-2'), {
+           url: 'data-original',
+         },
+    );
+    var gallery3 = new Viewer(document.getElementById('images-3'), {
+           url: 'data-original',
+         },
+    );
+    var gallery4 = new Viewer(document.getElementById('images-4'), {
+           url: 'data-original',
+         },
+    );
+</script>
+{% endblock %}
+

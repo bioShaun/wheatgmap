@@ -9,6 +9,7 @@ import random
 from settings import basedir
 
 Column = db.Column
+filter_null = lambda x: x if x else '-'
 VA_IMG_DIR = os.path.join(basedir, 'app', 'static/images/variety')
 
 
@@ -122,8 +123,8 @@ class Data(db.Model):
     __tablename__ = 'data'
     id = Column(db.Integer, primary_key=True)
     tc_id = Column(db.String(10), nullable=False)
-    provider = Column(db.String(45), nullable=False)
     sample_name = Column(db.String(45), nullable=False)
+    type = Column(db.String(6))
     scientific_name = Column(db.String(45))
     variety_name = Column(db.String(45))
     high_level_tissue = Column(db.Text)
@@ -137,7 +138,7 @@ class Data(db.Model):
     mixed_sample = Column(db.Text)
     mutant_transgenosis = Column(db.Text)
     other_inf = Column(db.Text)
-    type = Column(db.String(6))
+    provider = Column(db.String(45), nullable=False)
     opened = Column(db.Boolean)
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
@@ -414,3 +415,71 @@ class DataFigure(dbCRUD, db.Model):
     def __init__(self, url, data):
         self.url = url
         self.data = data
+
+
+def generateDTcls(cls):
+    class DT(cls):
+        def __init__(self, **kwargs):
+            self.draw = kwargs['draw']
+            self.page = kwargs['page']
+            self.length = kwargs['length']
+            self.search_str = kwargs['search']
+            self.order_str = kwargs['order']
+            self.columns = self.to_list()
+            self._query = None
+
+        def result(self, **kwargs):
+            if kwargs:
+                self._query = cls.query.filter_by(**kwargs)
+            else:
+                self._query = cls.query
+            self.search()
+            self.order()
+            return self.pager()
+
+        def to_list(self):
+            '''
+            rewrite this method to loading other datatables
+            '''
+            pass
+
+        @staticmethod
+        def get_attr(obj, attr):
+            return filter_null(getattr(obj, attr))
+
+        def search(self):
+            if self.search_str:
+                try:
+                    col, pattern = self.search_str.split(':')
+                    self.like(col, pattern)
+                except:
+                    pass
+
+        def order(self):
+            if self.order_str:
+                order_type, index = self.order_str.split()
+                col = self.columns[int(index)]
+                if order_type == 'desc':
+                    self._query = self._query.order_by((getattr(cls, col).desc()))
+                else:
+                    self._query = self._query.order_by(getattr(cls, col))
+
+        def like(self, col, keyword):
+            self._query = self._query.filter(getattr(cls, col).like('%{}%'.format(keyword)))
+
+        def pager(self):
+            pagination = self._query.paginate(page=self.page, per_page=self.length, error_out=False)
+            recordsTotal = self._query.count()
+            objs = pagination.items
+            rs = []
+            for obj in objs:
+                rs.append({attr: self.get_attr(obj, attr) for attr in self.columns})
+            res = {
+                'draw': self.draw,
+                'recordsTotal': recordsTotal,
+                'recordsFiltered': recordsTotal,
+                'data': rs
+            }
+            return res
+    return DT
+

@@ -13,7 +13,8 @@ from flask import render_template, \
 from settings import Config, basedir
 from werkzeug import secure_filename
 from app.mail import send_mail
-from app.utils import redis_task, vcfValidator
+from app.utils import redis_task, vcfValidator, logger
+from app.mc import mc
 from pathlib import PurePath
 
 
@@ -272,6 +273,9 @@ def userData():
 @auth.route('/fetch_samples/', methods=['GET', 'DELETE', 'PUT', 'POST'])
 @login_required
 def fetch_samples():
+    if request.method != 'GET':
+        mc.delete('wheatgmap.{0}.data'.format(current_user.username))
+        logger().info('cached delete: wheatgmap.{0}.data'.format(current_user.username))
     if request.method == 'GET':
         result = []
         samples = Data.query.filter_by(provider=current_user.username,
@@ -316,6 +320,8 @@ def fetch_samples():
         action = request.form['action']
         id_serise = ids.split(',')
         if action == 'pub':
+            mc.delete('wheatgmap.anonymous.data')
+            logger().info('cached delete: wheatgmap.{0}.data'.format('anonymous'))
             for id in id_serise:
                 sample = Data.query.filter_by(tc_id=id).first()
                 sample.update(opened=1)

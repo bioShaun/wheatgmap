@@ -7,13 +7,13 @@ from app.app import celery
 from flask_login import current_user
 import json
 
+
 UPLOAD_PATH = os.path.join(basedir, 'app', 'static', 'download')
 MAPPING_PATH = os.path.join(UPLOAD_PATH, 'gene_mapping')
 ANN_PATH = os.path.join(UPLOAD_PATH, 'vcf_ann')
 gene_bed_file = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
 #VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
 #SNP_SCORE_SCRIPT = '/home/scripts/omSnpScore/scripts/snpScore'
-
 
 def fetch_vcf():
     pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
