@@ -1,124 +1,147 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body">
   <h2>Public Samples:</h2>
-   <table id="samples" class="table table-striped" cellspacing="0" width="100%">
+  <div class="search-box" style="display: flex; margin-bottom: 1rem;">
+      <div class="input-box" style="margin-right: 1rem;">
+            <div class="form-group">
+              <input type="text" class="form-control" id="searchVal"/>
+            </div>
+      </div>
+      <div class="search-btn">
+          <button id="searchItem" class="btn btn-primary">Search</button>
+          <button id="resetSearch" class="btn btn-warning">Reset</button>
+      </div>
+  </div>
+
+  <table id="samples" class="table table-striped" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th class="th-sm">TC ID</th>
-        <th class="th-sm">Name</th>
+        <th class="th-sm">WG ID</th>
+        <th class="th-sm">Sample Name</th>
         <th class="th-sm">Type</th>
-        <th class="th-sm">Scientific</th>
+        <th class="th-sm">Scientific Name</th>
         <th class="th-sm">Variety ID</th>
-        <th class="th-sm">High Level Tissue</th>
-        <th class="th-sm">High Level Age</th>
-        <th class="th-sm">Treatments</th>
         <th class="th-sm">Tissue</th>
-        <th class="th-sm">Age</th>
-        <th class="th-sm">Stress Disease</th>
+        <th class="th-sm">Age</th>        
+        <th class="th-sm">Phenotype</th>
+        <th class="th-sm">Pooled Sample</th>
+        <th class="th-sm">Submitter</th>
         <th class="th-sm">DOI</th>
-        <th class="th-sm">Bulked Segregant</th>
-        <th class="th-sm">Mixed Sample</th>
-        <th class="th-sm">Mutant Transgenosis</th>
-        <th class="th-sm">Other Inf</th>
-        <th class="th-sm">Provider</th>
       </tr>
     </thead>
-    <tbody>
-    </tbody>
- </table>
+    <tbody></tbody>
+  </table>
 </div>
 {% endblock %} {% block js %}
 <script>
- $(document).ready(function () {
-    $("#samples").DataTable({
-        serverSide: true,
-        processing: true,
-        pageLength: 20,
-        paging: true,
-        ordering: true,
-        searchable: true,
-        pagingType: "full_numbers",
-        scrollX: true,
-        dom: "lBfrtip",
-        columns: [
-            {"data": "tc_id", "bSortable": true, "title": "TC ID"},
-            {"data": "sample_name", "bSortable": true, "title": "Name"},
-            {"data": "type", "bSortable": true, "title": "Type"},
-            {"data": "scientific_name", "bSortable": true, "title": "Scientific"},
-            {"data": "variety_name", "bSortable": true, "title": "Variety ID"},
-            {"data": "high_level_tissue", "bSortable": true, "title": "High Level Tissue"},
-            {"data": "high_level_age", "bSortable": true, "title": "High Level Age"},
-            {"data": "treatments", "bSortable": true, "title": "Treatments"},
-            {"data": "tissue", "bSortable": true, "title": "Tissue"},
-            {"data": "age", "bSortable": true, "title": "Age"},
-            {"data": "stress_disease", "bSortable": true, "title": "Stress Disease"},
-            {"data": "dol", "bSortable": true, "title": "DOI"},
-            {"data": "bulked_segregant", "bSortable": true, "title": "Bulked Segregant"},
-            {"data": "mixed_sample", "bSortable": true, "title": "Mixed Sample"},
-            {"data": "mutant_transgenosis", "bSortable": true, "title": "Mutant Transgenosis"},
-            {"data": "other_inf", "bSortable": true, "title": "Other Inf"},
-            {"data": "provider", "bSortable": true, "title": "Provider"},
-        ],
-        columnDefs: [{
-            title: 'TC ID',
-            name: 'tc_id_1',
-            data: 'tc_id',
-            targets: [0],
-            render: function (data) {
-                return "<a href='/data/samples/" + data + "/'>" + data + "</a>";
-            }
+  $(document).ready(function () {
+    var search_item = {};
+    const tableColumns = [
+        { data: "tc_id", bSortable: true, title: "WG ID" },
+        { data: "sample_name", bSortable: true, title: "Sample Name" },
+        { data: "type", bSortable: true, title: "Type" },
+        { data: "scientific_name", bSortable: true, title: "Scientific Name" },
+        { data: "variety_name", bSortable: true, title: "Variety ID" },
+        { data: "tissue", bSortable: true, title: "Tissue" },
+        { data: "age", bSortable: true, title: "Age" },
+        {
+          data: "bulked_segregant",
+          bSortable: true,
+          title: "Phenotype",
         },
-            {
-                title: 'Variety ID',
-                name: 'variety_name_5',
-                data: 'variety_name',
-                targets: [4],
-                render: function (data) {
-                    if(data != '-') {
-                        return "<a href='/variety/detail/" + data + "/'>" + data + "</a>";
-                    }
-                    else{
-                        return data;
-                    }
-                }
-            }, {
-                title: 'Provider',
-                name: 'provider_17',
-                data: 'provider',
-                targets: [-1],
-                render: function (data) {
-                    return "<a href='/data/user/" + data + "/'>" + data + "</a>";
-                }
-            }],
-        ajax: function (data, callback) {
-            var param = {};
-            param.draw = data.draw;
-            param.start = data.start;
-            param.length = data.length;
-            param.search = data.search.value;
-            param.page = param.start / param.length + 1;
-            if(data.order) {
-                param.order = data.order[0]['dir'] + ' ' + data.order[0]['column']
-            }else{
-                param.order = '';
+        { data: "mixed_sample", bSortable: true, title: "Pooled Sample" },
+        { data: "provider", bSortable: true, title: "Submitter" },
+        { data: "dol", bSortable: true, title: "DOI" },
+      ]
+    var sampleTable = $("#samples").DataTable({
+      serverSide: true,
+      processing: true,
+      pageLength: 20,
+      paging: true,
+      ordering: true,
+      searchable: false,
+      searching: false,
+      pagingType: "full_numbers",
+      scrollX: true,
+      dom: "lBfrtip",
+      columns: tableColumns,
+      columnDefs: [
+        {
+          title: "WG ID",
+          name: "tc_id_1",
+          data: "tc_id",
+          targets: [0],
+          render: function (data) {
+            return "<a href='/data/samples/" + data + "/'>" + data + "</a>";
+          },
+        },
+        {
+          title: "Variety ID",
+          name: "variety_name_5",
+          data: "variety_name",
+          targets: [4],
+          render: function (data) {
+            if (data != "-") {
+              return "<a href='/variety/detail/" + data + "/'>" + data + "</a>";
+            } else {
+              return data;
             }
-            $.ajax({
-                type: "POST",
-                url: "{{ url_for('data.data_dt') }}",
-                data: {data: JSON.stringify(param)},
-                success: function (res) {
-                    var returnData = {};
-                    returnData.draw = res.draw;
-                    returnData.recordsTotal = res.recordsTotal;
-                    returnData.recordsFiltered = res.recordsFiltered;
-                    returnData.data = res.data;
-                    callback(returnData);
-                },
-                error: function () {
-                    console.log('error');
-                }
-            });
+          },
+        },
+        {
+          title: "Submitter",
+          name: "provider_17",
+          data: "provider",
+          targets: [-2],
+          render: function (data) {
+            return "<a href='/data/user/" + data + "/'>" + data + "</a>";
+          },
+        },
+      ],
+      ajax: function (data, callback) {
+        var param = {};
+        param.draw = data.draw;
+        param.start = data.start;
+        param.length = data.length;
+        //param.search = data.search.value;
+        param.search = search_item;
+        param.page = param.start / param.length + 1;
+        if (data.order) {
+          param.order = data.order[0]["dir"] + " " + data.order[0]["column"];
+        } else {
+          param.order = "";
         }
+        $.ajax({
+          type: "POST",
+          url: "{{ url_for('data.data_dt') }}",
+          data: { data: JSON.stringify(param) },
+          success: function (res) {
+            var returnData = {};
+            returnData.draw = res.draw;
+            returnData.recordsTotal = res.recordsTotal;
+            returnData.recordsFiltered = res.recordsFiltered;
+            returnData.data = res.data;
+            callback(returnData);
+          },
+          error: function () {
+            console.log("error");
+          },
+        });
+      },
+    });
+    $("#searchItem").on("click", function () {
+      const inputVal = $("#searchVal")[0].value;
+      tableColumns.map(val => {
+        search_item[val.data] = inputVal
+      })
+      console.log(search_item)
+      sampleTable.ajax.reload();
+    });
+
+    $("#resetSearch").on("click", function () {
+      $("#searchVal")[0].value = ""
+      search_item = {}
+      sampleTable.ajax.reload();
     });
   });
 </script>

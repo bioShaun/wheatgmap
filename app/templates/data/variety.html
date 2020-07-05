@@ -1,6 +1,17 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body">
   <h2>Varieties:</h2>
+  <div class="search-box" style="display: flex; margin-bottom: 1rem;">
+    <div class="input-box" style="margin-right: 1rem;">
+          <div class="form-group">
+            <input type="text" class="form-control" id="searchVal"/>
+          </div>
+    </div>
+    <div class="search-btn">
+        <button id="searchItem" class="btn btn-primary">Search</button>
+        <button id="resetSearch" class="btn btn-warning">Reset</button>
+    </div>
+</div>  
   <table id="varieties" class="table table-striped" cellspacing="0" width="100%">
     <thead>
     <tr>
@@ -24,15 +35,8 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
  <script>
     $(document).ready(function () {
-    $("#varieties").DataTable({
-        serverSide: true,
-        processing: true,
-        pageLength: 20,
-        paging: true,
-        ordering: true,
-        searchable: true,
-        pagingType: "full_numbers",
-        columns: [
+        var search_item = {};
+        const tableColumns = [
             {"data": "id", "bSortable": true, "title": "Variety ID"},
             {"data": "variety_name", "bSortable": true, "title": "Variety Name"},
             {"data": "provider", "bSortable": true, "title": "Provider"},
@@ -42,7 +46,17 @@
             {"data": "province", "bSortable": true, "title": "Province"},
             {"data": "affiliation", "bSortable": true, "title": "Affiliation"},
             {"data": "create_time", "bSortable": true, "title": "Create Time"},
-        ],
+        ]
+        var vaTable =  $("#varieties").DataTable({
+        serverSide: true,
+        processing: true,
+        pageLength: 20,
+        paging: true,
+        ordering: true,
+        searchable: false,
+      searching: false,
+        pagingType: "full_numbers",
+        columns: tableColumns,
         columnDefs: [{
             title: 'TC ID',
             name: 'id_1',
@@ -65,7 +79,7 @@
             param.draw = data.draw;
             param.start = data.start;
             param.length = data.length;
-            param.search = data.search.value;
+            param.search = search_item;
             param.page = param.start / param.length + 1;
             if(data.order) {
                 param.order = data.order[0]['dir'] + ' ' + data.order[0]['column'];
@@ -89,6 +103,21 @@
                 }
             });
         }
+    });
+    
+    $("#searchItem").on("click", function () {
+      const inputVal = $("#searchVal")[0].value;
+      tableColumns.map(val => {
+        search_item[val.data] = inputVal
+      })
+      console.log(search_item)
+      vaTable.ajax.reload();
+    });
+
+    $("#resetSearch").on("click", function () {
+      $("#searchVal")[0].value = ""
+      search_item = {}
+      vaTable.ajax.reload();
     });
   });
 </script>

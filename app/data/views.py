@@ -6,7 +6,7 @@ from . import data
 from app.auth.models import Data, User, Variety, Comment, VarietyDetail, VarietyComment, VarietyFigureExample, DataFigure, generateDTcls, filter_null
 from app.variety.forms import VarietyCommentForm
 from flask_login import login_required, current_user
-from flask import render_template, request, jsonify, redirect, url_for
+from flask import render_template, request, jsonify, redirect, url_for, flash
 from settings import Config, basedir
 # from .actions import DT
 
@@ -35,6 +35,7 @@ class varietyDT(DT2):
 def data_dt():
     if request.method == 'POST':
         playload = json.loads(request.form['data'])
+        print(playload)
         data = dataDT(**playload)
         res = data.result(opened=1, sign=0)
         return jsonify(res)

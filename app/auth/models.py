@@ -7,11 +7,12 @@ from datetime import datetime
 from flask import current_app
 import random
 from settings import basedir
+import json
+from sqlalchemy import or_
 
 Column = db.Column
 filter_null = lambda x: x if x else '-'
 VA_IMG_DIR = os.path.join(basedir, 'app', 'static/images/variety')
-
 
 class dbCRUD:
 
@@ -423,7 +424,7 @@ def generateDTcls(cls):
             self.draw = kwargs['draw']
             self.page = kwargs['page']
             self.length = kwargs['length']
-            self.search_str = kwargs['search']
+            self.search_obj = kwargs['search']
             self.order_str = kwargs['order']
             self.columns = self.to_list()
             self._query = None
@@ -448,10 +449,9 @@ def generateDTcls(cls):
             return filter_null(getattr(obj, attr))
 
         def search(self):
-            if self.search_str:
-                try:
-                    col, pattern = self.search_str.split(':')
-                    self.like(col, pattern)
+            if self.search_obj:
+                try:                    
+                    self.like()
                 except:
                     pass
 
@@ -464,8 +464,10 @@ def generateDTcls(cls):
                 else:
                     self._query = self._query.order_by(getattr(cls, col))
 
-        def like(self, col, keyword):
-            self._query = self._query.filter(getattr(cls, col).like('%{}%'.format(keyword)))
+        def like(self):
+            filter_param = [getattr(cls, col).like('%{}%'.format(keyword)) 
+            for col, keyword in self.search_obj.items()]
+            self._query = self._query.filter(or_(*filter_param))
 
         def pager(self):
             pagination = self._query.paginate(page=self.page, per_page=self.length, error_out=False)
