@@ -19,7 +19,7 @@ function expr_line(head, data){
   for(var i = 0; i < keys.length; i++){
     series.push({'name': keys[i],
                  'type':'line',
-                 'data': data[keys[i]]});
+                 'data': data[keys[i]].map(val => Math.log2(val + 1))});
   }
   console.log(series);
   option = create_expr(head, Object.keys(data), series);
@@ -45,7 +45,6 @@ function create_expr(head, genes, series) {
                 show: true,
                 feature: {
                     mark: {show: true},
-                    dataZoom: {show: true},
                     dataView: {show: true, readOnly: false},
                     magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
                     restore: {show: true},
@@ -65,7 +64,8 @@ function create_expr(head, genes, series) {
             yAxis: [
                 {
                     type: 'value',
-                    scale: true
+                    scale: true,
+                    name: 'log2(TPM + 1)'
                 }
             ],
             series: series 
