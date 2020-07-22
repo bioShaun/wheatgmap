@@ -1,4 +1,4 @@
-function create_expr(row) {
+function create_expr(row, maxTpm) {
   /*
         input.forEach(function (t) {
             t['label'] = {
@@ -16,10 +16,6 @@ function create_expr(row) {
             tooltip : {
             trigger: 'axis'
     	    },
-            legend: {
-                //right: '15%',
-                data: ['Tiusse']
-            },
             toolbox: {
                 show: true,
                 feature: {
@@ -46,12 +42,13 @@ function create_expr(row) {
             yAxis: [
                 {
                     type: 'value',
-                    scale: true
+                    scale: true,
+                    max: maxTpm,
+                    name: "log2(TPM + 1)",                    
                 }
             ],
             series: [
               {
-                "name": "Tiusse",
                 "type": "bar",
                 "data": row
               }
@@ -60,8 +57,8 @@ function create_expr(row) {
         return option;
     }
 
-function expr_bar(row){
+function expr_bar(row, maxTpm){
   var expr_plot = echarts.init(document.getElementById('expr-plot'));
-  option = create_expr(row);
+  option = create_expr(row, maxTpm);
   expr_plot.setOption(option);
 }

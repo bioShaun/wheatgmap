@@ -21,3 +21,6 @@ gunicorn.pid
 .vscode
 *min.css
 *min.js
+
+# gunicorn
+gunicorn*pid

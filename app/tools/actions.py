@@ -1,4 +1,5 @@
 import os
+import re
 from app.db import DB
 import pandas as pd
 import numpy as np
@@ -11,11 +12,25 @@ from settings import basedir
 from app.utils import processor, printPretty
 from app.app import celery
 from settings import Config
+from app.auth.models import GeneExpression
 
 UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 vcf_seq_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_SEQ)
 vcf_ann_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_ANN)
 vcf_pca_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_PCA)
+
+
+GENE_PATTERN = re.compile('TraesCS(\w+)1G(\w+)')
+
+def transfer_id(gene_id):
+    """
+    TraesCS3D01G355600 -> TraesCS3D02G355600
+    """
+    if GENE_PATTERN.match(gene_id):
+        id_1, id_2 = GENE_PATTERN.match(gene_id).groups()
+        return 'TraesCS{id_1}2G{id_2}'.format(**locals())
+    else:
+        return gene_id
 
 
 def wildcard_gene(genename):
@@ -157,12 +172,18 @@ def get_locus_result(genename, blast_results):
             "select * from tissue_expression where Gene_id like '{0}'".format(
                 wildcard_gene(genename)))
         if result:
-            row = [float(each) for each in result[0][2:]]
+            row = [np.log2(float(each) + 1) for each in result[0][2:]]
         else:
             row = []
         locus_result['tissue_expression'] = row
         locus_result['gene_cds_seq'] = cds_seq_dict
         locus_result['gene_pro_seq'] = pro_seq_dict
+
+        geneExp = GeneExpression.findbygene(transfer_id(genename))
+        locus_result['dev_expression_stage'] = [each.tissue for each in geneExp]
+        locus_result['dev_expression_tpm'] = [np.log2(each.tpm + 1) for each in geneExp]
+        all_tpm_list = row + locus_result['dev_expression_tpm']
+        locus_result['max_tpm'] = np.ceil(max(all_tpm_list))
     return locus_result
 
 

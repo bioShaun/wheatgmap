@@ -9,6 +9,7 @@ import random
 from settings import basedir
 import json
 from sqlalchemy import or_
+from sqlalchemy.dialects.mysql import FLOAT
 
 Column = db.Column
 filter_null = lambda x: x if x else '-'
@@ -416,6 +417,25 @@ class DataFigure(dbCRUD, db.Model):
     def __init__(self, url, data):
         self.url = url
         self.data = data
+
+
+class GeneExpression(dbCRUD, db.Model):
+    __tablename__ = 'geneExpression'
+    id = Column(db.Integer, primary_key=True)
+    gene_id = Column(db.String(20))
+    tissue = Column(db.String(50))
+    tpm = Column(FLOAT(precision=10, scale=2))
+
+    def __init__(self, gene_id, tissue, tpm):
+        self.gene_id = gene_id
+        self.tissue = tissue
+        self.tpm = tpm
+
+    @staticmethod
+    def findbygene(gene_id):
+        return GeneExpression.query.filter_by(gene_id=gene_id).all()
+
+
 
 
 def generateDTcls(cls):

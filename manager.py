@@ -2,9 +2,11 @@
 
 from flask_script import Manager, Server
 from flask_migrate import MigrateCommand
-from app.auth.models import User
+from app.auth.models import User, GeneExpression
 from app.exetensions import db
 from app.app import create_app
+import pandas as pd
+from tqdm import tqdm
 
 app = create_app('prod')
 manager = Manager(app)
@@ -57,6 +59,32 @@ def init_db():
     db.session.add_all(tables)
     db.session.commit()
     '''
+
+@manager.command
+def add_exp():    
+    print('read data')
+    df = pd.read_csv('/data/wheatdb/data/expression/iwgsc.gene.tpm.grp.long_table.csv.gz')
+    print('load data')
+    geneNum = len(df.index)
+    unitNum = 10000
+    intervals = zip(
+        range(0, geneNum, unitNum), 
+    range(unitNum, geneNum + unitNum, unitNum)
+    )
+    intervalNum = len(range(0, geneNum, unitNum))
+    for interval_i in tqdm(intervals, total=intervalNum):
+        datas = []
+        print(f'interval {interval_i}')
+        for idx in df.index[interval_i[0]:interval_i[1]]:
+            datas.append(
+                GeneExpression(
+                    gene_id=df.loc[idx].gene_id,
+                    tissue=df.loc[idx].tissue,
+                    tpm=float(df.loc[idx].tpm),
+                ))
+        print('save data')
+        db.session.add_all(datas)
+        db.session.commit()
 
 
 if __name__ == '__main__':

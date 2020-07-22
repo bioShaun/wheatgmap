@@ -95,6 +95,18 @@
                     </table>
                     <table width="100%" border="0">
                         <tbody>
+                          <tr>
+                            <td class="header" colspan="5">Development Expression</td>
+                          </tr>
+                          <tr>
+                          <td>
+                           <div id="expr-plot-2" style="height:300px"></div>
+                  </td>
+                          </tr>
+                        </tbody>
+                      </table>                    
+                    <table width="100%" border="0">
+                        <tbody>
                             <tr>
                                 <td class="header" colspan="2">Gene CDS Sequence</td>
                             </tr>
@@ -153,10 +165,15 @@
 {% block js %}
   <script src="https://unpkg.com/echarts@3.5.3/dist/echarts.js"></script>
   <script src="{{ url_for('static', filename='js/utils/expr_plot.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/utils/expr_plot_xms.js') }}"></script>  
   <script>
   $(document).ready(function () {
     var row = {{ locus_result['tissue_expression'] | safe }};
-    expr_bar(row);
+    const maxTpm = {{ locus_result['max_tpm'] | safe }};
+    expr_bar(row, maxTpm);
+    const devStage = {{ locus_result['dev_expression_stage'] | safe }};
+    const devTpm = {{ locus_result['dev_expression_tpm'] | safe }};
+    expr_bar_xms(devStage, devTpm, maxTpm);    
   });
   </script>
 {% endblock %}
