@@ -13,7 +13,7 @@ from flask import render_template, \
 from settings import Config, basedir
 from werkzeug import secure_filename
 from app.mail import send_mail
-from app.utils import redis_task, vcfValidator, logger
+import app.utils as appUitls
 from app.mc import mc
 from pathlib import PurePath
 
@@ -192,7 +192,7 @@ def account():
 @auth.route('/tasks/', methods=['GET'])
 @login_required
 def tasks():
-    my_tasks = redis_task.fetch_task(current_user.username)
+    my_tasks = appUitls.redis_task.fetch_task(current_user.username)
     variety = VarietyDetail.query.filter_by(provider=current_user.id).all()
     return render_template(
         "auth/tasks.html",
@@ -219,14 +219,14 @@ def upload():
                  secure_filename(vcf_file.filename)])
             filepath = os.path.join(Config.VCF_FILE_PATH, filename)
             vcf_file.save(filepath)
-            vcf_check_msg = vcfValidator(filepath)
+            vcf_check_msg = appUitls.vcfValidator(filepath)
             if vcf_check_msg:
                 return jsonify({'msg': vcf_check_msg, 'table': []})
             if os.stat(filepath).st_size > 1 * 1000:
                 task = async_fetch_vcf_samples.delay(filename,
                                                      current_user.username,
                                                      vcf_type)
-                redis_task.push_task(current_user.username, task.id)
+                appUitls.redis_task.push_task(current_user.username, task.id)
                 return jsonify({'msg': 'async', 'task_id': task.id})
             else:
                 result = fetch_vcf_samples(filename, vcf_type)
@@ -275,7 +275,7 @@ def userData():
 def fetch_samples():
     if request.method != 'GET':
         mc.delete('wheatgmap.{0}.data'.format(current_user.username))
-        logger().info('cached delete: wheatgmap.{0}.data'.format(current_user.username))
+        appUitls.logger().info('cached delete: wheatgmap.{0}.data'.format(current_user.username))
     if request.method == 'GET':
         result = []
         samples = Data.query.filter_by(provider=current_user.username,
@@ -321,7 +321,7 @@ def fetch_samples():
         id_serise = ids.split(',')
         if action == 'pub':
             mc.delete('wheatgmap.anonymous.data')
-            logger().info('cached delete: wheatgmap.{0}.data'.format('anonymous'))
+            appUitls.logger().info('cached delete: wheatgmap.{0}.data'.format('anonymous'))
             for id in id_serise:
                 sample = Data.query.filter_by(tc_id=id).first()
                 sample.update(opened=1)

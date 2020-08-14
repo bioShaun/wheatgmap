@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from app.utils import processor, logger
+import app.utils as appUtils
 from settings import Config
 from .models import Data
 from app.app import celery
@@ -29,7 +29,7 @@ def tc_map(vcf, vcf_type, samples):
 def fetch_vcf_samples(vcf, vcf_type="WES"):
     # split vcf return each sample
     fetch_sample_cmd = "sh {script} {vcf}".format(script=extract_vcf_sample_script, vcf=vcf)
-    processor.shRun(fetch_sample_cmd)
+    appUtils.processor.shRun(fetch_sample_cmd)
     f = open(os.path.join(Config.VCF_FILE_PATH, vcf + '.sample_name'), 'r')
     samples = [each.strip() for each in f.readlines()]
     f.close()
@@ -39,7 +39,7 @@ def fetch_vcf_samples(vcf, vcf_type="WES"):
         script=split_vcf_sample_script, 
         vcf=vcf,
         map_file=vcf + '.idmap')
-    processor.shRun(split_vcf_cmd)
+    appUtils.processor.shRun(split_vcf_cmd)
     return tc_series
 
 
@@ -47,7 +47,7 @@ def fetch_vcf_samples(vcf, vcf_type="WES"):
 def async_fetch_vcf_samples(vcf, username, vcf_type="WES"):
     # split vcf return each sample
     fetch_sample_cmd = "sh {script} {vcf}".format(script=extract_vcf_sample_script, vcf=vcf)
-    processor.shRun(fetch_sample_cmd)
+    appUtils.processor.shRun(fetch_sample_cmd)
     f = open(os.path.join(Config.VCF_FILE_PATH, vcf + '.sample_name'), 'r')
     samples = [each.strip() for each in f.readlines()]
     f.close()
@@ -64,8 +64,8 @@ def async_fetch_vcf_samples(vcf, username, vcf_type="WES"):
         script=split_vcf_sample_script,
         vcf=vcf,
         map_file=vcf + '.idmap')
-    processor.shRun(split_vcf_cmd)
+    appUtils.processor.shRun(split_vcf_cmd)
     mc.delete('wheatgmap.{0}.data'.format(username))  # 删除在redis的旧缓存
-    logger().info('cache delete: wheatgmap.{0}.data'.format(username))
+    appUtils.logger().info('cache delete: wheatgmap.{0}.data'.format(username))
     return {'task': 'vcf_upload', 'result': '{0} upload success...'.format(vcf)}
 
