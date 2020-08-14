@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import glob
 from app.auth.models import Data
 from settings import Config, basedir
 from app.utils import processor, parseInput
@@ -35,16 +36,9 @@ def fetch_vcf():
 
 @celery.task
 def run_bsa(info):
-    freq_pattern = 'snp.freq.plot.jpg'
-    score_pattern = 'var.score.plot.jpg'
-    qtlseqr_pattern1 = 'snpIndex.plot.png'
-    qtlseqr_pattern2 = 'Gprime.plot.jpg'
-    ed_pattern = 'ED.plot.png'
-    circos_pattern = '.circos.png'
 
-    print(info)
     cmd = (
-        f"snpScore-mp -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
+        f"snpScore-mp2 -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
         f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
     )
 
@@ -56,25 +50,17 @@ def run_bsa(info):
     result_path = os.path.join(result_base, 'results')
     processor.Run(
         cmd=
-        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*"'
+        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*" -x "results/mutant*.bed" -x "results/qtlseqr*.csv"'
         .format(zip_file=os.path.join(result_base, 'results.zip'),
                 dir=result_base))
-    all_files = os.listdir(result_path)
+
     path = result_path.split('/home/app/vcfweb/wheatdb/app')[-1]
+    
+    png_files = glob.glob(f'{result_path}/*/*png')
+    jpg_files = glob.glob(f'{result_path}/*/*jpg')
 
-    def findFiles(pattern):
-        nonlocal all_files
-        return [
-            os.path.join(path, file_i) for file_i in all_files
-            if file_i[-len(pattern):] == pattern
-        ]
-
-    freq_files = findFiles(freq_pattern)
-    score_files = findFiles(score_pattern)
-    qtlseqr_gpime = findFiles(qtlseqr_pattern1)
-    qtlseqr_deltasnp = findFiles(qtlseqr_pattern2)
-    ed_files = findFiles(ed_pattern)
-    circos_files = findFiles(circos_pattern)
+    plot_files = png_files + jpg_files
+    plot_files_path = [each.replace('/home/app/vcfweb/wheatdb/app', '') for each in plot_files]
 
     return {
         'task': 'bsa',
@@ -82,8 +68,7 @@ def run_bsa(info):
             'path':
             os.path.join(path, '../results.zip'),
             'files':
-            freq_files + score_files + qtlseqr_gpime + qtlseqr_deltasnp +
-            ed_files + circos_files
+            plot_files_path
         }
     }
 
