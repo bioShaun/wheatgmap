@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <a href="{{ url_for('mapping.bsa_base_public') }}">
+
+        <button type="button" class="btn btn-success btn-lg">
+            Public Data Only
+        </button>
+    </a>
+
+    <a href="{{ url_for('mapping.bsa_base_public') }}">
+        <button type="button" class="btn btn-warning btn-lg">
+            Pulic Data + Upload data
+        </button>
+    </a>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}
