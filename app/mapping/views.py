@@ -37,6 +37,11 @@ def bsa_base_public():
                            pri_samples=private_samples)
 
 
+@mapping.route('/bsa-base-upload/', methods=['GET'])
+def bsa_base_upload():
+    return render_template('mapping/mapping_bsa_anony_upload.html')
+
+
 @mapping.route('/bsa/', methods=['GET'])
 def bsa():
     name = current_username()

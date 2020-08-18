@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <div style="margin-top: 100px;">
+        <h3>Input Your Upload Code</h3>
+        <div class="input-group" style="margin-bottom: 100px;">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
+        </div>
+    </div>
+
+    <h3>Or Start Uploading</h3>
+    <p>
+        <b>Please read the VCF format
+            <a href="{{ url_for('document.dataAnalysis')}}">REQUIRMENT</a>
+            before
+            upload. VCF is allowed less than 1G.</b>
+    </p>
+    <table class="table"
+        style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;">
+        <tbody>
+            <tr>
+                <td>
+                    <input id="vcf-file" input name="vcfile" type="file" />
+                    <div class="progress progress-striped active"
+                        style="margin-top: 10px;">
+                        <div class="progress-bar progress-bar-success"
+                            role="progressbar" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style="width: 0%;">
+                            <span class="sr-only">0%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <select id="vcf-type" class="form-control" data-width="20%"
+                        style="margin: 10px;">
+                        <option value="WGS">WES</option>
+                        <option value="WES">WGS</option>
+                        <option value="RNAseq">RNAseq</option>
+                    </select>
+                </td>
+                <td>
+                    <input class="btn btn-default" id="vcf-sub" type="submit"
+                        value="Upload" style="margin: 10px;" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="upload-info" style="display: none;">
+        <h3>Your data is under processing, pleasing save the upload code to
+            query your data:</h3>
+        <p id="upload-code"></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
+{% endblock %}

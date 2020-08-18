@@ -228,8 +228,9 @@ def upload():
                                                  current_user.username,
                                                  upload_id, vcf_type) 
             appUitls.redis_task.push_task(current_user.username, task.id) """
+            print(upload_id)
             return jsonify({
-                'msg': 'async',
+                'msg': 'async-upload',
                 'task_id': 'task.id',
                 'upload_id': upload_id
             })
