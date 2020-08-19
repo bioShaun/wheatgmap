@@ -24,3 +24,6 @@ gunicorn.pid
 
 # gunicorn
 gunicorn*pid
+
+# viewerjs
+viewerjs/*
