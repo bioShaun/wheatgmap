@@ -217,6 +217,11 @@ def vcfValidator(vcf):
     return False
 
 
+def fetch_vcf_by_task(upload_id):
+    task_vcf = Data.query.filter_by(upload_id=upload_id).all()
+    return ['.'.join([each.tc_id, each.sample_name]) for each in task_vcf]
+
+
 def finish_task(task_id):
     task_info = TaskInfo.findByTaskId(task_id)
     task_info.task_status = 'finished'

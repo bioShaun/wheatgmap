@@ -2,8 +2,8 @@ import json
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask_login import current_user
 from . import mapping
-from .actions import run_bsa, compare_info, fetch_vcf_by_task
-from app.utils import redis_task, fetch_vcf
+from .actions import run_bsa, compare_info
+from app.utils import redis_task, fetch_vcf, fetch_vcf_by_task
 from app.auth.models import TaskInfo
 
 

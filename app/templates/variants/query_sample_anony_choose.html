@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mapping-choose-box d-flex jc-around ai-center">
+    <div class="mapping-choose-item">
+        <a href="{{ url_for('variants.query_sample_anony', task_id='no') }}">
+
+            <button type="button"
+                class="btn btn-success btn-lg mapping-choose-btn">
+                Public Data Only
+            </button>
+        </a>
+    </div>
+
+    <div class="mapping-choose-item">
+        <a href="{{ url_for('variants.query_sample_upload') }}">
+            <button type="button"
+                class="btn btn-warning btn-lg  mapping-choose-btn">
+                Pulic Data + Upload Data
+            </button>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

@@ -53,6 +53,14 @@ function search_upload_task() {
     return;
 }
 
+function search_upload_task_query_sample() {
+    var search_text = $('#input-task').val()
+    if (search_text) {
+        window.location.href = "/variants/query-anony/sample/" + search_text;
+    }
+    return;
+}
+
 $(document).ready(function () {
     add_sample_href();
 
@@ -179,5 +187,9 @@ $(document).ready(function () {
     // search upload
     var search_but = $('#search-upload')
     search_but.on('click', search_upload_task)
+
+    // search upload query sample
+    var search_query_sample_but = $('#search-upload-query-sample')
+    search_query_sample_but.on('click', search_upload_task_query_sample)
 
 });
