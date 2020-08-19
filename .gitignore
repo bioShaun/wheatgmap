@@ -26,4 +26,4 @@ gunicorn.pid
 gunicorn*pid
 
 # viewerjs
-viewerjs/*
+app/static/viewerjs
