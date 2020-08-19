@@ -15,6 +15,7 @@ Column = db.Column
 filter_null = lambda x: x if x else '-'
 VA_IMG_DIR = os.path.join(basedir, 'app', 'static/images/variety')
 
+
 class dbCRUD:
 
     __tablename__ = ''
@@ -144,6 +145,7 @@ class Data(db.Model):
     opened = Column(db.Boolean)
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
+    upload_id = Column(db.String(36))
     figures = db.relationship('DataFigure', backref='fig', lazy=True)
 
     def __init__(self,
@@ -153,6 +155,7 @@ class Data(db.Model):
                  type,
                  opened=False,
                  sign=False,
+                 upload_id='',
                  create_time=datetime.now()):
         self.tc_id = tc_id
         self.provider = provider
@@ -160,6 +163,7 @@ class Data(db.Model):
         self.type = type
         self.opened = opened
         self.sign = sign
+        self.upload_id = upload_id
         self.create_time = create_time
 
     def save(self, commit=True):
@@ -436,8 +440,6 @@ class GeneExpression(dbCRUD, db.Model):
         return GeneExpression.query.filter_by(gene_id=gene_id).all()
 
 
-
-
 def generateDTcls(cls):
     class DT(cls):
         def __init__(self, **kwargs):
@@ -470,7 +472,7 @@ def generateDTcls(cls):
 
         def search(self):
             if self.search_obj:
-                try:                    
+                try:
                     self.like()
                 except:
                     pass
@@ -480,22 +482,29 @@ def generateDTcls(cls):
                 order_type, index = self.order_str.split()
                 col = self.columns[int(index)]
                 if order_type == 'desc':
-                    self._query = self._query.order_by((getattr(cls, col).desc()))
+                    self._query = self._query.order_by((getattr(cls,
+                                                                col).desc()))
                 else:
                     self._query = self._query.order_by(getattr(cls, col))
 
         def like(self):
-            filter_param = [getattr(cls, col).like('%{}%'.format(keyword)) 
-            for col, keyword in self.search_obj.items()]
+            filter_param = [
+                getattr(cls, col).like('%{}%'.format(keyword))
+                for col, keyword in self.search_obj.items()
+            ]
             self._query = self._query.filter(or_(*filter_param))
 
         def pager(self):
-            pagination = self._query.paginate(page=self.page, per_page=self.length, error_out=False)
+            pagination = self._query.paginate(page=self.page,
+                                              per_page=self.length,
+                                              error_out=False)
             recordsTotal = self._query.count()
             objs = pagination.items
             rs = []
             for obj in objs:
-                rs.append({attr: self.get_attr(obj, attr) for attr in self.columns})
+                rs.append(
+                    {attr: self.get_attr(obj, attr)
+                     for attr in self.columns})
             res = {
                 'draw': self.draw,
                 'recordsTotal': recordsTotal,
@@ -503,5 +512,32 @@ def generateDTcls(cls):
                 'data': rs
             }
             return res
+
     return DT
 
+
+class TaskInfo(dbCRUD, db.Model):
+    __tablename__ = 'taskInfo'
+    id = Column(db.Integer, primary_key=True)
+    task_type = Column(db.String(10))
+    task_name = Column(db.String(100))
+    task_id = Column(db.String(50))
+    task_status = Column(db.String(10))
+    task_content = Column(db.String(500))
+    create_time = Column(db.DateTime)
+
+    def __init__(self,
+                 task_type,
+                 task_name,
+                 task_id,
+                 task_status,
+                 create_time=datetime.now()):
+        self.task_type = task_type
+        self.task_name = task_name
+        self.task_id = task_id
+        self.task_status = task_status
+        self.create_time = create_time
+
+    @staticmethod
+    def findByTaskId(task_id):
+        return TaskInfo.query.filter_by(task_id=task_id).first()

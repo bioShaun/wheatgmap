@@ -27,23 +27,27 @@ class Config(object):
     GENE_POS = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
     IMG_PATH = '/static/download/imgs'
     UPLOADED_PHOTOS_DEST = '/static/download/photos'
-    DEFAULT_USER_PHOTO = '/static/images/user.svg'    
-    SCRIPT_PATH = '/home/scripts'
+    DEFAULT_USER_PHOTO = '/static/images/user.svg'
+    SCRIPT_PATH = '/data/scripts'
     EXTRACT_VCF_SAMPLE = 'extract_vcf_sample_name.sh'
     SPLIT_VCF_SAMPLE = 'splitt_vcf_to_each_sample.sh'
     VCF_SEQ = 'vcf2seq.py'
     VCF_ANN = 'vcf_ann.sh'
     VCF_PCA = 'plink2pca.sh'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    MAIL_MAP = {'qq.com': 'https://mail.qq.com',
-                '163.com': 'https://mail.163.com'}
-    CACHE = {'CACHE_TYPE': 'redis',
-             'CACHE_REDIS_HOST': '127.0.0.1',
-             'CACHE_REDIS_PORT': 6379,
-             'CACHE_REDIS_PASSWORD': 'wheatdb',
-             'CACHE_REDIS_DB': 0
-            }
+    MAIL_MAP = {
+        'qq.com': 'https://mail.qq.com',
+        '163.com': 'https://mail.163.com'
+    }
+    CACHE = {
+        'CACHE_TYPE': 'redis',
+        'CACHE_REDIS_HOST': '127.0.0.1',
+        'CACHE_REDIS_PORT': 6379,
+        'CACHE_REDIS_PASSWORD': 'wheatdb',
+        'CACHE_REDIS_DB': 0
+    }
     CACHE_PREFIX = 'wheatgmap'
+
     @staticmethod
     def init_app(app):
         pass
@@ -67,14 +71,15 @@ class ProdConfig(Config):
     ENV = 'prod'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{passwd}@{host}/{db}'.format(
         user=os.environ.get('DB_USER', 'wheatdb'),
-        passwd=os.environ.get('DB_PASSWD','wheatdb'),
+        passwd=os.environ.get('DB_PASSWD', 'wheatdb'),
         host='localhost',
-        db='wheatDB'
-    )
+        db='wheatDB')
     Debug = False
 
 
-config = {'default': DevConfig,
-          'test': TestConfig,
-          'prod': ProdConfig,
-          'dev': DevConfig}
+config = {
+    'default': DevConfig,
+    'test': TestConfig,
+    'prod': ProdConfig,
+    'dev': DevConfig
+}

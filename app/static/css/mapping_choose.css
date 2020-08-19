@@ -1,0 +1,14 @@
+.mapping-choose-box {
+    height: 60vh;
+}
+
+.mapping-choose-item {
+    width: 300px;
+    height: 150px;
+}
+
+.mapping-choose-btn {
+    height: 100%;
+    width: 100%;
+    font-size: 24px;
+}

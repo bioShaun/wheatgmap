@@ -12,7 +12,7 @@ from app.db import DB
 from app.mc import cached
 from settings import Config
 from flask_login import current_user
-from app.auth.models import Data
+from app.auth.models import Data, TaskInfo
 import logging
 
 CACHE_PREFIX = Config.CACHE_PREFIX
@@ -21,7 +21,8 @@ CACHE_PREFIX = Config.CACHE_PREFIX
 def logger(log_file=''):
     _logger = logging.getLogger(__name__)
     _logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     if log_file:
         handler = logging.FileHandler(log_file)
     else:
@@ -38,9 +39,7 @@ def fetch_vcf(name):
         '.'.join([each.tc_id, each.sample_name]) for each in pub_vcf
     ]
     if name != 'anonymous':
-        own_vcf = Data.query.filter_by(provider=name,
-                                       opened=0,
-                                       sign=0).all()
+        own_vcf = Data.query.filter_by(provider=name, opened=0, sign=0).all()
         private_samples = [
             '.'.join([each.tc_id, each.sample_name]) for each in own_vcf
         ]
@@ -50,7 +49,7 @@ def fetch_vcf(name):
     return pub_samples, private_samples
 
 
-@cached('wheatgmap.sample.{table}',expire=3600)
+@cached('wheatgmap.sample.{table}', expire=3600)
 def fetch_sample(table, fixed_column_num):
     cmd = "select COLUMN_NAME from information_schema.COLUMNS where table_name='{table}';".format(
         table=table)
@@ -217,3 +216,8 @@ def vcfValidator(vcf):
             return 'Chromosome information is missing from vcf file.'
     return False
 
+
+def finish_task(task_id):
+    task_info = TaskInfo.findByTaskId(task_id)
+    task_info.task_status = 'finished'
+    task_info.save()

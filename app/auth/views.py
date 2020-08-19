@@ -2,12 +2,13 @@
 import os
 import json
 import time
+import uuid
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
-from .models import User, Data, VarietyDetail
+from .models import User, Data, VarietyDetail, TaskInfo
 from app.exetensions import login_manager
 from .forms import RegisterForm, LoginForm, EditForm
-from .actions import fetch_vcf_samples, async_fetch_vcf_samples
+from .actions import async_fetch_vcf_samples
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
 from settings import Config, basedir
@@ -202,7 +203,6 @@ def tasks():
 
 
 @auth.route('/upload/', methods=['POST'])
-@login_required
 def upload():
     if request.method == 'POST':
         if 'vcf_file' not in request.files:
@@ -222,22 +222,26 @@ def upload():
             vcf_check_msg = appUitls.vcfValidator(filepath)
             if vcf_check_msg:
                 return jsonify({'msg': vcf_check_msg, 'table': []})
-            if os.stat(filepath).st_size > 1 * 1000:
-                task = async_fetch_vcf_samples.delay(filename,
-                                                     current_user.username,
-                                                     vcf_type)
-                appUitls.redis_task.push_task(current_user.username, task.id)
-                return jsonify({'msg': 'async', 'task_id': task.id})
+            upload_id = str(uuid.uuid1())
+            if current_user.is_authenticated:
+                username = current_user.username
             else:
-                result = fetch_vcf_samples(filename, vcf_type)
-                # write to mysql
-                for each in result:
-                    row = Data(tc_id=each[0],
-                               provider=current_user.username,
-                               sample_name=each[1],
-                               type=vcf_type)
-                    row.save()
-                return jsonify({'msg': 'ok', 'table': result})
+                username = 'anonymouse'
+            task = async_fetch_vcf_samples.delay(filename, username, upload_id,
+                                                 vcf_type)
+            appUitls.redis_task.push_task(username, task.id)
+            upload_task = TaskInfo(task_name=filename,
+                                   task_type='upload vcf',
+                                   task_status='running',
+                                   task_id=upload_id)
+            upload_task.save()
+
+            #async_fetch_vcf_samples2(filename, username, upload_id, vcf_type)
+            return jsonify({
+                'msg': 'async-upload',
+                'task_id': 'task.id',
+                'upload_id': upload_id
+            })
         return jsonify({'msg': 'check upload file(only *.vcf.gz suffix)'})
 
 
@@ -275,7 +279,8 @@ def userData():
 def fetch_samples():
     if request.method != 'GET':
         mc.delete('wheatgmap.{0}.data'.format(current_user.username))
-        appUitls.logger().info('cached delete: wheatgmap.{0}.data'.format(current_user.username))
+        appUitls.logger().info('cached delete: wheatgmap.{0}.data'.format(
+            current_user.username))
     if request.method == 'GET':
         result = []
         samples = Data.query.filter_by(provider=current_user.username,
@@ -321,7 +326,8 @@ def fetch_samples():
         id_serise = ids.split(',')
         if action == 'pub':
             mc.delete('wheatgmap.anonymous.data')
-            appUitls.logger().info('cached delete: wheatgmap.{0}.data'.format('anonymous'))
+            appUitls.logger().info(
+                'cached delete: wheatgmap.{0}.data'.format('anonymous'))
             for id in id_serise:
                 sample = Data.query.filter_by(tc_id=id).first()
                 sample.update(opened=1)

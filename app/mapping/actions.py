@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 import glob
-from app.auth.models import Data
+from app.auth.models import Data, TaskInfo
 from settings import Config, basedir
 from app.utils import processor, parseInput
 from app.app import celery
 from flask_login import current_user
 import json
-
 
 UPLOAD_PATH = os.path.join(basedir, 'app', 'static', 'download')
 MAPPING_PATH = os.path.join(UPLOAD_PATH, 'gene_mapping')
@@ -15,6 +14,7 @@ ANN_PATH = os.path.join(UPLOAD_PATH, 'vcf_ann')
 gene_bed_file = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
 #VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
 #SNP_SCORE_SCRIPT = '/home/scripts/omSnpScore/scripts/snpScore'
+
 
 def fetch_vcf():
     pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
@@ -32,6 +32,11 @@ def fetch_vcf():
         private_samples = []
 
     return pub_samples, private_samples
+
+
+def fetch_vcf_by_task(upload_id):
+    task_vcf = Data.query.filter_by(upload_id=upload_id).all()
+    return ['.'.join([each.tc_id, each.sample_name]) for each in task_vcf]
 
 
 @celery.task
@@ -55,20 +60,20 @@ def run_bsa(info):
                 dir=result_base))
 
     path = result_path.split('/home/app/vcfweb/wheatdb/app')[-1]
-    
+
     png_files = glob.glob(f'{result_path}/*/*png')
     jpg_files = glob.glob(f'{result_path}/*/*jpg')
 
     plot_files = png_files + jpg_files
-    plot_files_path = [each.replace('/home/app/vcfweb/wheatdb/app', '') for each in plot_files]
+    plot_files_path = [
+        each.replace('/home/app/vcfweb/wheatdb/app', '') for each in plot_files
+    ]
 
     return {
         'task': 'bsa',
         'result': {
-            'path':
-            os.path.join(path, '../results.zip'),
-            'files':
-            plot_files_path
+            'path': os.path.join(path, '../results.zip'),
+            'files': plot_files_path
         }
     }
 
@@ -113,3 +118,7 @@ def compare_info(info):
             }
         }
     return {'task': 'compare_info', 'result': {'header': [], 'body': []}}
+
+
+def fetch_task_info(task_id):
+    return TaskInfo.query.filter_by(task_id=task_id).first()

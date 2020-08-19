@@ -13,6 +13,7 @@ css_base = Bundle('css/lightbox.min.css',
                   'css/jquery-confirm.min.css',
                   'css/main.css',
                   'css/variety.css',
+                  'css/mapping_choose.css',
                   datatable,
                   filters='cssmin',
                   output='css/all.min.css')
