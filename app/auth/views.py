@@ -8,7 +8,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from .models import User, Data, VarietyDetail, TaskInfo
 from app.exetensions import login_manager
 from .forms import RegisterForm, LoginForm, EditForm
-from .actions import async_fetch_vcf_samples, fetch_vcf_samples, async_fetch_vcf_samples2
+from .actions import async_fetch_vcf_samples
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
 from settings import Config, basedir

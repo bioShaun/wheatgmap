@@ -1,18 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-    <a href="{{ url_for('mapping.bsa_base_anony', task_id='no') }}">
+<div class="mapping-choose-box d-flex jc-around ai-center">
+    <div class="mapping-choose-item">
+        <a href="{{ url_for('mapping.bsa_base_anony', task_id='no') }}">
 
-        <button type="button" class="btn btn-success btn-lg">
-            Public Data Only
-        </button>
-    </a>
+            <button type="button"
+                class="btn btn-success btn-lg mapping-choose-btn">
+                Public Data Only
+            </button>
+        </a>
+    </div>
 
-    <a href="{{ url_for('mapping.bsa_base_upload') }}">
-        <button type="button" class="btn btn-warning btn-lg">
-            Pulic Data + Upload data
-        </button>
-    </a>
+    <div class="mapping-choose-item">
+        <a href="{{ url_for('mapping.bsa_base_upload') }}">
+            <button type="button"
+                class="btn btn-warning btn-lg  mapping-choose-btn">
+                Pulic Data + Upload Data
+            </button>
+        </a>
+    </div>
+
 </div>
 {% endblock %}
 
