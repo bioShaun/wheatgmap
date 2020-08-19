@@ -61,6 +61,14 @@ function search_upload_task_query_sample() {
     return;
 }
 
+function search_upload_task_query_group() {
+    var search_text = $('#input-task').val()
+    if (search_text) {
+        window.location.href = "/mapping/compare-anony/group/" + search_text;
+    }
+    return;
+}
+
 $(document).ready(function () {
     add_sample_href();
 
@@ -191,5 +199,9 @@ $(document).ready(function () {
     // search upload query sample
     var search_query_sample_but = $('#search-upload-query-sample')
     search_query_sample_but.on('click', search_upload_task_query_sample)
+
+    // search upload query sample
+    var search_query_group_but = $('#search-upload-query-group')
+    search_query_group_but.on('click', search_upload_task_query_group)
 
 });
