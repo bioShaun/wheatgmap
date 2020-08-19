@@ -537,3 +537,7 @@ class TaskInfo(dbCRUD, db.Model):
         self.task_id = task_id
         self.task_status = task_status
         self.create_time = create_time
+
+    @staticmethod
+    def findByTaskId(task_id):
+        return TaskInfo.query.filter_by(task_id=task_id).first()

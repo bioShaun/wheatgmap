@@ -1,9 +1,10 @@
-from . import mapping
-from .actions import run_bsa, compare_info, fetch_task_info
+import json
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask_login import current_user
-import json
+from . import mapping
+from .actions import run_bsa, compare_info, fetch_vcf_by_task
 from app.utils import redis_task, fetch_vcf
+from app.auth.models import TaskInfo
 
 
 def current_username():
@@ -34,16 +35,20 @@ def bsa_base_anony(task_id):
                                pub_samples=pub_samples,
                                pri_samples=[])
     else:
-        task_info = fetch_task_info(task_id)
+        task_info = TaskInfo.findByTaskId(task_id)
         if task_info:
             if task_info.task_status == 'running':
                 flash('Your Data is still under processing, please wait.',
                       'warning')
                 return redirect(url_for('mapping.bsa_base_upload'))
-            else:
+            elif task_info.task_status == 'finished':
+                upload_samples = fetch_vcf_by_task(task_info.task_id)
                 return render_template('mapping/mapping_bsa_base.html',
                                        pub_samples=pub_samples,
-                                       pri_samples=[])
+                                       pri_samples=upload_samples)
+            else:
+                flash('Upload Failed, please try again.', 'error')
+                return redirect(url_for('mapping.bsa_base_upload'))
         else:
             flash('Invalid upload id, please check.', 'warning')
             return redirect(url_for('mapping.bsa_base_upload'))

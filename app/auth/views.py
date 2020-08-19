@@ -8,7 +8,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from .models import User, Data, VarietyDetail, TaskInfo
 from app.exetensions import login_manager
 from .forms import RegisterForm, LoginForm, EditForm
-from .actions import fetch_vcf_samples, async_fetch_vcf_samples
+from .actions import async_fetch_vcf_samples, fetch_vcf_samples, async_fetch_vcf_samples2
 from flask import render_template, \
     request, redirect, url_for, flash, jsonify, session
 from settings import Config, basedir
@@ -223,16 +223,20 @@ def upload():
             if vcf_check_msg:
                 return jsonify({'msg': vcf_check_msg, 'table': []})
             upload_id = str(uuid.uuid1())
-            """ task = async_fetch_vcf_samples.delay(filename,
-                                                 current_user.username,
-                                                 upload_id, vcf_type) 
-            appUitls.redis_task.push_task(current_user.username, task.id) """
-            print(upload_id)
+            if current_user.is_authenticated:
+                username = current_user.username
+            else:
+                username = 'anonymouse'
+            task = async_fetch_vcf_samples.delay(filename, username, upload_id,
+                                                 vcf_type)
+            appUitls.redis_task.push_task(username, task.id)
             upload_task = TaskInfo(task_name=filename,
                                    task_type='upload vcf',
                                    task_status='running',
                                    task_id=upload_id)
             upload_task.save()
+
+            #async_fetch_vcf_samples2(filename, username, upload_id, vcf_type)
             return jsonify({
                 'msg': 'async-upload',
                 'task_id': 'task.id',

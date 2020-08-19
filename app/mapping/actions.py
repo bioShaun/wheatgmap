@@ -34,6 +34,11 @@ def fetch_vcf():
     return pub_samples, private_samples
 
 
+def fetch_vcf_by_task(upload_id):
+    task_vcf = Data.query.filter_by(upload_id=upload_id).all()
+    return ['.'.join([each.tc_id, each.sample_name]) for each in task_vcf]
+
+
 @celery.task
 def run_bsa(info):
 
