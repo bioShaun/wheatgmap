@@ -1,10 +1,7 @@
-from app.auth.views import upload
-from app.variety.views import update
 from . import mapping
-from .actions import run_bsa, compare_info
-from flask import render_template, url_for, request, jsonify, redirect
-from flask_login import current_user, login_required
-import requests
+from .actions import run_bsa, compare_info, fetch_task_info
+from flask import render_template, request, jsonify, flash, url_for, redirect
+from flask_login import current_user
 import json
 from app.utils import redis_task, fetch_vcf
 
@@ -28,13 +25,28 @@ def bsa_base():
         return render_template('mapping/mapping_bsa_anony_choose.html')
 
 
-@mapping.route('/bsa-base-public/', methods=['GET'])
-def bsa_base_public():
+@mapping.route('/bsa-base-anony/<task_id>', methods=['GET'])
+def bsa_base_anony(task_id):
     name = current_username()
-    pub_samples, private_samples = fetch_vcf(name)
-    return render_template('mapping/mapping_bsa_base.html',
-                           pub_samples=pub_samples,
-                           pri_samples=private_samples)
+    pub_samples, _ = fetch_vcf(name)
+    if task_id == 'no':
+        return render_template('mapping/mapping_bsa_base.html',
+                               pub_samples=pub_samples,
+                               pri_samples=[])
+    else:
+        task_info = fetch_task_info(task_id)
+        if task_info:
+            if task_info.task_status == 'running':
+                flash('Your Data is still under processing, please wait.',
+                      'warning')
+                return redirect(url_for('mapping.bsa_base_upload'))
+            else:
+                return render_template('mapping/mapping_bsa_base.html',
+                                       pub_samples=pub_samples,
+                                       pri_samples=[])
+        else:
+            flash('Invalid upload id, please check.', 'warning')
+            return redirect(url_for('mapping.bsa_base_upload'))
 
 
 @mapping.route('/bsa-base-upload/', methods=['GET'])

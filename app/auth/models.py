@@ -514,3 +514,26 @@ def generateDTcls(cls):
             return res
 
     return DT
+
+
+class TaskInfo(dbCRUD, db.Model):
+    __tablename__ = 'taskInfo'
+    id = Column(db.Integer, primary_key=True)
+    task_type = Column(db.String(10))
+    task_name = Column(db.String(100))
+    task_id = Column(db.String(50))
+    task_status = Column(db.String(10))
+    task_content = Column(db.String(500))
+    create_time = Column(db.DateTime)
+
+    def __init__(self,
+                 task_type,
+                 task_name,
+                 task_id,
+                 task_status,
+                 create_time=datetime.now()):
+        self.task_type = task_type
+        self.task_name = task_name
+        self.task_id = task_id
+        self.task_status = task_status
+        self.create_time = create_time

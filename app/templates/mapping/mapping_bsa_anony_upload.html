@@ -4,9 +4,11 @@
     <div style="margin-top: 100px;">
         <h3>Input Your Upload Code</h3>
         <div class="input-group" style="margin-bottom: 100px;">
-            <input type="text" class="form-control" placeholder="Search for...">
+            <input id="input-task" type="text" class="form-control"
+                placeholder="Search for...">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
+                <button id="search-upload" class="btn btn-default"
+                    type="button">Go!</button>
             </span>
         </div>
     </div>
@@ -51,9 +53,9 @@
     </table>
 
     <div id="upload-info" style="display: none;">
-        <h3>Your data is under processing, pleasing save the upload code to
-            query your data:</h3>
-        <p id="upload-code"></p>
+        <h3>Your data is under processing, this may take 30 minutes to 1 hour,
+            pleasing save the upload code and query your data later:</h3>
+        <p id="upload-code" style="color: cornflowerblue;"></p>
     </div>
 </div>
 {% endblock %}

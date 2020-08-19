@@ -45,6 +45,14 @@ function add_upload_id(upload_id) {
     upload_info_el.show()
 }
 
+function search_upload_task() {
+    var search_text = $('#input-task').val()
+    if (search_text) {
+        window.location.href = "/mapping/bsa-base-anony/" + search_text;
+    }
+    return;
+}
+
 $(document).ready(function () {
     add_sample_href();
 
@@ -99,65 +107,77 @@ $(document).ready(function () {
     });
 
     // variety bootstrap table
-    $("#table-variety").bootstrapTable({
-        sortable: false, //排序
-        search: true, //启用搜索
-        pagination: true, //是否显示分页条
-        pageSize: 10, //一页显示的行数
-        paginationLoop: false, //是否开启分页条无限循环，最后一页时点击下一页是否转到第一页
-        pageList: [5, 10, 20], //选择每页显示多少行，数据过少时可能会没有效果
-        columns: [
-            [
-                {
-                    width: 120
-                },
-                {
-                    width: 110
-                },
-                {
-                    width: 80
-                },
-                {
-                    width: 100
-                },
-                {
-                    width: 100
-                },
-                {
-                    width: 100
-                },
-                {
-                    width: 200
-                },
-                {
-                    width: 100
-                },
-                {
-                    width: 180
-                }
+    var va_table = $("#table-variety")
+    if (va_table.length) {
+        $("#table-variety").bootstrapTable({
+            sortable: false, //排序
+            search: true, //启用搜索
+            pagination: true, //是否显示分页条
+            pageSize: 10, //一页显示的行数
+            paginationLoop: false, //是否开启分页条无限循环，最后一页时点击下一页是否转到第一页
+            pageList: [5, 10, 20], //选择每页显示多少行，数据过少时可能会没有效果
+            columns: [
+                [
+                    {
+                        width: 120
+                    },
+                    {
+                        width: 110
+                    },
+                    {
+                        width: 80
+                    },
+                    {
+                        width: 100
+                    },
+                    {
+                        width: 100
+                    },
+                    {
+                        width: 100
+                    },
+                    {
+                        width: 200
+                    },
+                    {
+                        width: 100
+                    },
+                    {
+                        width: 180
+                    }
+                ]
             ]
-        ]
-    });
+        });
 
-    $("#table-variety").bootstrapTable("hideLoading");
+        $("#table-variety").bootstrapTable("hideLoading");
+    }
 
     // delete confirm
-    $(".delete-va").each(function () {
-        const that = $(this);
-        const vaName = that.attr("va-name");
-        $(this).on("click", function () {
-            $.confirm({
-                title: "Confirm!",
-                content: `Delete Variety ${vaName}?`,
-                buttons: {
-                    confirm: function () {
-                        window.location.href = that.attr("id");
-                    },
-                    cancel: function () {
-                        $.alert("Canceled!");
+    var delete_va = $(".delete-va")
+    if (delete_va.length) {
+
+        $(".delete-va").each(function () {
+            const that = $(this);
+            const vaName = that.attr("va-name");
+            $(this).on("click", function () {
+                $.confirm({
+                    title: "Confirm!",
+                    content: `Delete Variety ${vaName}?`,
+                    buttons: {
+                        confirm: function () {
+                            window.location.href = that.attr("id");
+                        },
+                        cancel: function () {
+                            $.alert("Canceled!");
+                        }
                     }
-                }
+                });
             });
         });
-    });
+    }
+
+    // search upload
+    var search_but = $('#search-upload')
+    search_but.on('click', search_upload_task)
+
 });

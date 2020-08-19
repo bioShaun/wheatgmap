@@ -5,7 +5,7 @@ import time
 import uuid
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
-from .models import User, Data, VarietyDetail
+from .models import User, Data, VarietyDetail, TaskInfo
 from app.exetensions import login_manager
 from .forms import RegisterForm, LoginForm, EditForm
 from .actions import fetch_vcf_samples, async_fetch_vcf_samples
@@ -17,7 +17,6 @@ from app.mail import send_mail
 import app.utils as appUitls
 from app.mc import mc
 from pathlib import PurePath
-from collections import namedtuple
 
 
 @login_manager.user_loader
@@ -229,6 +228,11 @@ def upload():
                                                  upload_id, vcf_type) 
             appUitls.redis_task.push_task(current_user.username, task.id) """
             print(upload_id)
+            upload_task = TaskInfo(task_name=filename,
+                                   task_type='upload vcf',
+                                   task_status='running',
+                                   task_id=upload_id)
+            upload_task.save()
             return jsonify({
                 'msg': 'async-upload',
                 'task_id': 'task.id',
