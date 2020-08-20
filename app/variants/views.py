@@ -4,7 +4,7 @@ from . import variants
 from .actions import snp_info, snp_info_by_chr
 from flask import render_template, jsonify, request, session, flash, redirect, url_for
 from app.auth.models import Data, TaskInfo
-from app.utils import parseInput, redis_task, fetch_vcf, fetch_vcf_by_task
+from app.utils import parseInput, redis_task, fetch_vcf, fetch_vcf_by_task, tasks_status
 from flask_login import current_user, login_required
 
 
@@ -36,23 +36,19 @@ def query_sample_anony(task_id):
                                pub_samples=pub_samples,
                                pri_samples=[])
     else:
-        task_info = TaskInfo.findByTaskId(task_id)
+        task_info = tasks_status(task_id)
         if task_info:
-            if task_info.task_status == 'running':
-                flash('Your Data is still under processing, please wait.',
-                      'warning')
-                return redirect(url_for('variants.query_sample_upload'))
-            elif task_info.task_status == 'finished':
-                upload_samples = fetch_vcf_by_task(task_info.task_id)
+            if task_info == 'all_done':
+                upload_samples = fetch_vcf_by_task(task_id)
                 return render_template('variants/query_sample.html',
                                        pub_samples=pub_samples,
                                        pri_samples=upload_samples)
             else:
-                flash('Upload Failed, please try again.', 'error')
-                return redirect(url_for('mapping.query_sample_upload'))
+                flash(task_info, 'warning')
+                return redirect(url_for('variants.query_sample_upload'))
         else:
             flash('Invalid upload id, please check.', 'warning')
-            return redirect(url_for('mapping.query_sample_upload'))
+            return redirect(url_for('variants.query_sample_upload'))
 
 
 @variants.route('/query/sample-upload/', methods=['GET'])

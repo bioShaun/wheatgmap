@@ -218,8 +218,46 @@ def vcfValidator(vcf):
 
 
 def fetch_vcf_by_task(upload_id):
-    task_vcf = Data.query.filter_by(upload_id=upload_id).all()
+    upload_id_list = [each.strip() for each in upload_id.split(',')]
+    task_vcf = Data.query.filter(Data.upload_id.in_(upload_id_list)).all()
     return ['.'.join([each.tc_id, each.sample_name]) for each in task_vcf]
+
+
+def tasks_status(task_ids):
+    task_list = task_ids.split(',')
+    task_info_list = [(task_id, TaskInfo.findByTaskId(task_id))
+                      for task_id in task_list]
+    running_tasks = []
+    failed_tasks = []
+    invalid_tasks = []
+    for task_i_id, task_i_info in task_info_list:
+        if task_i_info is None:
+            invalid_tasks.append(task_i_id)
+        else:
+            if task_i_info.task_status == 'running':
+                running_tasks.append(task_i_id)
+            elif task_i_info.task_status == 'finished':
+                pass
+            else:
+                failed_tasks.append(task_i_id)
+
+    def task_out_str(tasks_list, prefix):
+        if tasks_list:
+            out_str = ','.join(tasks_list)
+            return f'{prefix} Tasks: {out_str}'
+
+    status_str_list = [
+        task_out_str(each[0], each[1])
+        for each in [(invalid_tasks,
+                      'Invalid'), (failed_tasks,
+                                   'Failed'), (running_tasks, 'Running')]
+        if task_out_str(each[0], each[1])
+    ]
+
+    if status_str_list:
+        return ';'.join(status_str_list)
+    else:
+        return 'all_done'
 
 
 def finish_task(task_id):
