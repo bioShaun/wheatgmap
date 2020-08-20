@@ -1,22 +1,45 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base_auto_refresh.html' %} {% block content %}
 <h3>Backend task</h3>
-(Only latest 5 tasks saved.)
-<table
-  class="table"
-  style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;"
->
-  <tbody>
-    {% for task in tasks %}
-    <tr>
-      <td>
-        <a href="/task/result/{{ task['id'] }}/"><b>{{ task['id'] }}</b></a>
-      </td>
-      <td>{{ task['state'] }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+<div class="table-responsive va-info-table" style="margin-bottom: 50px;">
+  <table
+    id="table-tasks"
+    class="table"
+    style="
+      border-bottom: 1px solid #e6e6e6;
+      border-top: 1px solid #e6e6e6;
+      margin-bottom: 10px;
+      word-break: break-all;
+      table-layout: fixed;
+    "
+  >
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Task Type</th>
+        <th>Task Status</th>
+        <th>Create Time</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task_i in my_tasks %}
+      <tr>
+        <td>{{task_i.task_name}}</td>
+        <td>{{task_i.task_type}}</td>
+        <td>{{task_i.task_status}}</td>
+        <td>{{task_i.create_time}}</td>
+        <td>
+          <button
+            class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"
+          >
+            Detail
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 <h3>Upload VCF</h3>
 <p>
   <b

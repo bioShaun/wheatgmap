@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="refresh" content="60"> 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
   <meta name="description" content="" />
@@ -57,8 +58,18 @@
               </ul>
             </li>
 
-            <li>
-              <a href="/data/samples/">Data</a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                aria-expanded="false">Data<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a href="{{url_for('data.samples')}}">Samples</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="{{ url_for('data.variety') }}">Varieties</a>
+                </li>
+              </ul>
             </li>
 
             <li class="dropdown">
@@ -93,7 +104,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">User<span
                   class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{ url_for('auth.account') }}">Account</a></li>
+                <li><a href="{{ url_for('auth.edit') }}">Account</a></li>
                 <li class="divider"></li>
                 <li><a href="{{ url_for('auth.tasks') }}">Tasks</a></li>
                 <li class="divider"></li>
@@ -124,11 +135,18 @@
                 </li>
                 <li class="divider"></li>
                 <li>
+                  <a href="{{ url_for('document.gallery') }}">Gallery</a>
+                </li>
+                <li class="divider"></li>
+		<li>
+                  <a href="{{ url_for('document.cite') }}">Citation</a>
+                </li>
+                <li class="divider"></li>
+                <li>
                   <a href="{{ url_for('document.contactUS') }}">Contact us</a>
                 </li>
               </ul>
             </li>
-
           </ul>
         </div>
       </div>
@@ -164,8 +182,7 @@
       >
         <p class="pull-right"><a href="#">Back to top</a></p>
         <p style="margin-bottom: 20px;">
-          &copy; 2019 <a href="http://www.tcuni.com">Tcuni, Inc.</a> &middot;
-          Privacy &middot; <a href="#">Terms</a>
+          &copy; 2019 Tcuni, Inc.
         </p>
       </div>
     </footer>

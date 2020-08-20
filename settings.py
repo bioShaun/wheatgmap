@@ -74,8 +74,7 @@ class ProdConfig(Config):
         passwd=os.environ.get('DB_PASSWD', 'wheatdb'),
         host='localhost',
         db='wheatDB')
-    #Debug = False
-    Debug = True
+    Debug = False
 
 
 config = {

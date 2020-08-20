@@ -193,11 +193,14 @@ def account():
 @auth.route('/tasks/', methods=['GET'])
 @login_required
 def tasks():
-    my_tasks = appUitls.redis_task.fetch_task(current_user.username)
+    #my_tasks = appUitls.redis_task.fetch_task(current_user.username)
+    my_tasks = TaskInfo.query.filter_by(
+        username=current_user.username).order_by(
+            TaskInfo.create_time.desc()).all()
     variety = VarietyDetail.query.filter_by(provider=current_user.id).all()
     return render_template(
         "auth/tasks.html",
-        tasks=my_tasks,
+        my_tasks=my_tasks,
         variety_items=variety,
     )
 
@@ -230,17 +233,19 @@ def upload():
             task = async_fetch_vcf_samples.delay(filename, username, upload_id,
                                                  vcf_type)
             appUitls.redis_task.push_task(username, task.id)
-            upload_task = TaskInfo(task_name=filename,
+            upload_task = TaskInfo(task_name=vcf_file.filename,
                                    task_type='upload vcf',
                                    task_status='running',
-                                   task_id=upload_id)
+                                   task_id=upload_id,
+                                   username=username)
             upload_task.save()
 
             #async_fetch_vcf_samples2(filename, username, upload_id, vcf_type)
             return jsonify({
                 'msg': 'async-upload',
                 'task_id': 'task.id',
-                'upload_id': upload_id
+                'upload_id': upload_id,
+                'username': username
             })
         return jsonify({'msg': 'check upload file(only *.vcf.gz suffix)'})
 

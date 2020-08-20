@@ -524,6 +524,7 @@ class TaskInfo(dbCRUD, db.Model):
     task_id = Column(db.String(50))
     task_status = Column(db.String(10))
     task_content = Column(db.String(500))
+    username = Column(db.String(80))
     create_time = Column(db.DateTime)
 
     def __init__(self,
@@ -531,11 +532,13 @@ class TaskInfo(dbCRUD, db.Model):
                  task_name,
                  task_id,
                  task_status,
+                 username=username,
                  create_time=datetime.now()):
         self.task_type = task_type
         self.task_name = task_name
         self.task_id = task_id
         self.task_status = task_status
+        self.username = username
         self.create_time = create_time
 
     @staticmethod
