@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Upload Samples</h3>
+<div class="table-responsive va-info-table" style="margin-bottom: 50px;">
+  <table
+    id="table-tasks"
+    class="table"
+    style="
+      border-bottom: 1px solid #e6e6e6;
+      border-top: 1px solid #e6e6e6;
+      margin-bottom: 10px;
+      word-break: break-all;
+      table-layout: fixed;
+    "
+  >
+    <thead>
+      <tr>
+        <th>WG ID</th>
+        <th>Sample Name</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sample_i in data_info %}
+      <tr>
+        <td>{{sample_i.tc_id}}</td>
+        <td>{{sample_i.sample_name}}</td>
+        <td>{{sample_i.type}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
+{% endblock %}

@@ -26,14 +26,27 @@
       <tr>
         <td>{{task_i.task_name}}</td>
         <td>{{task_i.task_type}}</td>
-        <td>{{task_i.task_status}}</td>
+        <td>
+          <span
+            class="label {% if task_i.task_status == 'finished' %} label-success {% else %} label-warning {% endif %}"
+            >{{task_i.task_status}}</span
+          >
+        </td>
         <td>{{task_i.create_time}}</td>
         <td>
-          <button
-            class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"
+          {%if task_i.task_type == 'upload vcf' %}
+          <a
+            href="{{ url_for('data.upload_samples', upload_id=task_i.task_id) }}"
           >
-            Detail
-          </button>
+          {% else %}
+          <a href="#">
+            {% endif %}
+            <button
+              class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"
+            >
+              Detail
+            </button>
+          </a>
         </td>
       </tr>
       {% endfor %}

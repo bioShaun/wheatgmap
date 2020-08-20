@@ -13,6 +13,7 @@ from settings import Config, basedir
 DT1 = generateDTcls(Data)
 DT2 = generateDTcls(VarietyDetail)
 
+
 class dataDT(DT1):
     def to_list(self):
         return [c.name for c in self.__table__.columns][1:-3]
@@ -20,9 +21,10 @@ class dataDT(DT1):
 
 class varietyDT(DT2):
     def to_list(self):
-        return ['id','variety_name','provider',
-                'variety_type', 'geographic', 'country',
-                'province', 'affiliation', 'create_time']
+        return [
+            'id', 'variety_name', 'provider', 'variety_type', 'geographic',
+            'country', 'province', 'affiliation', 'create_time'
+        ]
 
     @staticmethod
     def get_attr(obj, attr):
@@ -35,10 +37,15 @@ class varietyDT(DT2):
 def data_dt():
     if request.method == 'POST':
         playload = json.loads(request.form['data'])
-        print(playload)
         data = dataDT(**playload)
         res = data.result(opened=1, sign=0)
         return jsonify(res)
+
+
+@data.route('/upload-samples/<upload_id>/')
+def upload_samples(upload_id):
+    data_info = Data.query.filter_by(upload_id=upload_id).all()
+    return render_template('/data/upload_samples.html', data_info=data_info)
 
 
 @data.route('/samples/')
@@ -120,7 +127,7 @@ def variety():
     return render_template('/data/variety.html')
 
 
-@data.route('/datatable/variety/', methods=['GET','POST'])
+@data.route('/datatable/variety/', methods=['GET', 'POST'])
 def variety_dt():
     if request.method == 'POST':
         playload = json.loads(request.form['data'])
