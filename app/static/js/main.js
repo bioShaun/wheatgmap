@@ -565,11 +565,10 @@ function createAlert(msg, type) {
 
 function createPlot(files, name) {
   var textStr =
-    "<div class='col-md-4'><h3>Snp Score Plot</h3>" +
-    "<p>snp Score plot by group.</p>" +
+    "<div class='col-md-4'>" +
     "<p><a class='btn btn-primary' href='" +
     name +
-    "' role='button'>Download &raquo;</a></p>" +
+    "' role='button'>Download Full Results &raquo;</a></p>" +
     "</div>";
   var plotStr =
     "<div class='col-md-8 albumSlider'>" +

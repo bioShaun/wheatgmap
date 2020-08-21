@@ -1,4 +1,5 @@
 import json
+import uuid
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask_login import current_user
 from . import mapping
@@ -108,10 +109,20 @@ def compare_group_upload():
 @mapping.route('/bsa/run/', methods=['GET', 'POST'])
 def fetch_bsa():
     if request.method == 'POST':
+        username = current_username()
         info = request.form['info']
-        task = run_bsa.delay(info)
+        job_name = request.form['jobName']
+        task_id = str(uuid.uuid1())
+        task = run_bsa.delay(info, task_id)
         redis_task.push_task(current_username(), task.id)
-        return jsonify({'msg': 'ok', 'task_id': task.id})
+        bsa_task = TaskInfo(task_name=job_name,
+                            task_type='gene mapping',
+                            task_status='running',
+                            task_id=task_id,
+                            username=username,
+                            redis_id=task.id)
+        bsa_task.save()
+        return jsonify({'msg': 'ok', 'task_id': task.id, username: username})
 
 
 @mapping.route('/compare/run/', methods=['POST'])

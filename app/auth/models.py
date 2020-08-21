@@ -519,9 +519,10 @@ def generateDTcls(cls):
 class TaskInfo(dbCRUD, db.Model):
     __tablename__ = 'taskInfo'
     id = Column(db.Integer, primary_key=True)
-    task_type = Column(db.String(10))
-    task_name = Column(db.String(100))
+    task_type = Column(db.String(12))
+    task_name = Column(db.String(500))
     task_id = Column(db.String(50))
+    redis_id = Column(db.String(50))
     task_status = Column(db.String(10))
     task_content = Column(db.String(500))
     username = Column(db.String(80))
@@ -531,12 +532,14 @@ class TaskInfo(dbCRUD, db.Model):
                  task_type,
                  task_name,
                  task_id,
+                 redis_id,
                  task_status,
                  username=username,
                  create_time=datetime.now()):
         self.task_type = task_type
         self.task_name = task_name
         self.task_id = task_id
+        self.redis_id = redis_id
         self.task_status = task_status
         self.username = username
         self.create_time = create_time

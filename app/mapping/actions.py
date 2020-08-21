@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 import glob
 from app.auth.models import Data, TaskInfo
 from settings import Config, basedir
-from app.utils import processor, parseInput
+from app.utils import processor, parseInput, finish_task
 from app.app import celery
 from flask_login import current_user
 import json
@@ -35,10 +36,16 @@ def fetch_vcf():
 
 
 @celery.task
-def run_bsa(info):
+def run_bsa(info, task_id):
 
     cmd = (
         f"snpScore-mp2 -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
+        f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
+    )
+
+    # for test
+    cmd = (
+        f"snpScore-mp2-test -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
         f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
     )
 
@@ -54,15 +61,17 @@ def run_bsa(info):
         .format(zip_file=os.path.join(result_base, 'results.zip'),
                 dir=result_base))
 
-    path = result_path.split('/home/app/vcfweb/wheatdb/app')[-1]
+    path = re.sub(r'\S+wheatgmap/app', '', result_path)
 
     png_files = glob.glob(f'{result_path}/*/*png')
     jpg_files = glob.glob(f'{result_path}/*/*jpg')
 
     plot_files = png_files + jpg_files
     plot_files_path = [
-        each.replace('/home/app/vcfweb/wheatdb/app', '') for each in plot_files
+        re.sub(r'\S+wheatgmap/app', '', each) for each in plot_files
     ]
+
+    finish_task(task_id)
 
     return {
         'task': 'bsa',

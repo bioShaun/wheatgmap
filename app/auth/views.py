@@ -237,7 +237,8 @@ def upload():
                                    task_type='upload vcf',
                                    task_status='running',
                                    task_id=upload_id,
-                                   username=username)
+                                   username=username,
+                                   redis_id=task.id)
             upload_task.save()
 
             #async_fetch_vcf_samples2(filename, username, upload_id, vcf_type)

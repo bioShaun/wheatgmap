@@ -105,6 +105,10 @@ $(document).ready(function () {
   clear_select_plugin();
   $("#submit").bind("click", function () {
     var info = get_input_data();
+    var compare = "Compare: " + info.mutant + "|" + info.wild;
+    var parents = "Parents: " + info.mutant_parent + "|" + info.wild_parent;
+    var background = "Background: " + info.background;
+    var jobName = compare + ";" + parents + ";" + background;
     error_msg = check_input_data(info);
     if (error_msg.length > 0) {
       alert(error_msg);
@@ -113,11 +117,12 @@ $(document).ready(function () {
     info = JSON.stringify(info);
     ajaxSend(
       "/mapping/bsa/run/",
-      { info: info },
+      { info: info, jobName: jobName },
       function (data) {
         if (data.msg == "ok") {
-          layer.msg("task alreay commit, please waitting a second...");
-          window.location.href = "/task/result/" + data.task_id + "/";
+          if (data.username !== "anonymous") {
+            window.location.href = "/auth/tasks/";
+          }
           return;
         } else {
           alert(data.msg);

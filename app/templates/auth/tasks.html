@@ -1,5 +1,5 @@
 {% extends 'base_auto_refresh.html' %} {% block content %}
-<h3>Backend task</h3>
+<h3>Tasks</h3>
 <div class="table-responsive va-info-table" style="margin-bottom: 50px;">
   <table
     id="table-tasks"
@@ -39,7 +39,7 @@
             href="{{ url_for('data.upload_samples', upload_id=task_i.task_id) }}"
           >
           {% else %}
-          <a href="#">
+          <a href="{{ url_for('main.show_result', task_id=task_i.redis_id) }}">
             {% endif %}
             <button
               class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"

@@ -32,7 +32,7 @@ def logger(log_file=''):
     return _logger
 
 
-@cached('wheatgmap.{name}.data', expire=3600)
+#@cached('wheatgmap.{name}.data', expire=3600)
 def fetch_vcf(name):
     pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
     pub_samples = [
