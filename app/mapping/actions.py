@@ -43,12 +43,6 @@ def run_bsa(info, task_id):
         f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
     )
 
-    # for test
-    cmd = (
-        f"snpScore-mp2-test -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
-        f"-o {MAPPING_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} --circos"
-    )
-
     # test
     print(cmd)
 
