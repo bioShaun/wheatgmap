@@ -68,6 +68,7 @@
                       >Mapping via BSA</a
                     >
                   </li>
+                  {% if not current_user.is_authenticated %}
                   <li class="divider"></li>
                   <li>
                     <a
@@ -75,6 +76,7 @@
                       >Search Mapping Result</a
                     >
                   </li>
+                  {% endif %}
                 </ul>
               </li>
 

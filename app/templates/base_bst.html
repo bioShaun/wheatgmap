@@ -40,6 +40,15 @@
                 <li>
                   <a href="{{ url_for('mapping.bsa_base') }}">Mapping via BSA</a>
                 </li>
+                {% if not current_user.is_authenticated %}
+                <li class="divider"></li>
+                <li>
+                  <a
+                    href="{{ url_for('mapping.bsa_search', task_id='none') }}"
+                    >Search Mapping Result</a
+                  >
+                </li>                
+                {% endif %}
               </ul>
             </li>
 

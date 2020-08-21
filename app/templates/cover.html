@@ -82,7 +82,9 @@
       <div class="col-lg-3">
         <h2>Mapping</h2>
         <p><a href="{{ url_for('mapping.bsa_base') }}" role="button">Mapping via BSA &raquo;</a></p>
+        {% if not current_user.is_authenticated %}
         <p><a href="{{ url_for('mapping.bsa_search', task_id='none') }}" role="button">Search Mapping Result &raquo;</a></p>
+        {% endif %}
       </div>
 
       <div class="col-lg-3">
