@@ -563,15 +563,30 @@ function createAlert(msg, type) {
   $(alertStr).appendTo($(".myalert"));
 }
 
-function createPlot(files, name) {
+function generate_result_param_line(params, item) {
+  if (params[item].length) {
+    item_info = params[item].join(", ");
+    return `<div><code>${item}</code><p style="word-break: break-word;">${item_info}</p></div>`;
+  } else {
+    return "";
+  }
+}
+
+function createPlot(files, name, params) {
+  console.log(params);
+  paramsObj = JSON.parse(params);
   var textStr =
     "<div class='col-md-4'>" +
-    "<p><a class='btn btn-primary' href='" +
-    name +
-    "' role='button'>Download Full Results &raquo;</a></p>" +
+    "<h4 style='font-weight: 600;'>Task Info</h4>" +
+    generate_result_param_line(paramsObj, "mutant") +
+    generate_result_param_line(paramsObj, "wild") +
+    generate_result_param_line(paramsObj, "mutant_parent") +
+    generate_result_param_line(paramsObj, "wild_parent") +
+    generate_result_param_line(paramsObj, "background") +
     "</div>";
   var plotStr =
-    "<div class='col-md-8 albumSlider'>" +
+    "<div class='col-md-8' style='text-align:center'>" +
+    "<div class='albumSlider'>" +
     "<div class='fullview'><img src='" +
     files[0] +
     "'></div>" +
@@ -588,8 +603,14 @@ function createPlot(files, name) {
     );
   }
   var liStr = liBuffer.join("\n");
+  var downloadBtn = `<a href="${name}"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 10px;">Download Full Results<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button></a>`;
   plotStr =
-    plotStr + "<ul class='imglist'>" + liStr + "</ul></div></div></div>";
+    plotStr +
+    "<ul class='imglist'>" +
+    liStr +
+    "</ul></div></div></div>" +
+    downloadBtn +
+    "</div>";
   var allStr = "<div class='row'>" + textStr + plotStr + "</div>";
   return allStr;
 }

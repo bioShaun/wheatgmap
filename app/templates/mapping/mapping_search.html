@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+<div style="margin-top: 100px; margin-bottom: 100px;">
+  {% if task_id != 'none' %}
+  <div id="task-info" style="margin-bottom: 100px;">
+    <h4>
+      Your Job is under processing, this may take 30 minutes to 1 hour, pleasing
+      save the task code and query your Taks later:
+    </h4>
+    <h4 style="color: cornflowerblue;">{{ task_id }}</h4>
+  </div>
+  {% endif %}
+
+  <div style="margin-top: 100px;">
+    <div class="input-group">
+      <input
+        id="bsa-task-id"
+        type="text"
+        class="form-control"
+        placeholder="Search for Gene Mapping Task..."
+      />
+      <span class="input-group-btn">
+        <button id="bsa-task-btn" class="btn btn-default" type="button">
+          Go!
+        </button>
+      </span>
+    </div>
+    <!-- /input-group -->
+  </div>
+</div>
+{% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/utils/search_bsa.js') }}"></script>
+{% endblock %}

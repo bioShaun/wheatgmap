@@ -119,9 +119,12 @@ $(document).ready(function () {
       "/mapping/bsa/run/",
       { info: info, jobName: jobName },
       function (data) {
+        console.log(data);
         if (data.msg == "ok") {
           if (data.username !== "anonymous") {
             window.location.href = "/auth/tasks/";
+          } else {
+            window.location.href = "/mapping/bsa/launched/" + data.task_id;
           }
           return;
         } else {

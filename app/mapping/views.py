@@ -97,7 +97,7 @@ def compare_group_anony(task_id):
                 flash(task_info, 'warning')
                 return redirect(url_for('mapping.compare_group_upload'))
         else:
-            flash('Invalid upload id, please check.', 'warning')
+            flash('Invalid upload id, please check.', 'error')
             return redirect(url_for('mapping.compare_group_upload'))
 
 
@@ -122,7 +122,32 @@ def fetch_bsa():
                             username=username,
                             redis_id=task.id)
         bsa_task.save()
-        return jsonify({'msg': 'ok', 'task_id': task.id, username: username})
+        return jsonify({'msg': 'ok', 'task_id': task.id, 'username': username})
+    return jsonify({'msg': 'method not allowed'})
+
+
+@mapping.route('/bsa/launched/<task_id>', methods=['GET'])
+def bsa_launched(task_id):
+    return render_template('mapping/mapping_launched.html', task_id=task_id)
+
+
+@mapping.route('/bsa/search/<task_id>', methods=['GET'])
+def bsa_search(task_id):
+    if task_id != 'none':
+        task_info = TaskInfo.findByRedisId(task_id)
+        if task_info:
+            if task_info.task_status == 'finished':
+                return redirect(url_for('main.show_result', task_id=task_id))
+            else:
+                flash('Your task is under processing, please wait.', 'warning')
+                return render_template('mapping/mapping_search.html',
+                                       task_id='none')
+        else:
+            flash('Invalid task id, please check.', 'warning')
+            return render_template('mapping/mapping_search.html',
+                                   task_id='none')
+    else:
+        return render_template('mapping/mapping_search.html', task_id='none')
 
 
 @mapping.route('/compare/run/', methods=['POST'])

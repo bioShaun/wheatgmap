@@ -77,7 +77,8 @@ def run_bsa(info, task_id):
         'task': 'bsa',
         'result': {
             'path': os.path.join(path, '../results.zip'),
-            'files': plot_files_path
+            'files': plot_files_path,
+            'params': info
         }
     }
 

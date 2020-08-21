@@ -68,7 +68,7 @@ function annTask(result) {
 
 function bsaTask(result) {
   $("#result").empty();
-  var plotStr = createPlot(result.files, result.path);
+  var plotStr = createPlot(result.files, result.path, result.params);
   $("#result").html(plotStr);
   $("a.snp-index").fancybox({
     overlayShow: true,

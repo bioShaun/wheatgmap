@@ -547,3 +547,7 @@ class TaskInfo(dbCRUD, db.Model):
     @staticmethod
     def findByTaskId(task_id):
         return TaskInfo.query.filter_by(task_id=task_id).first()
+
+    @staticmethod
+    def findByRedisId(redis_id):
+        return TaskInfo.query.filter_by(redis_id=redis_id).first()
