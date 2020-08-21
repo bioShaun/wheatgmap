@@ -1,4 +1,5 @@
 # coding:utf-8
+from datetime import datetime
 import os
 import json
 import time
@@ -238,7 +239,8 @@ def upload():
                                    task_status='running',
                                    task_id=upload_id,
                                    username=username,
-                                   redis_id=task.id)
+                                   redis_id=task.id,
+                                   create_time=datetime.now())
             upload_task.save()
 
             #async_fetch_vcf_samples2(filename, username, upload_id, vcf_type)

@@ -1,5 +1,6 @@
 import json
 import uuid
+from datetime import datetime
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask_login import current_user
 from . import mapping
@@ -120,7 +121,8 @@ def fetch_bsa():
                             task_status='running',
                             task_id=task_id,
                             username=username,
-                            redis_id=task.id)
+                            redis_id=task.id,
+                            create_time=datetime.now())
         bsa_task.save()
         return jsonify({'msg': 'ok', 'task_id': task.id, 'username': username})
     return jsonify({'msg': 'method not allowed'})
