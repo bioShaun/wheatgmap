@@ -55,14 +55,14 @@ def run_bsa(info, task_id):
         .format(zip_file=os.path.join(result_base, 'results.zip'),
                 dir=result_base))
 
-    path = re.sub(r'\S+wheatgmap/app', '', result_path)
+    path = re.sub(r'\S+wheat.*/app', '', result_path)
 
     png_files = glob.glob(f'{result_path}/*/*png')
     jpg_files = glob.glob(f'{result_path}/*/*jpg')
 
     plot_files = png_files + jpg_files
     plot_files_path = [
-        re.sub(r'\S+wheatgmap/app', '', each) for each in plot_files
+        re.sub(r'\S+wheat.*/app', '', each) for each in plot_files
     ]
 
     finish_task(task_id)
