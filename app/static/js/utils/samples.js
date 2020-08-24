@@ -139,6 +139,22 @@ function EditSample() {
   });
 }
 
+function is_legal_name(name, maxLen = 45, iligal_str = "=&") {
+  if (name.length > maxLen) {
+    return "Maximum request length exceeded";
+  }
+  var iligal_str_re = new RegExp(`[${iligal_str}]`, "g");
+  if (iligal_str_re.test(name)) {
+    return `Illegal character [${iligal_str}] in input.`;
+  }
+}
+
+function is_va_id(name) {
+  if (!/^TC-Va-(\d+)/.test(name)) {
+    return "Illegal Variety Name, name pattern is: TC-Va-number.";
+  }
+}
+
 $(document).ready(function () {
   function linkFormatter(value, row, index) {
     if (typeof value === "string") {
@@ -176,7 +192,7 @@ $(document).ready(function () {
     /* showToggle:true,//显示详细视图和列表 */
     showColumns: true, //是否显示 内容列下拉框
     showRefresh: true, //显示刷新按钮
-    clickToSelect: true, //点击选中checkbox
+    //clickToSelect: true, //点击选中checkbox
     pageNumber: 1, //初始化加载第一页，默认第一页
     pageSize: 10, //每页的记录行数
     pageList: [10, 25, 50, 100], //可选择的每页行数
@@ -195,96 +211,162 @@ $(document).ready(function () {
         checkbox: true,
       },
       {
+        field: "tc_id",
+        title: "WG ID",
+        switchable: true,
+        sortable: true,
+        formatter: linkFormatter,
+      },
+      {
         field: "opened",
         title: "Public",
         switchable: true,
         sortable: true,
         formatter: pubFormatter,
-      },
-      {
-        field: "tc_id",
-        title: "TC ID",
-        switchable: true,
-        sortable: true,
-        formatter: linkFormatter,
+        editable: {
+          type: "select",
+          title: "Type",
+          source: [
+            { value: "Yes", text: "Yes" },
+            { value: "No", text: "No" },
+          ],
+        },
       },
       {
         field: "sample_name",
         title: "Sample Name",
         switchable: true,
+        editable: {
+          type: "text",
+          title: "Sample Name",
+          validate: function (v) {
+            if (!v) return "Sample name can not be null";
+            return is_legal_name(v);
+          },
+        },
       },
       {
         field: "type",
         title: "Type",
         switchable: true,
+        editable: {
+          type: "select",
+          title: "Type",
+          source: [
+            { value: "WES", text: "WES" },
+            { value: "WGS", text: "WGS" },
+            { value: "RNAseq", text: "RNAseq" },
+          ],
+        },
       },
       {
         field: "scientific_name",
         title: "Scientific Name",
         switchable: true,
+        editable: {
+          type: "text",
+          title: "Scientific Name",
+          validate: function (v) {
+            return is_legal_name(v);
+          },
+        },
       },
       {
         field: "variety_name",
         title: "Variety ID",
         switchable: true,
-        formatter: linkFormatter,
-      },
-      {
-        field: "high_level_tissue",
-        title: "High Level Tissue",
-        switchable: true,
-      },
-      {
-        field: "high_level_age",
-        title: "High Level Age",
-        switchable: true,
-      },
-      {
-        field: "treatments",
-        title: "Treatments",
-        switchable: true,
+        //formatter: linkFormatter,
+        editable: {
+          type: "text",
+          title: "Variety ID",
+          validate: function (v) {
+            if (v) {
+              return is_va_id(v);
+            }
+          },
+        },
       },
       {
         field: "tissue",
         title: "Tissue",
         switchable: true,
+        editable: {
+          type: "text",
+          title: "Tissue",
+          validate: function (v) {
+            return is_legal_name(v);
+          },
+        },
       },
       {
         field: "age",
         title: "Age",
         switchable: true,
-      },
-      {
-        field: "stress_disease",
-        title: "Stress Disease",
-        switchable: true,
-      },
-      {
-        field: "dol",
-        title: "Dol",
-        switchable: true,
+        editable: {
+          type: "text",
+          title: "Age",
+          validate: function (v) {
+            return is_legal_name(v);
+          },
+        },
       },
       {
         field: "bulked_segregant",
-        title: "Bulked Segregant",
+        title: "Phenotype",
         switchable: true,
+        editable: {
+          type: "text",
+          title: "Phenotype",
+          validate: function (v) {
+            return is_legal_name(v, (maxLen = 500));
+          },
+        },
       },
       {
         field: "mixed_sample",
-        title: "Mixed Sample",
+        title: "Pooled Sample",
         switchable: true,
+        editable: {
+          type: "text",
+          title: "Pooled Sample",
+          validate: function (v) {
+            return is_legal_name(v, (maxLen = 500));
+          },
+        },
       },
       {
-        field: "mutant_transgenosis",
-        title: "Mutant Transgenosis",
+        field: "dol",
+        title: "DOI",
         switchable: true,
-      },
-      {
-        field: "other_inf",
-        title: "Other Inf",
-        switchable: true,
+        editable: {
+          type: "text",
+          title: "DOI",
+          validate: function (v) {
+            return is_legal_name(v, (maxLen = 500));
+          },
+        },
       },
     ],
+
+    onEditableSave: function (field, row, oldValue, $el) {
+      $.ajax({
+        type: "post",
+        url: "/auth/edit_samples/",
+        data: row,
+        contentType: "application/json",
+        success: function (data, status) {
+          console.log(data);
+          console.log(status);
+          if (status == "success") {
+            alert("Date Update Success.");
+          }
+        },
+        error: function () {
+          alert("Date Update Failed");
+        },
+        complete: function () {},
+      });
+    },
   });
 
   $("#sample-table").on("load-success.bs.table", function (data) {
