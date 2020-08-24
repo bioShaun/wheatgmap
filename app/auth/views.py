@@ -4,6 +4,7 @@ import os
 import json
 import time
 import uuid
+
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
 from .models import User, Data, VarietyDetail, TaskInfo
@@ -344,6 +345,32 @@ def fetch_samples():
                 sample = Data.query.filter_by(tc_id=id).first()
                 sample.update(opened=0)
         return jsonify({'msg': 'ok'})
+
+
+@auth.route('/edit_samples/', methods=['POST', 'GET'])
+@login_required
+def edit_samples():
+    if request.method == 'POST':
+        post_data = request.get_data(as_text=True)
+
+        def data2obj(post_data):
+            post_obj = {}
+            post_data_list = post_data.split('&')
+            for item_i in post_data_list:
+                field, value = item_i.split('=')
+                if field not in ['select']:
+                    if field in ['opened']:
+                        open_map = {'Yes': 1, 'No': 0, 'true': 1, 'false': 0}
+                        value = open_map.get(value)
+                    post_obj[field] = value
+
+            return post_obj
+
+        post_obj = data2obj(post_data)
+        sample = Data.query.filter_by(tc_id=post_obj['tc_id']).first()
+        sample.update(**post_obj)
+
+    return jsonify({'msg': 'ok'})
 
 
 @auth.route('/confirm/')
