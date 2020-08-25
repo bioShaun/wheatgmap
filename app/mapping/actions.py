@@ -12,7 +12,7 @@ import json
 UPLOAD_PATH = os.path.join(basedir, 'app', 'static', 'download')
 MAPPING_PATH = os.path.join(UPLOAD_PATH, 'gene_mapping')
 ANN_PATH = os.path.join(UPLOAD_PATH, 'vcf_ann')
-gene_bed_file = '/data/data/wheat/reference/gene.5kbupdown.window.bed'
+gene_bed_file = Config.GENE_POS
 #VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
 #SNP_SCORE_SCRIPT = '/home/scripts/omSnpScore/scripts/snpScore'
 
