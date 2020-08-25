@@ -353,6 +353,8 @@ def edit_samples():
     if request.method == 'POST':
         post_data = request.get_data(as_text=True)
 
+        print(post_data)
+
         def data2obj(post_data):
             post_obj = {}
             post_data_list = post_data.split('&')
@@ -363,12 +365,16 @@ def edit_samples():
                         open_map = {'Yes': 1, 'No': 0, 'true': 1, 'false': 0}
                         value = open_map.get(value)
                     else:
+                        # x-edite transfer space to +
+                        value = value.replace('+', ' ')
+                        # url to string
                         value = parse.unquote(value)
                     post_obj[field] = value
 
             return post_obj
 
         post_obj = data2obj(post_data)
+        print(post_obj)
 
         sample = Data.query.filter_by(tc_id=post_obj['tc_id']).first()
         sample.update(**post_obj)
