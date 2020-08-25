@@ -4,7 +4,7 @@ import os
 import json
 import time
 import uuid
-
+from urllib import parse
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
 from .models import User, Data, VarietyDetail, TaskInfo
@@ -362,11 +362,14 @@ def edit_samples():
                     if field in ['opened']:
                         open_map = {'Yes': 1, 'No': 0, 'true': 1, 'false': 0}
                         value = open_map.get(value)
+                    else:
+                        value = parse.unquote(value)
                     post_obj[field] = value
 
             return post_obj
 
         post_obj = data2obj(post_data)
+
         sample = Data.query.filter_by(tc_id=post_obj['tc_id']).first()
         sample.update(**post_obj)
 
