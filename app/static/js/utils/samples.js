@@ -355,14 +355,26 @@ $(document).ready(function () {
         data: row,
         contentType: "application/json",
         success: function (data, status) {
-          console.log(data);
-          console.log(status);
           if (status == "success") {
-            alert("Date Update Success.");
+            $.confirm({
+              boxWidth: "30%",
+              backgroundDismiss: true,
+              title: "Success!",
+              type: "green",
+              content: "Date Updated.",
+              buttons: { close: function () {} },
+            });
           }
         },
         error: function () {
-          alert("Date Update Failed");
+          $.confirm({
+            boxWidth: "30%",
+            backgroundDismiss: true,
+            title: "Failed!",
+            type: "red",
+            content: "Please Try Again.",
+            buttons: { close: function () {} },
+          });
         },
         complete: function () {},
       });
