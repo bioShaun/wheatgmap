@@ -51,7 +51,7 @@ def run_bsa(info, task_id):
     result_path = os.path.join(result_base, 'results')
     processor.Run(
         cmd=
-        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*" -x "results/mutant*.bed" -x "results/qtlseqr*.csv"'
+        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*" -x "results/mutant*.bed" -x "results/qtlseqr*.csv" -x "results/history"'
         .format(zip_file=os.path.join(result_base, 'results.zip'),
                 dir=result_base))
 
