@@ -1,4 +1,7 @@
-/* .result-table a {color:black;} */
+.result-table a {
+  color: cornflowerblue;
+  font-style: italic;
+}
 .result-table td.leftsmall {
   font-family: Courier, Helvetica, sans-serif;
   font-size: small;
