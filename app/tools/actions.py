@@ -9,7 +9,7 @@ import math
 import subprocess
 from sklearn.decomposition import PCA
 from settings import basedir
-from app.utils import processor, printPretty
+from app.utils import processor, addOuterLink
 from app.app import celery
 from settings import Config
 from app.auth.models import GeneExpression
@@ -19,8 +19,8 @@ vcf_seq_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_SEQ)
 vcf_ann_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_ANN)
 vcf_pca_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_PCA)
 
-
 GENE_PATTERN = re.compile('TraesCS(\w+)1G(\w+)')
+
 
 def transfer_id(gene_id):
     """
@@ -142,7 +142,7 @@ def get_locus_result(genename, blast_results):
         if ortho_result:
             ortho_result_list = ortho_result[3:]
             ortho_result_list = [
-                printPretty(each) for each in ortho_result_list
+                addOuterLink(each) for each in ortho_result_list
                 if each is not None
             ]
             locus_result['orthologous_gene']['body'] = ortho_result_list
@@ -180,8 +180,12 @@ def get_locus_result(genename, blast_results):
         locus_result['gene_pro_seq'] = pro_seq_dict
 
         geneExp = GeneExpression.findbygene(transfer_id(genename))
-        locus_result['dev_expression_stage'] = [each.tissue for each in geneExp]
-        locus_result['dev_expression_tpm'] = [np.log2(each.tpm + 1) for each in geneExp]
+        locus_result['dev_expression_stage'] = [
+            each.tissue for each in geneExp
+        ]
+        locus_result['dev_expression_tpm'] = [
+            np.log2(each.tpm + 1) for each in geneExp
+        ]
         all_tpm_list = row + locus_result['dev_expression_tpm']
         locus_result['max_tpm'] = np.ceil(max(all_tpm_list))
     return locus_result

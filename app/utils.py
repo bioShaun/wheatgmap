@@ -5,6 +5,7 @@ import math
 import redis
 import vcfpy
 import random
+import logging
 import requests
 import subprocess
 import pandas as pd
@@ -13,7 +14,6 @@ from app.mc import cached
 from settings import Config
 from flask_login import current_user
 from app.auth.models import Data, TaskInfo
-import logging
 
 CACHE_PREFIX = Config.CACHE_PREFIX
 
@@ -135,6 +135,25 @@ def printPretty(String, max_row_len=25, sep='\n'):
             i += max_row_len
         return tmp_str
     return String
+
+
+def geneOuterLink(gene: str):
+    link_address = {
+        'at':
+        'https://www.arabidopsis.org/servlets/TairObject?type=locus&name='
+    }
+    gene_pre = gene[:2].lower()
+    gene_link = link_address.get(gene_pre)
+    if gene_link:
+        return f'<a href="{gene_link}{gene}">{gene}</a>'
+    else:
+        return gene
+
+
+def addOuterLink(orth_genes):
+    orth_gene_list = orth_genes.split(',')
+    orth_link_list = [geneOuterLink(gene) for gene in orth_gene_list]
+    return ','.join(orth_link_list)
 
 
 class redisTask(object):

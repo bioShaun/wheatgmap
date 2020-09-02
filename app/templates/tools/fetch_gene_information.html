@@ -1,179 +1,179 @@
-{% extends 'base.html' %}
-{% block css %}
-    <link href={{ url_for('static', filename='css/locus_results.css') }} rel="stylesheet">
-{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block css %} <link href={{ url_for('static',
+filename='css/locus_results.css') }} rel="stylesheet"> {% endblock %} {% block
+content %}
 <div class="panel-body">
-<div class="panel">
-  <h2>Locus Identidier Gene Search Results:</h2>
+  <div class="panel">
+    <h2>Locus Identidier Gene Search Results:</h2>
     {% if locus_result %}
-        <div class="panel-heading">
-            <h3 class="panel-title">Obtain a table by locus identifier:</h3>
-        </div>
+    <div class="panel-heading">
+      <h3 class="panel-title">Obtain a table by locus identifier:</h3>
+    </div>
     <div class="result-table panel-body">
-        <table class="table">
-            <tbody>
-            <tr>
-                <td>
-                    <table width="100%" border="0">
-                        <tbody>
-                        <tr>
-                            <td class="header" colspan="2">Gene Identification</td>
-                        </tr>
-				{% for key, value in locus_result['gene_identification'].items() %}
-                            <tr>
-                            <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
-                            <td class="leftsmall" width="50%">
-				{{ value }}
-			   </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                        <tbody>
-                        <tr>
-                            <td class="header" colspan="2">Gene Attributes</td>
-                        </tr>
-                        {% for key, value in locus_result['gene_attributes'].items() %}
-                            <tr>
-                                <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
-                                <td class="leftsmall" width="50%"> {{ value }} </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                        <tbody>
-                        <tr>
-                            <td class="header" colspan="5">Gene Annotation</td>
-                        </tr>
-                        <tr>
-                        {% for each in locus_result['gene_annotation']['header'] %}
-                                <th class="centersmall">{{ each }}</th>
-                        {% endfor %}
-                         </tr>
-                        {% if locus_result['gene_annotation']['body'] %}
-                            <tr>
-                            {% for row in locus_result['gene_annotation']['body'] %}
-                                    <td class="centersmall">{{ row }}</td>
-                             {% endfor %}
-                            </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                        <tbody>
-                        <tr>
-                            <td class="header" colspan="5">Orthologous Gene</td>
-                        </tr>
-                        <tr>
-                        {% for each in locus_result['orthologous_gene']['header'] %}
-                                <th class="centersmall">{{ each }}</th>
-                        {% endfor %}
-                         </tr>
-                        {% if locus_result['orthologous_gene']['body'] %}
-                            <tr>
-                            {% for row in locus_result['orthologous_gene']['body'] %}
-                                    <td class="centersmall">{{ row }}</td>
-                             {% endfor %}
-                            </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                      <tbody>
-                        <tr>
-                          <td class="header" colspan="5">Tissue Expression</td>
-                        </tr>
-                        <tr>
-                        <td>
-                         <div id="expr-plot" style="height:300px"></div>
-		        </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                        <tbody>
-                          <tr>
-                            <td class="header" colspan="5">Development Expression</td>
-                          </tr>
-                          <tr>
-                          <td>
-                           <div id="expr-plot-2" style="height:300px"></div>
-                  </td>
-                          </tr>
-                        </tbody>
-                      </table>                    
-                    <table width="100%" border="0">
-                        <tbody>
-                            <tr>
-                                <td class="header" colspan="2">Gene CDS Sequence</td>
-                            </tr>
-			    {% if locus_result['gene_cds_seq'] == 'NA' %}
-			    <tr>
-				    <td class="centersmall">NA</td>
-                            <tr>
-		            {%else%}
-			    {% for key,value in locus_result['gene_cds_seq'].items() %}
-			    	<tr>
-				    	<td class="leftsmall">{{ key }}</td>
-                            	</tr>
-				<tr>
-					<td class="leftsmall">{{ value | safe }}</td>
-				</tr>
-				<tr>
-					<td><br/></td>
-				</tr>
-			    {% endfor %}
-			    {% endif %}
-                        </tbody>
-                    </table>
-                    <table width="100%" border="0">
-                        <tbody>
-                            <tr>
-                                <td class="header" colspan="2">Gene Protein Sequence</td>
-                            </tr>
-			    {% if locus_result['gene_cds_seq'] == 'NA' %}
-                            <tr>
-				    <td class="centersmall">NA</td>
-                            </tr>
-			    {% else %}
-			    {% for key,value in locus_result['gene_pro_seq'].items() %}
-			    	<tr>
-					<td class="leftsmall">{{ key }}</td>
-				</tr>
-				<tr>
-					<td class="leftsmall">{{ value | safe }}</td>
-				</tr>
-				<tr>
-					<td><br/></td>
-				</tr>
-			    {% endfor %}
-			    {% endif %}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="2">Gene Identification</td>
+                  </tr>
+                  {% for key, value in
+                  locus_result['gene_identification'].items() %}
+                  <tr>
+                    <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
+                    <td class="leftsmall" width="50%">{{ value }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="2">Gene Attributes</td>
+                  </tr>
+                  {% for key, value in locus_result['gene_attributes'].items()
+                  %}
+                  <tr>
+                    <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
+                    <td class="leftsmall" width="50%">{{ value }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="5">Gene Annotation</td>
+                  </tr>
+                  <tr>
+                    {% for each in locus_result['gene_annotation']['header'] %}
+                    <th class="centersmall">{{ each }}</th>
+                    {% endfor %}
+                  </tr>
+                  {% if locus_result['gene_annotation']['body'] %}
+                  <tr>
+                    {% for row in locus_result['gene_annotation']['body'] %}
+                    <td class="centersmall">{{ row }}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="5">Orthologous Gene</td>
+                  </tr>
+                  <tr>
+                    {% for each in locus_result['orthologous_gene']['header'] %}
+                    <th class="centersmall">{{ each }}</th>
+                    {% endfor %}
+                  </tr>
+                  {% if locus_result['orthologous_gene']['body'] %}
+                  <tr>
+                    {% for row in locus_result['orthologous_gene']['body'] %}
+                    <td class="centersmall">{{ row | safe}}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="5">Tissue Expression</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div id="expr-plot" style="height: 300px"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="5">Development Expression</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div id="expr-plot-2" style="height: 300px"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="2">Gene CDS Sequence</td>
+                  </tr>
+                  {% if locus_result['gene_cds_seq'] == 'NA' %}
+                  <tr>
+                    <td class="centersmall">NA</td>
+                  </tr>
+
+                  <tr>
+                    {%else%} {% for key,value in
+                    locus_result['gene_cds_seq'].items() %}
+                  </tr>
+
+                  <tr>
+                    <td class="leftsmall">{{ key }}</td>
+                  </tr>
+                  <tr>
+                    <td class="leftsmall">{{ value | safe }}</td>
+                  </tr>
+                  <tr>
+                    <td><br /></td>
+                  </tr>
+                  {% endfor %} {% endif %}
+                </tbody>
+              </table>
+              <table width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td class="header" colspan="2">Gene Protein Sequence</td>
+                  </tr>
+                  {% if locus_result['gene_cds_seq'] == 'NA' %}
+                  <tr>
+                    <td class="centersmall">NA</td>
+                  </tr>
+                  {% else %} {% for key,value in
+                  locus_result['gene_pro_seq'].items() %}
+                  <tr>
+                    <td class="leftsmall">{{ key }}</td>
+                  </tr>
+                  <tr>
+                    <td class="leftsmall">{{ value | safe }}</td>
+                  </tr>
+                  <tr>
+                    <td><br /></td>
+                  </tr>
+                  {% endfor %} {% endif %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     {% else %}
-        <h3>not found gene in database!</h3>
-    {% endif %}
-{% endblock %}
-{% block js %}
-  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts-en.min.js"></script>
-  <script src="{{ url_for('static', filename='js/utils/expr_plot.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/utils/expr_plot_xms.js') }}"></script>  
-  <script>
-  $(document).ready(function () {
-    var row = {{ locus_result['tissue_expression'] | safe }};
-    const maxTpm = {{ locus_result['max_tpm'] | safe }};
-    expr_bar(row, maxTpm);
-    const devStage = {{ locus_result['dev_expression_stage'] | safe }};
-    const devTpm = {{ locus_result['dev_expression_tpm'] | safe }};
-    expr_bar_xms(devStage, devTpm, maxTpm);    
-  });
-  </script>
-{% endblock %}
+    <h3>not found gene in database!</h3>
+    {% endif %} {% endblock %} {% block js %}
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts-en.min.js"></script>
+    <script src="{{ url_for('static', filename='js/utils/expr_plot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils/expr_plot_xms.js') }}"></script>
+    <script>
+      $(document).ready(function () {
+        var row = {{ locus_result['tissue_expression'] | safe }};
+        const maxTpm = {{ locus_result['max_tpm'] | safe }};
+        expr_bar(row, maxTpm);
+        const devStage = {{ locus_result['dev_expression_stage'] | safe }};
+        const devTpm = {{ locus_result['dev_expression_tpm'] | safe }};
+        expr_bar_xms(devStage, devTpm, maxTpm);
+      });
+    </script>
+    {% endblock %}
+  </div>
+</div>
