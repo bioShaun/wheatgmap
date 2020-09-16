@@ -1,15 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 <div>
   <div style="margin-top: 100px; margin-bottom: 100px;">
-    <h3>Input Your Upload Code</h3>
-    <p>If More than one upload code, seperate them with ",".</p>
+    <h3>Input the task IDs</h3>
+    <p>If you have more than one upload code, seperate them with ",".</p>
     <div class="row">
       <div class="col-xs-6">
         <textarea
           id="input-task"
           type="text"
           class="form-control"
-          placeholder="Search for..."
+          placeholder="50fef8b5-7e39-4107-a1e2-496d178aa51f,8jyef8b5-7e21-2307-cce4-jzxd178aa7aa"
           rows="5"
         ></textarea>
       </div>
@@ -24,7 +24,7 @@
     </button>
   </div>
 
-  <h3>Or Start Uploading</h3>
+  <h3>Upload VCF</h3>
   <p>
     <b
       >Please read the VCF format
@@ -83,7 +83,7 @@
 
   <div id="upload-info" style="display: none;">
     <h3>
-      Your data is under processing, this may take 30 minutes to 1 hour,
+      Your data is under processing, this may take 10 minutes to 1 hour,
       pleasing save the upload code and query your data later:
     </h3>
     <p id="upload-code" style="color: cornflowerblue;"></p>

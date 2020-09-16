@@ -3,19 +3,17 @@
   <h3>VCF Prepare</h3>
 </br>
   <h4>Required</h4>
-  <p>> The <b>reference genome</b> for variant-calling must be <a href="https://www.wheatgenome.org/" target="_blank"><b>IWGSC RefSeq V1.0</b></a> at this time.</p>
+  <p>> The <b>reference genome</b> for variant-calling must be <a href="https://www.wheatgenome.org/" target="_blank"><b>IWGSC RefSeq V1.0/V1.1</b></a> at this time.</p>
   <p>> VCF can work out flow by <a href="https://gatk.broadinstitute.org/" target="_blank">GATK Best Practice</a> or
     <a href="https://samtools.github.io/bcftools/howtos/variant-calling.html" target="_blank">Samtools</a>
     variant-calling pipeline with both DNA and RNA data.</p>
   <p>> All VCF need be compressed as <b>VCF.gz</b> by bcftools or GATK.</p>
   <p>> VCF should contain “GT,AD” in FORMAT tags. </p>
-  <p>>> VCF from GATK pipeline with default paramets already has "GT,AD" in INFO colum as the first and sencond tags.
+  <p>> VCF from GATK pipeline with default perameters already has "GT,AD" in INFO column as the first and second tags.
   </p>
-  <p>>> If you call variants with samtools/bcftools, you need specify the output with “FORMAT/AD”</p>
-  </br>
-  <h4>Optional</h4>
+  <p>> If you call variants with samtools/bcftools, you need specify the output with “FORMAT/AD”</p>
   <p><B>Joint-Call Cohort is suggested for callling variants VCF.</B></p>
-  <p>Here are some demo for cohort variants-calling below:</p>
+  <p>Here are two demo for cohort variants-calling below:</p>
   </br>
   <p><B>GATK</B></p>
   <div type="margin-left:20%">

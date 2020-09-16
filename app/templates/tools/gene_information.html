@@ -1,13 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body" style="height: 800px;">
   <div class="panel">
-    <h2>Query gene annotaion:</h2>
+    <h2>Gene Information:</h2>
 
     <div class="row">
       <div class="panel-heading" style="margin-bottom: 30px;">
         <h3 class="panel-title">
-          Obtain a table of a coding regin by locus
-          identifier(e.g.TraesCS1D01G311400) or location.
+          Obtain a gene ID list (e.g.TraesCS1D01G311400) or location.
         </h3>
       </div>
       <div class="col-xs-6">
@@ -17,7 +16,7 @@
             rows="6"
             class="form-control"
             value=""
-            placeholder="Gene ID"
+            placeholder="e.g. TraesCS1D01G311400"
           ></textarea>
           <br />
           <button type="submit" class="btn btn-sm btn-success" id="submit">
@@ -33,7 +32,7 @@
         <div class="form-group">
           <div class="input-group input-group-sm">
             <span class="input-group-addon" style="padding: 0 11px;"
-              >Chromsome:</span
+              >Chromosome:</span
             >
             <select
               class="selectpicker"
@@ -98,33 +97,7 @@
       </div>
     </div>
 
-    <!--     <div class="panel-heading">
-      <h3 class="panel-title">
-        Obtain a table of a coding regin by locus
-        identifier(e.g.TraesCS1D01G311400)
-      </h3>
-    </div> -->
     <div class="panel-body">
-      <!-- <div class="form-group">
-        <span>
-          <label
-            >Locus Identifier:(now,you can input many genes to
-            searching!)</label
-          >
-          <textarea
-            id="genes"
-            rows="5"
-            class="form-control"
-            value=""
-            placeholder="Input Gene Symbol/Name"
-          ></textarea>
-        </span>
-        <br />
-        <button type="submit" class="btn btn-sm btn-success" id="submit">
-          Search
-        </button>
-        <button type="reset" class="btn btn-sm btn-warning">Reset</button>
-      </div> -->
       <div id="results-table"></div>
     </div>
     {% endblock %} {% block js %}
