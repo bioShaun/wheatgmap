@@ -21,7 +21,9 @@ content %}
                   {% for key, value in
                   locus_result['gene_identification'].items() %}
                   <tr>
-                    <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
+                    <td class="leftsmall leftheader" nowrap="nowrap">
+                      {{ key }}
+                    </td>
                     <td class="leftsmall" width="50%">{{ value }}</td>
                   </tr>
                   {% endfor %}
@@ -35,7 +37,9 @@ content %}
                   {% for key, value in locus_result['gene_attributes'].items()
                   %}
                   <tr>
-                    <td class="leftsmall" nowrap="nowrap">{{ key }}:</td>
+                    <td class="leftsmall leftheader" nowrap="nowrap">
+                      {{ key }}
+                    </td>
                     <td class="leftsmall" width="50%">{{ value }}</td>
                   </tr>
                   {% endfor %}
@@ -44,7 +48,7 @@ content %}
               <table width="100%" border="0">
                 <tbody>
                   <tr>
-                    <td class="header" colspan="5">Gene Annotation</td>
+                    <td class="header" colspan="4">Gene Annotation</td>
                   </tr>
                   <tr>
                     {% for each in locus_result['gene_annotation']['header'] %}
@@ -82,31 +86,29 @@ content %}
               <table width="100%" border="0">
                 <tbody>
                   <tr>
-                    <td class="header" colspan="5">Tissue Expression</td>
+                    <td class="header" colspan="24">Tissue Expression</td>
                   </tr>
                   <tr>
-                    <td>
-                      <div id="expr-plot" style="height: 300px"></div>
-                    </td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
+              <div id="expr-plot" style="height: 300px"></div>
               <table width="100%" border="0">
                 <tbody>
                   <tr>
                     <td class="header" colspan="5">Development Expression</td>
                   </tr>
                   <tr>
-                    <td>
-                      <div id="expr-plot-2" style="height: 300px"></div>
-                    </td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
+              <div id="expr-plot-2" style="height: 300px"></div>
               <table width="100%" border="0">
                 <tbody>
                   <tr>
-                    <td class="header" colspan="2">Gene CDS Sequence</td>
+                    <td class="header">Gene CDS Sequence</td>
                   </tr>
                   {% if locus_result['gene_cds_seq'] == 'NA' %}
                   <tr>
@@ -119,10 +121,10 @@ content %}
                   </tr>
 
                   <tr>
-                    <td class="leftsmall">{{ key }}</td>
+                    <td class="leftsmall sequence">>{{ key }}</td>
                   </tr>
                   <tr>
-                    <td class="leftsmall">{{ value | safe }}</td>
+                    <td class="leftsmall sequence">{{ value | safe }}</td>
                   </tr>
                   <tr>
                     <td><br /></td>
@@ -133,7 +135,7 @@ content %}
               <table width="100%" border="0">
                 <tbody>
                   <tr>
-                    <td class="header" colspan="2">Gene Protein Sequence</td>
+                    <td class="header">Gene Protein Sequence</td>
                   </tr>
                   {% if locus_result['gene_cds_seq'] == 'NA' %}
                   <tr>
@@ -142,10 +144,10 @@ content %}
                   {% else %} {% for key,value in
                   locus_result['gene_pro_seq'].items() %}
                   <tr>
-                    <td class="leftsmall">{{ key }}</td>
+                    <td class="leftsmall sequence">>{{ key }}</td>
                   </tr>
                   <tr>
-                    <td class="leftsmall">{{ value | safe }}</td>
+                    <td class="leftsmall sequence">{{ value | safe }}</td>
                   </tr>
                   <tr>
                     <td><br /></td>

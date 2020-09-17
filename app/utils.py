@@ -153,7 +153,7 @@ def geneOuterLink(gene: str):
 def addOuterLink(orth_genes):
     orth_gene_list = orth_genes.split(',')
     orth_link_list = [geneOuterLink(gene) for gene in orth_gene_list]
-    return ','.join(orth_link_list)
+    return ', '.join(orth_link_list)
 
 
 class redisTask(object):

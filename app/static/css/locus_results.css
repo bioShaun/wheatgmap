@@ -1,39 +1,54 @@
+table {
+  table-layout: fixed;
+}
+
 .result-table a {
   color: cornflowerblue;
   font-style: italic;
 }
 .result-table td.leftsmall {
-  font-family: Courier, Helvetica, sans-serif;
+  font-family: Arial, helvetica, sans-serif;
   font-size: small;
   color: black;
   vertical-align: middle;
   text-align: left;
   background-color: #f6f6f6;
   word-spacing: 0.1px;
+  padding: 5px;
 }
+
+.result-table td.leftsmall.leftheader {
+  font-weight: bold;
+}
+
+.result-table td.leftsmall.sequence {
+  font-family: Courier, Helvetica, sans-serif;
+}
+
 .result-table td.header {
   font-family: Arial, helvetica, sans-serif;
   font-weight: bold;
   font-size: medium;
-  background-color: #1c699d;
+  background-color: #81c784;
   color: #fff;
   vertical-align: top;
   text-align: left;
+  padding: 5px;
 }
 .result-table td.centersmall {
   font-family: Arial, Helvetica, sans-serif;
   font-size: small;
   color: black;
   vertical-align: middle;
-  text-align: center;
   background-color: #f6f6f6;
+  padding: 5px;
+  word-wrap: break-word;
 }
 .result-table th.centersmall {
   font-family: Arial, Helvetica, sans-serif;
   font-size: small;
   color: black;
   vertical-align: middle;
-  text-align: center;
-  text-decoration: underline;
   background-color: #f6f6f6;
+  padding: 5px;
 }
