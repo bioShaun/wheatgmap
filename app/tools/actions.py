@@ -1,5 +1,8 @@
 import os
+import delegator
+from pathlib import Path
 import re
+from typing import List, Optional
 from app.db import DB
 import pandas as pd
 import numpy as np
@@ -18,6 +21,8 @@ UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 vcf_seq_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_SEQ)
 vcf_ann_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_ANN)
 vcf_pca_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_PCA)
+
+VAR_DENSITY_PATH = os.path.join(UPLOAD_FOLDER, 'var_density')
 
 GENE_PATTERN = re.compile('TraesCS(\w+)1G(\w+)')
 
@@ -212,6 +217,58 @@ def fetch_sequence(table, chr, start_pos, end_pos):
         str(each, encoding="utf-8").replace('\n', '<br/>') for each in result
     ])
     return result
+
+
+def window_number_format(number: int) -> str:
+    megabase = 1000 * 1000
+    kilobase = 1000
+    if number >= megabase:
+        return f"{number / megabase}M"
+    elif number >= kilobase:
+        return f"{int(number / kilobase)}K"
+    else:
+        return str(number)
+
+
+def va_density_compare_dir(sample_list: List[str], min_depth: int, window: int,
+                           min_alt_freq: float, step: Optional[int],
+                           outdir: str) -> Path:
+    sample_name = '_'.join(sample_list)
+    window_str = f"window_{window_number_format(window)}"
+    if step:
+        step_str = f"-step_{window_number_format(step)}"
+    else:
+        step_str = ""
+    folder_name = f"{sample_name}-depth_{min_depth}-alt_freq_{min_alt_freq}-{window_str}{step_str}"
+    out_folder = Path(outdir) / folder_name
+    return out_folder
+
+
+def launch_var_density_plot(sample_list: List[str],
+                            min_depth: int = 1,
+                            window: int = 1000_000,
+                            min_alt_freq: float = 0,
+                            step: Optional[int] = None):
+    res_dir = va_density_compare_dir(sample_list=sample_list,
+                                     min_depth=min_depth,
+                                     window=window,
+                                     step=step,
+                                     min_alt_freq=min_alt_freq,
+                                     outdir=VAR_DENSITY_PATH)
+    samples = ','.join(sample_list)
+    plot_cmd = (f"varDensityCompare {samples} "
+                f"{Config.VCF_TABLE_BYCHR_PATH} "
+                f"{Config.CHROM_SIZE} "
+                f"{res_dir} "
+                f"--min-depth {min_depth} "
+                f"--window {window} "
+                f"--min-alt-freq {min_alt_freq}")
+    print(plot_cmd)
+    delegator.run(plot_cmd)
+    zip_cmd = f'cd {VAR_DENSITY_PATH} && zip -r {res_dir.name}.zip {res_dir.name}'
+    print(zip_cmd)
+    delegator.run(zip_cmd)
+    return re.sub(r'\S+wheat.*/app', '', str(res_dir))
 
 
 def _pandas_read(filename, header):
