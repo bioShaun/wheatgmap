@@ -1,22 +1,34 @@
-{% from "auth/_authform.html" import render_field %}
-{% extends 'auth_base.html' %}
+{% from "auth/_authform.html" import render_field %} {% extends 'base.html' %}
+{% block css %} {% endblock %} {% block content %}
 
-{% block css %}
-{% endblock %}
-
-{% block auth %}
-    <li><a href="{{url_for('auth.register')}}">register</a></li>
-{% endblock %}
-
-{% block content %}
-    <h2 style="text-align: center">Sign In</h2>
-    <form class="form form-sigin" method="post" action="{{ url_for('auth.login') }}">
-        {{ form.csrf_token }}
-        {{ render_field(form.username, placeholder="Username", class_="form-control") }}
-        {{ render_field(form.password, placeholder="Password", class_="form-control") }}
-        <p align="center"><input type="submit" class="btn btn-primary" value="submit"></p>
+<div class="card" style="width: 350px; margin: 0 auto">
+  <div class="card-body">
+    <h5 class="card-title" style="text-align: center">Sign in to Wheat Gmap</h5>
+    <form
+      class="form form-sigin"
+      method="post"
+      action="{{ url_for('auth.login') }}"
+    >
+      {{ form.csrf_token }} {{ render_field(form.username,
+      placeholder="Username", class_="form-control") }} {{
+      render_field(form.password, placeholder="Password", class_="form-control")
+      }}
+      <p align="center">
+        <input type="submit" class="btn btn-primary btn-block" value="submit" />
+      </p>
     </form>
-{% endblock %}
+  </div>
+</div>
 
-{% block script %}
-{% endblock %}
+<div style="margin-bottom: 10px"></div>
+
+<div class="card" style="width: 350px; margin: 0 auto">
+  <div class="card-body">
+    <p>New to Wheat Gmap?</p>
+    <a href="{{url_for('auth.register')}}"
+      >Create an account to manage your data.</a
+    >
+  </div>
+</div>
+
+{% endblock %} {% block script %} {% endblock %}

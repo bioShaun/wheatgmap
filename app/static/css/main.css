@@ -230,6 +230,10 @@ a:active {
   flex-grow: 1;
 }
 
+.ta-center {
+  text-align: center;
+}
+
 .user-img {
   width: 300px;
   height: auto;
