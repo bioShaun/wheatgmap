@@ -11,6 +11,33 @@
             color: #ffffff;
 }
 */
+
+body {
+  margin-top: 80px;
+}
+
+.bd-callout {
+  padding: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #eee;
+  border-left-width: 0.25rem;
+  border-radius: 0.24rem;
+}
+
+.bd-callout span {
+  font-size: large;
+  font-weight: 600;
+}
+
+.bd-callout-info {
+  border-left-color: #5bc0de;
+}
+
+.bd-callout-warning {
+  border-left-color: orange;
+}
+
 #results_table > tbody > tr > td {
   text-align: center;
 }

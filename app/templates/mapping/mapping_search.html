@@ -1,32 +1,39 @@
 {% extends 'base.html' %} {% block content %}
-<div style="margin-top: 100px; margin-bottom: 100px;">
+<div style="margin-top: 100px; margin-bottom: 100px">
   {% if task_id != 'none' %}
-  <div id="task-info" style="margin-bottom: 100px;">
+  <div id="task-info" style="margin-bottom: 100px">
     <h4>
       Your job is under processing, it may take 10 minutes to an hour, please
       save the task code and query your result later:
     </h4>
-    <h4 style="color: cornflowerblue;">{{ task_id }}</h4>
+    <h4 style="color: cornflowerblue">{{ task_id }}</h4>
   </div>
   {% endif %}
 
-  <div style="margin-top: 100px;">
-    <div class="input-group">
+  <div style="margin-top: 100px">
+    <div class="input-group mb-3">
       <input
         id="bsa-task-id"
         type="text"
         class="form-control"
         placeholder="Input your task ID e.g. 50fef8b5-7e39-4107-a1e2-496d178aa51f..."
       />
-      <span class="input-group-btn">
-        <button id="bsa-task-btn" class="btn btn-default" type="button">
+      <div class="input-group-append">
+        <button
+          id="bsa-task-btn"
+          class="btn btn-primary"
+          type="button"
+          id="button-addon2"
+        >
           Go!
         </button>
-      </span>
+      </div>
     </div>
     <!-- /input-group -->
   </div>
 </div>
 {% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/search_bsa.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

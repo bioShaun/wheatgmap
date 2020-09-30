@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="display-8">Gene Mapping Via Bulked Segregant Analysis</h2>
+          <p>1. Wild Bulk and Mutant Bulk are <b>required</b>.</p>
+          <p>2. Wild Parent and Mutant Parent are suggested if available.</p>
+          <p>3. Background could help you filter out some variants, but you should be much careful the genetic
+            background and phenotype of sample you selected.</p>
+    </div>
+</div>
+
+<div class="bd-callout bd-callout-info">
+    <span>Data Selection</span>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">My samples</div>
+          <div class="card-body">
+            <div>
+                <select name="from[]" id="multi_d" class="form-control multi_d" size="10" multiple="multiple">
+                    {% for sample in pri_samples %}
+                    <option value="private">{{ sample }}</option>
+                    {% endfor %}
+                  </select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Public samples</div>
+          <div class="card-body">
+            <div>
+                <select name="from[]" id="multi_d2" class="form-control multi_d" size="10" multiple="multiple">
+                    {% for sample in pub_samples %}
+                    <option value="public">{{ sample }}</option>
+                    {% endfor %}
+                  </select>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="col-md-6">
+            <div class="card" style="margin-bottom: 10px">
+              <div class="card-header">Wild Bulk (Required)</div>
+              <div class="card-body">
+                <div style="display: flex; justify-content: space-around">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: space-around;
+                    "
+                  >
+                    <button
+                      type="button"
+                      id="multi_d_rightSelected"
+                      class="btn btn-outline-success btn-sm"
+                    >
+                      <span class="iconfont icon-arrow-right-filling"></span>
+
+                      ADD
+                    </button>
+                    <button
+                      type="button"
+                      id="multi_d_leftSelected"
+                      class="btn btn-outline-warning btn-sm"
+                    >
+                      <span class="iconfont icon-arrow-left-filling"></span>
+                      REMOVE
+                    </button>
+                  </div>
+                  <div style="flex: 1; margin-left: 10px">
+                    <select
+                      name="to[]"
+                      id="multi_d_to"
+                      class="form-control"
+                      size="6"
+                      multiple="multiple"
+                    ></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>        
+    </div>
+
+
+</div>
+
+<div class="row">
+
+
+  <div class="row">
+
+    {% if pri_samples %}
+    <div class="col-xs-3">
+      <h3 class="panel-title">My samples</h3>
+      <select name="from[]" id="multi_d" class="form-control multi_d" size="67" multiple="multiple">
+        {% for sample in pri_samples %}
+        <option value="private">{{ sample }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+    {% if pub_samples %}
+    <div class="col-xs-3">
+      <h3 class="panel-title">Public samples</h3>
+      <select name="from[]" id="multi_d2" class="form-control multi_d" size="67" multiple="multiple">
+        {% for sample in pub_samples %}
+        <option value="public">{{ sample }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+
+    <div class="col-xs-2">
+      <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i
+          class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+      <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+      <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+      <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+      <hr style="margin: 40px 0 60px;" />
+
+      <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+      <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+      <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+      <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+      <hr style="margin: 40px 0 60px;" />
+
+      <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+      <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+      <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+      <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+
+      <hr style="margin: 40px 0 60px;" />
+
+      <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+      <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+      <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+      <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+      <hr style="margin: 40px 0 60px;" />
+
+      <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
+      <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
+      <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
+      <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i
+          class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+    </div>
+
+    <div class="col-xs-4">
+      <b>Wild Bulk (Required)</b>
+      <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
+
+      <br />
+      <hr /><br />
+
+      <b>Mutant Bulk (Required)</b>
+      <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
+      <br />
+      <hr /><br />
+
+      <b>Wild Parent (Optional)</b>
+      <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
+      <br />
+      <hr /><br />
+
+      <b>Mutant Parent (Optional)</b>
+      <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
+      <br />
+      <hr /><br />
+
+      <b>Background (Optional)</b>
+      <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
+    </div>
+  </div>
+  <br /><br />
+  <h3 class="panel-title"><b>Optional parameters [SNP Density/varBScore]:</b></h3>
+  <br>
+
+  <form>
+
+    <div class="form-group row">
+        <label for="min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth</label>
+        <div class="col-xs-7">
+          <input id="min_depth" type="input" value="" placeholder="5"></input></td>
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="w-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Window Size</label>
+      <div class="col-xs-7">
+        <input id="w-snp-num" type="input" value="" placeholder="20"></input></td>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="s-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Step Size</label>
+      <div class="col-xs-7">
+        <input id="s-snp-num" type="input" value="" placeholder="5"></input>
+      </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Filter Method</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="filter_method" id="filter_method0" value="symmetrical"> symmetrical
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="filter_method" id="filter_method1" value="nonsymmetrical" checked> nonsymmetrical
+              </label>                  
+        </div>
+    </div>    
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq0" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq1" value="0.2"> 0.2/0.8
+              </label>              
+              <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="ref_freq" id="ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant Parent</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq0" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq1" value="0.2"> 0.2/0.8
+              </label>              
+              <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="p_ref_freq" id="p_ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>    
+    
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Background</b>]</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq0" value="0.1"> 0.1/0.9
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq1" value="0.2"> 0.2/0.8
+              </label>              
+              <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq2" value="0.3" checked> 0.3/0.7
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="background_ref_freq" id="background_ref_freq3" value="0.43"> 0.43/0.57
+              </label>        
+        </div>
+    </div>  
+  </form>
+  <br />
+  <h3 class="panel-title"><b>Optional parameters [QTLseqr/ED/G']:</b></h3>
+  <br>
+  <form>
+
+    <div class="form-group row">
+        <label for="qtlseqr_min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth</label>
+        <div class="col-xs-7">
+          <input id="qtlseqr_min_depth" type="input" value="" placeholder="5"></input></td>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Population Structure</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="pop_stru" id="popStruc1" value="RIL" checked> RIL
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="pop_stru" id="popStruc2" value="F2"> F2
+              </label>               
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Ref Allele Frequency(AFD)</label>
+        <div class="col-xs-7">
+            <label class="radio-inline">
+                <input type="radio" name="qtlseqr_ref_freq" id="qtlseqr_ref_freq0" value="0.1"> 0.1
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="qtlseqr_ref_freq" id="qtlseqr_ref_freq1" value="0.2"> 0.2
+              </label>              
+              <label class="radio-inline">
+                <input type="radio" name="qtlseqr_ref_freq" id="qtlseqr_ref_freq2" value="0.3" checked> 0.3
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="qtlseqr_ref_freq" id="qtlseqr_ref_freq3" value="0.43"> 0.43
+              </label>        
+        </div>
+    </div>
+    
+
+  </form>
+  <div class="panel-body">
+    <input class="btn btn-primary btn-sm" id="submit" type="submit" value="Submit">
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/utils/bsa.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

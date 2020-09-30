@@ -36,7 +36,6 @@ css_fancybox = Bundle('fancybox/jquery.fancybox.css',
                       output='css/fancybox.min.css')
 
 js_comment = Bundle('js/jquery.min.js',
-                    'js/bootstrap.min.js',
                     'js/jquery-confirm.min.js',
                     filters='jsmin',
                     output='js/comment.min.js')

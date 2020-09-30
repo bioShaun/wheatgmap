@@ -1,19 +1,19 @@
 {% extends 'base.html' %} {% from 'auth/_authform.html' import render_field %}
 {% block css %} {% endblock %} {% block content %}
-<div class="main" style="margin: 30px 0;">
+<div class="main" style="margin: 30px 0">
   {% if current_user.is_anonymous %}
   <h3>Register</h3>
   {% else %}
   <h3>Public profile</h3>
   {% endif %}
-  <div style="margin-bottom: 10px; border-bottom: 1px solid #e1e4e8;"></div>
+  <div style="margin-bottom: 10px; border-bottom: 1px solid #e1e4e8"></div>
   <div class="user-profile d-flex">
     <div class="info flex-1">
       <form
         class="form form-register"
         method="post"
         action="{% if current_user.is_anonymous %}{{ url_for('auth.register') }}{% else %}{{ url_for('auth.edit') }}{% endif %}"
-        style="max-width: none; padding: 15px 0;"
+        style="max-width: none; padding: 15px 0"
       >
         {{ form.csrf_token }} {% if current_user.is_anonymous %} {{
         render_field(form.username, class_="form-control") }} {{
@@ -46,7 +46,7 @@
       </form>
     </div>
     <div class="photo-upload d-flex flex-column ai-center">
-      <div id="display-photo" class="display" style="margin-bottom: 5px;">
+      <div id="display-photo" class="display" style="margin-bottom: 5px">
         <a href="{{current_user.photo}}" data-lightbox="user-info">
           {% if current_user.photo %}
           <img class="user-img" src="{{current_user.photo}}" />
@@ -61,16 +61,16 @@
           name="imagePic"
           type="file"
           accept=".bmp,.jpg,.png,.jpeg,image/bmp,image/jpg,image/png,image/jpeg"
-          style="display: none;"
+          style="display: none"
         />
-        <button id="uploadButton" class="btn">
-          upload
-        </button>
+        <button id="uploadButton" class="btn btn-warning">upload</button>
       </div>
     </div>
   </div>
 </div>
 {% endblock %} {% block script %} {% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='js/lightbox.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils/userPhoto.js') }}"></script>
 {% endblock %}
