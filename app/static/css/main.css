@@ -130,6 +130,11 @@ body.main {
   }
 }
 
+.navbar-expand-md .navbar-nav .nav-link {
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
+
 a {
   text-decoration: none;
 }

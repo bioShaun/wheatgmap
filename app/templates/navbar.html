@@ -17,8 +17,9 @@
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="#"
           id="dropdown01"
+          href="#"
+          role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
@@ -35,6 +36,25 @@
             >Search Mapping Result</a
           >
           {% endif %}
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="dropdown02"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          >Variants</a
+        >
+        <div class="dropdown-menu" aria-labelledby="dropdown02">
+          <a class="dropdown-item" href="{{url_for('variants.query_sample')}}"
+            >Query by Sample</a
+          >
+          <a class="dropdown-item" href="{{ url_for('mapping.compare_group') }}"
+            >Compare by Group</a
+          >
         </div>
       </li>
       {% if current_user.is_authenticated %}

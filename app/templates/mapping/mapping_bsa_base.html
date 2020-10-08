@@ -19,6 +19,7 @@ content %}
 
 <div class="row">
   <div class="col-md-4">
+    {% if pri_samples %}
     <div class="card" style="margin-bottom: 10px">
       <div class="card-header">My samples</div>
       <div class="card-body">
@@ -37,6 +38,7 @@ content %}
         </div>
       </div>
     </div>
+    {% endif %}
     <div class="card">
       <div class="card-header">Public samples</div>
       <div class="card-body">
@@ -45,7 +47,18 @@ content %}
             name="from[]"
             id="multi_d2"
             class="form-control multi_d"
+            {%
+            if
+            pri_samples
+            %}
             size="10"
+            {%
+            else
+            %}
+            size="27"
+            {%
+            endif
+            %}
             multiple="multiple"
           >
             {% for sample in pub_samples %}

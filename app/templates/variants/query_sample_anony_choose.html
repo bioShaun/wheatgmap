@@ -1,27 +1,22 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="mapping-choose-box d-flex jc-around ai-center">
-    <div class="mapping-choose-item">
-        <a href="{{ url_for('variants.query_sample_anony', task_id='no') }}">
+  <div class="mapping-choose-item">
+    <a href="{{ url_for('variants.query_sample_anony', task_id='no') }}">
+      <button type="button" class="btn btn-success btn-lg mapping-choose-btn">
+        Public Data
+      </button>
+    </a>
+  </div>
 
-            <button type="button"
-                class="btn btn-success btn-lg mapping-choose-btn">
-                Public Data
-            </button>
-        </a>
-    </div>
-
-    <div class="mapping-choose-item">
-        <a href="{{ url_for('variants.query_sample_upload') }}">
-            <button type="button"
-                class="btn btn-warning btn-lg  mapping-choose-btn">
-                Upload Data
-            </button>
-        </a>
-    </div>
-
+  <div class="mapping-choose-item">
+    <a href="{{ url_for('variants.query_sample_upload') }}">
+      <button type="button" class="btn btn-warning btn-lg mapping-choose-btn">
+        Upload Data
+      </button>
+    </a>
+  </div>
 </div>
-{% endblock %}
-
-{% block js %}
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
