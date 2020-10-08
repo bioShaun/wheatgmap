@@ -54,7 +54,7 @@ def bsa_base_anony(task_id):
 
 @mapping.route('/bsa-base-upload/', methods=['GET'])
 def bsa_base_upload():
-    return render_template('mapping/mapping_bsa_anony_upload.html')
+    return render_template('anony_upload.html')
 
 
 @mapping.route('/bsa/', methods=['GET'])
@@ -104,7 +104,7 @@ def compare_group_anony(task_id):
 
 @mapping.route('/compare-group-upload/', methods=['GET'])
 def compare_group_upload():
-    return render_template('mapping/compare_group_anony_upload.html')
+    return render_template('anony_upload.html')
 
 
 @mapping.route('/bsa/run/', methods=['GET', 'POST'])

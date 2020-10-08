@@ -1,21 +1,19 @@
 {% extends 'base.html' %} {% block content %}
 <div>
   <div style="margin-top: 100px; margin-bottom: 100px">
-    <h3>Input upload ID</h3>
-    <p>If you have more than one upload code, seperate them with ",".</p>
-    <div class="row">
-      <div class="col-xs-6">
-        <textarea
-          id="input-task"
-          type="text"
-          class="form-control"
-          placeholder="Search for..."
-          rows="5"
-        ></textarea>
-      </div>
+    <div class="bd-callout bd-callout-info">
+      <span>Search Your Data</span>
     </div>
+    <p>If you have more than one upload code, seperate them with ",".</p>
+    <textarea
+      id="input-task"
+      type="text"
+      class="form-control"
+      placeholder="50fef8b5-7e39-4107-a1e2-496d178aa51f,8jyef8b5-7e21-2307-cce4-jzxd178aa7aa"
+      rows="5"
+    ></textarea>
     <button
-      id="search-upload-query-group"
+      id="search-upload"
       class="btn btn-success"
       type="button"
       style="margin-top: 10px"
@@ -24,11 +22,13 @@
     </button>
   </div>
 
-  <h3>Or Start Uploading</h3>
+  <div class="bd-callout bd-callout-warning">
+    <span>Upload Your Data</span>
+  </div>
   <p>
     <b
       >Please read the VCF format
-      <a href="{{ url_for('document.dataAnalysis')}}">REQUIRMENT</a>
+      <a href="/document/dataAnalysis/">REQUIRMENT</a>
       before upload. VCF is allowed less than 1G.</b
     >
   </p>
@@ -81,16 +81,24 @@
     </tbody>
   </table>
 
-  <div id="upload-info" style="display: none">
-    <h3>
-      Your data is under processing, this may take 30 minutes to 1 hour,
-      pleasing save the upload code and query your data later:
-    </h3>
-    <p id="upload-code" style="color: cornflowerblue"></p>
+  <div
+    class="alert alert-success"
+    role="alert"
+    id="upload-info"
+    style="display: none"
+  >
+    <h4 class="alert-heading">Processing Your Data!</h4>
+    <p>
+      This procudure may take 10 minutes to 1 hour, pleasing save the upload
+      code below and search your data later
+    </p>
+    <hr />
+    <p class="mb-0" id="upload-code" style="color: cornflowerblue"></p>
   </div>
 </div>
+
 {% endblock %} {% block js %}
-<script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
 {% endblock %}

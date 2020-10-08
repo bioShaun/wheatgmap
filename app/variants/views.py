@@ -53,7 +53,7 @@ def query_sample_anony(task_id):
 
 @variants.route('/query/sample-upload/', methods=['GET'])
 def query_sample_upload():
-    return render_template('variants/query_sample_anony_upload.html')
+    return render_template('anony_upload.html')
 
 
 @variants.route('/query/result/', methods=['POST'])
