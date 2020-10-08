@@ -33,7 +33,6 @@
     <div class="card" style="height: 210px">
       <div class="card-body">
         <div class="form-group row">
-          <br />
           <label for="select-chr" class="col-3 col-form-label">Chromsome</label>
           <div class="col-9">
             <select
@@ -187,9 +186,7 @@
 
 <br />
 <input class="btn btn-primary" id="submit" type="submit" value="Submit" />
-<!-- add loading hint -->
-<div id="query_hint"></div>
-<div id="results"></div>
+
 {% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/query_sample.js') }}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

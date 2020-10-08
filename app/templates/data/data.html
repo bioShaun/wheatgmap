@@ -1,16 +1,18 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body">
-  <h2>Public Samples:</h2>
-  <div class="search-box" style="display: flex; margin-bottom: 1rem;">
-      <div class="input-box" style="margin-right: 1rem;">
-            <div class="form-group">
-              <input type="text" class="form-control" id="searchVal"/>
-            </div>
+  <div class="bd-callout bd-callout-info">
+    <span>Public Samples</span>
+  </div>
+  <div class="search-box" style="display: flex; margin-bottom: 1rem">
+    <div class="input-box" style="margin-right: 1rem">
+      <div class="form-group">
+        <input type="text" class="form-control" id="searchVal" />
       </div>
-      <div class="search-btn">
-          <button id="searchItem" class="btn btn-primary">Search</button>
-          <button id="resetSearch" class="btn btn-warning">Reset</button>
-      </div>
+    </div>
+    <div class="search-btn">
+      <button id="searchItem" class="btn btn-primary">Search</button>
+      <button id="resetSearch" class="btn btn-warning">Reset</button>
+    </div>
   </div>
 
   <table id="samples" class="table table-striped" cellspacing="0" width="100%">
@@ -22,7 +24,7 @@
         <th class="th-sm">Scientific Name</th>
         <th class="th-sm">Variety ID</th>
         <th class="th-sm">Tissue</th>
-        <th class="th-sm">Age</th>        
+        <th class="th-sm">Age</th>
         <th class="th-sm">Phenotype</th>
         <th class="th-sm">Pooled Sample</th>
         <th class="th-sm">Submitter</th>
@@ -33,26 +35,28 @@
   </table>
 </div>
 {% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
   $(document).ready(function () {
     var search_item = {};
     const tableColumns = [
-        { data: "tc_id", bSortable: true, title: "WG ID" },
-        { data: "sample_name", bSortable: true, title: "Sample Name" },
-        { data: "type", bSortable: true, title: "Type" },
-        { data: "scientific_name", bSortable: true, title: "Scientific Name" },
-        { data: "variety_name", bSortable: true, title: "Variety ID" },
-        { data: "tissue", bSortable: true, title: "Tissue" },
-        { data: "age", bSortable: true, title: "Age" },
-        {
-          data: "bulked_segregant",
-          bSortable: true,
-          title: "Phenotype",
-        },
-        { data: "mixed_sample", bSortable: true, title: "Pooled Sample" },
-        { data: "provider", bSortable: true, title: "Submitter" },
-        { data: "dol", bSortable: true, title: "DOI" },
-      ]
+      { data: "tc_id", bSortable: true, title: "WG ID" },
+      { data: "sample_name", bSortable: true, title: "Sample Name" },
+      { data: "type", bSortable: true, title: "Type" },
+      { data: "scientific_name", bSortable: true, title: "Scientific Name" },
+      { data: "variety_name", bSortable: true, title: "Variety ID" },
+      { data: "tissue", bSortable: true, title: "Tissue" },
+      { data: "age", bSortable: true, title: "Age" },
+      {
+        data: "bulked_segregant",
+        bSortable: true,
+        title: "Phenotype",
+      },
+      { data: "mixed_sample", bSortable: true, title: "Pooled Sample" },
+      { data: "provider", bSortable: true, title: "Submitter" },
+      { data: "dol", bSortable: true, title: "DOI" },
+    ];
     var sampleTable = $("#samples").DataTable({
       serverSide: true,
       processing: true,
@@ -131,16 +135,16 @@
     });
     $("#searchItem").on("click", function () {
       const inputVal = $("#searchVal")[0].value;
-      tableColumns.map(val => {
-        search_item[val.data] = inputVal
-      })
-      console.log(search_item)
+      tableColumns.map((val) => {
+        search_item[val.data] = inputVal;
+      });
+      console.log(search_item);
       sampleTable.ajax.reload();
     });
 
     $("#resetSearch").on("click", function () {
-      $("#searchVal")[0].value = ""
-      search_item = {}
+      $("#searchVal")[0].value = "";
+      search_item = {};
       sampleTable.ajax.reload();
     });
   });

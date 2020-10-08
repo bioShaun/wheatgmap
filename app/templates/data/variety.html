@@ -1,20 +1,27 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body">
-  <h2>Varieties:</h2>
-  <div class="search-box" style="display: flex; margin-bottom: 1rem;">
-    <div class="input-box" style="margin-right: 1rem;">
-          <div class="form-group">
-            <input type="text" class="form-control" id="searchVal"/>
-          </div>
+  <div class="bd-callout bd-callout-info">
+    <span>Varieties</span>
+  </div>
+  <div class="search-box" style="display: flex; margin-bottom: 1rem">
+    <div class="input-box" style="margin-right: 1rem">
+      <div class="form-group">
+        <input type="text" class="form-control" id="searchVal" />
+      </div>
     </div>
     <div class="search-btn">
-        <button id="searchItem" class="btn btn-primary">Search</button>
-        <button id="resetSearch" class="btn btn-warning">Reset</button>
+      <button id="searchItem" class="btn btn-primary">Search</button>
+      <button id="resetSearch" class="btn btn-warning">Reset</button>
     </div>
-</div>  
-  <table id="varieties" class="table table-striped" cellspacing="0" width="100%">
+  </div>
+  <table
+    id="varieties"
+    class="table table-striped"
+    cellspacing="0"
+    width="100%"
+  >
     <thead>
-    <tr>
+      <tr>
         <th>Variety ID</th>
         <th>Variety Name</th>
         <th>Provider</th>
@@ -24,102 +31,107 @@
         <th>Province</th>
         <th>Affiliation</th>
         <th>Create Time</th>
-    </tr>
+      </tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody></tbody>
   </table>
 </div>
 {% endblock %} {% block js %}
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
- <script>
-    $(document).ready(function () {
-        var search_item = {};
-        const tableColumns = [
-            {"data": "id", "bSortable": true, "title": "Variety ID"},
-            {"data": "variety_name", "bSortable": true, "title": "Variety Name"},
-            {"data": "provider", "bSortable": true, "title": "Provider"},
-            {"data": "variety_type", "bSortable": true, "title": "Type"},
-            {"data": "geographic", "bSortable": true, "title": "Geographic"},
-            {"data": "country", "bSortable": true, "title": "Country"},
-            {"data": "province", "bSortable": true, "title": "Province"},
-            {"data": "affiliation", "bSortable": true, "title": "Affiliation"},
-            {"data": "create_time", "bSortable": true, "title": "Create Time"},
-        ]
-        var vaTable =  $("#varieties").DataTable({
-        serverSide: true,
-        processing: true,
-        pageLength: 20,
-        paging: true,
-        ordering: true,
-        searchable: false,
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function () {
+    var search_item = {};
+    const tableColumns = [
+      { data: "id", bSortable: true, title: "Variety ID" },
+      { data: "variety_name", bSortable: true, title: "Variety Name" },
+      { data: "provider", bSortable: true, title: "Provider" },
+      { data: "variety_type", bSortable: true, title: "Type" },
+      { data: "geographic", bSortable: true, title: "Geographic" },
+      { data: "country", bSortable: true, title: "Country" },
+      { data: "province", bSortable: true, title: "Province" },
+      { data: "affiliation", bSortable: true, title: "Affiliation" },
+      { data: "create_time", bSortable: true, title: "Create Time" },
+    ];
+    var vaTable = $("#varieties").DataTable({
+      serverSide: true,
+      processing: true,
+      pageLength: 20,
+      paging: true,
+      ordering: true,
+      searchable: false,
       searching: false,
-        pagingType: "full_numbers",
-        columns: tableColumns,
-        columnDefs: [{
-            title: 'TC ID',
-            name: 'id_1',
-            data: 'id',
-            targets: [0],
-            render: function (data) {
-                return "<a href='/variety/detail/" + data + "/'>TC-Va-" + data + "</a>";
-            }
-        }, {
-                title: 'Provider',
-                name: 'provider_3',
-                data: 'provider',
-                targets: [2],
-                render: function (data) {
-                    return "<a href='/data/user/" + data + "/'>" + data + "</a>";
-                }
-            }],
-        ajax: function (data, callback) {
-            var param = {};
-            param.draw = data.draw;
-            param.start = data.start;
-            param.length = data.length;
-            param.search = search_item;
-            param.page = param.start / param.length + 1;
-            if(data.order) {
-                param.order = data.order[0]['dir'] + ' ' + data.order[0]['column'];
-            }else{
-                param.order = '';
-            }
-            $.ajax({
-                type: "POST",
-                url: "{{ url_for('data.variety_dt') }}",
-                data: {data: JSON.stringify(param)},
-                success: function (res) {
-                    var returnData = {};
-                    returnData.draw = res.draw;
-                    returnData.recordsTotal = res.recordsTotal;
-                    returnData.recordsFiltered = res.recordsFiltered;
-                    returnData.data = res.data;
-                    callback(returnData);
-                },
-                error: function () {
-                    console.log('error');
-                }
-            });
+      pagingType: "full_numbers",
+      columns: tableColumns,
+      columnDefs: [
+        {
+          title: "TC ID",
+          name: "id_1",
+          data: "id",
+          targets: [0],
+          render: function (data) {
+            return (
+              "<a href='/variety/detail/" + data + "/'>TC-Va-" + data + "</a>"
+            );
+          },
+        },
+        {
+          title: "Provider",
+          name: "provider_3",
+          data: "provider",
+          targets: [2],
+          render: function (data) {
+            return "<a href='/data/user/" + data + "/'>" + data + "</a>";
+          },
+        },
+      ],
+      ajax: function (data, callback) {
+        var param = {};
+        param.draw = data.draw;
+        param.start = data.start;
+        param.length = data.length;
+        param.search = search_item;
+        param.page = param.start / param.length + 1;
+        if (data.order) {
+          param.order = data.order[0]["dir"] + " " + data.order[0]["column"];
+        } else {
+          param.order = "";
         }
+        $.ajax({
+          type: "POST",
+          url: "{{ url_for('data.variety_dt') }}",
+          data: { data: JSON.stringify(param) },
+          success: function (res) {
+            var returnData = {};
+            returnData.draw = res.draw;
+            returnData.recordsTotal = res.recordsTotal;
+            returnData.recordsFiltered = res.recordsFiltered;
+            returnData.data = res.data;
+            callback(returnData);
+          },
+          error: function () {
+            console.log("error");
+          },
+        });
+      },
     });
-    
+
     $("#searchItem").on("click", function () {
       const inputVal = $("#searchVal")[0].value;
-      tableColumns.map(val => {
-        search_item[val.data] = inputVal
-      })
-      console.log(search_item)
+      tableColumns.map((val) => {
+        search_item[val.data] = inputVal;
+      });
+      console.log(search_item);
       vaTable.ajax.reload();
     });
 
     $("#resetSearch").on("click", function () {
-      $("#searchVal")[0].value = ""
-      search_item = {}
+      $("#searchVal")[0].value = "";
+      search_item = {};
       vaTable.ajax.reload();
     });
   });
 </script>
 {% endblock %}
-

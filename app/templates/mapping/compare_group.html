@@ -1,253 +1,421 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
+
+<div class="jumbotron">
+  <div class="container">
+    <h2 class="display-8">Variants compare by groups</h2>
+    <p>1: Input one or more gene ID <b>OR</b> select a chromsome and region.</p>
+    <p>2: Select the samples in the left boxes and add to right box.</p>
+    <p>3: Click the "Submit"</p>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-info">
+  <span>Genome Region Selection</span>
+</div>
+
 <div class="row">
-    <h2>Variants compare by groups</h2>
-
-    <div class="panel-heading">
-        <p> 1: Input one or more gene ID <B>OR</B> select a chromsome and region.</p>
-        <p> 2: Select the samples in the left boxes and add to right box. </p>
-        <p> 3: Click the "Submit"</p>
+  <div class="col-6">
+    <div class="card" style="height: 210px">
+      <div class="card-body">
+        <form role="search" method="" action="#">
+          <textarea
+            id="gene_list"
+            rows="5"
+            class="form-control"
+            value=""
+            placeholder="Input Gene ID.(e.g TraesCS1D01G311400)"
+          ></textarea>
+        </form>
+      </div>
     </div>
-
-    <div class="row">
-        <div class="col-xs-6">
-            <form role="search" method="" action="#">
-                <div class="input-group">
-                    <table class="table">
-                        <tr>
-                            <td>
-                                <textarea id="gene_list" rows="5" cols="80" class="form-control" value=""
-                                    placeholder="Input Gene ID.(e.g TraesCS1D01G311400)"></textarea>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-        </div>
-        <div class="col-xs-6">
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">Chromsome:</span>
-                    <select class="selectpicker" data-width="25%" name="chr" id="select-chr">
-                        <option value=selected="selected"></option>
-                        <option value=chr1A>chr1A</option>
-                        <option value=chr1B>chr1B</option>
-                        <option value=chr1D>chr1D</option>
-                        <option value=chr2A>chr2A</option>
-                        <option value=chr2B>chr2B</option>
-                        <option value=chr2D>chr2D</option>
-                        <option value=chr3A>chr3A</option>
-                        <option value=chr3B>chr3B</option>
-                        <option value=chr3D>chr3D</option>
-                        <option value=chr4A>chr4A</option>
-                        <option value=chr4B>chr4B</option>
-                        <option value=chr4D>chr4D</option>
-                        <option value=chr5A>chr5A</option>
-                        <option value=chr5B>chr5B</option>
-                        <option value=chr5D>chr5D</option>
-                        <option value=chr6A>chr6A</option>
-                        <option value=chr6B>chr6B</option>
-                        <option value=chr6D>chr6D</option>
-                        <option value=chr7A>chr7A</option>
-                        <option value=chr7B>chr7B</option>
-                        <option value=chr7D>chr7D</option>
-                        <option value=chrUn>chrUn</option>
-                    </select>
-                </div>
-                <br>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">Start position:</span>
-                    <input type="text" id="pos-start" class="form-control input-group-sm" name="pos_start">
-                </div>
-                <br>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">End position:</span>
-                    <input type="text" id="pos-end" class="form-control input-group-sm" name="pos_end">
-                </div>
-            </div>
-        </div>
-    </div>
-    <h2>Add the samples to each group boxes:</h2>
-    <div class="row">
-
-        {% if pri_samples %}
-        <div class="col-xs-3">
-            <h3 class="panel-title">Private samples</h3>
-            <select name="from[]" id="multi_d" class="form-control multi_d" size="67" multiple="multiple">
-                {% for sample in pri_samples %}
-                <option value="private">{{ sample }}</option>
-                {% endfor %}
+  </div>
+  <div class="col-6">
+    <div class="card" style="height: 210px">
+      <div class="card-body">
+        <div class="form-group row">
+          <br />
+          <label for="select-chr" class="col-3 col-form-label">Chromsome</label>
+          <div class="col-9">
+            <select
+              class="form-control form-control-sm"
+              name="chr"
+              id="select-chr"
+            >
+              <option value="selected" ="selected"></option>
+              <option value="chr1A">chr1A</option>
+              <option value="chr1B">chr1B</option>
+              <option value="chr1D">chr1D</option>
+              <option value="chr2A">chr2A</option>
+              <option value="chr2B">chr2B</option>
+              <option value="chr2D">chr2D</option>
+              <option value="chr3A">chr3A</option>
+              <option value="chr3B">chr3B</option>
+              <option value="chr3D">chr3D</option>
+              <option value="chr4A">chr4A</option>
+              <option value="chr4B">chr4B</option>
+              <option value="chr4D">chr4D</option>
+              <option value="chr5A">chr5A</option>
+              <option value="chr5B">chr5B</option>
+              <option value="chr5D">chr5D</option>
+              <option value="chr6A">chr6A</option>
+              <option value="chr6B">chr6B</option>
+              <option value="chr6D">chr6D</option>
+              <option value="chr7A">chr7A</option>
+              <option value="chr7B">chr7B</option>
+              <option value="chr7D">chr7D</option>
+              <option value="chrUn">chrUn</option>
             </select>
+          </div>
         </div>
-        {% endif %}
-
-        {% if pub_samples %}
-        <div class="col-xs-3">
-            <h3 class="panel-title">Public samples</h3>
-            <select name="from[]" id="multi_d2" class="form-control multi_d" size="67" multiple="multiple">
-                {% for sample in pub_samples %}
-                <option value="public">{{ sample }}</option>
-                {% endfor %}
-            </select>
+        <div class="form-group row">
+          <label for="pos-start" class="col-3 col-form-label"
+            >Start Position</label
+          >
+          <div class="col-9">
+            <input
+              type="text"
+              id="pos-start"
+              class="form-control form-control-sm"
+              name="pos_start"
+            />
+          </div>
         </div>
-        {% endif %}
-
-        <div class="col-xs-2">
-            <button type="button" id="multi_d_rightAll" class="btn btn-default btn-block" style="margin-top: 20px;"><i
-                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-            <button type="button" id="multi_d_rightSelected" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-            <button type="button" id="multi_d_leftSelected" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-            <button type="button" id="multi_d_leftAll" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-            <hr style="margin: 40px 0 60px;" />
-
-            <button type="button" id="multi_d_rightAll_2" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-            <button type="button" id="multi_d_rightSelected_2" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-            <button type="button" id="multi_d_leftSelected_2" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-            <button type="button" id="multi_d_leftAll_2" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-            <hr style="margin: 40px 0 60px;" />
-
-            <button type="button" id="multi_d_rightAll_3" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-            <button type="button" id="multi_d_rightSelected_3" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-            <button type="button" id="multi_d_leftSelected_3" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-            <button type="button" id="multi_d_leftAll_3" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-
-            <hr style="margin: 40px 0 60px;" />
-
-            <button type="button" id="multi_d_rightAll_4" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-            <button type="button" id="multi_d_rightSelected_4" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-            <button type="button" id="multi_d_leftSelected_4" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-            <button type="button" id="multi_d_leftAll_4" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
-            <hr style="margin: 40px 0 60px;" />
-
-            <button type="button" id="multi_d_rightAll_5" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-forward"></i>&nbsp;ADD ALL</button>
-            <button type="button" id="multi_d_rightSelected_5" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-right"></i>&nbsp;ADD</button>
-            <button type="button" id="multi_d_leftSelected_5" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-chevron-left"></i>&nbsp;REMOVE</button>
-            <button type="button" id="multi_d_leftAll_5" class="btn btn-default btn-block"><i
-                    class="glyphicon glyphicon-backward"></i>&nbsp;REMOVE ALL</button>
+        <div class="form-group row">
+          <label for="pos-end" class="col-3 col-form-label">End Position</label>
+          <div class="col-9">
+            <input
+              type="text"
+              id="pos-end"
+              class="form-control form-control-sm"
+              name="pos_end"
+            />
+          </div>
         </div>
-
-        <div class="col-xs-4">
-            <div class="input-group">
-                <span class="input-group-addon">Group name</span>
-                <input id="g1" type="text" class="form-control" placeholder="">
-            </div>
-            <select name="to[]" id="multi_d_to" class="form-control" size="8" multiple="multiple"></select>
-
-            <hr style="margin: 28px 0 50px;" />
-
-            <div class="input-group">
-                <span class="input-group-addon">Group name</span>
-                <input id="g2" type="text" class="form-control" placeholder="">
-            </div>
-            <select name="to_2[]" id="multi_d_to_2" class="form-control" size="8" multiple="multiple"></select>
-
-            <hr style="margin: 20px 0 45px;">
-
-            <div class="input-group">
-                <span class="input-group-addon">Group name</span>
-                <input id="g3" type="text" class="form-control" placeholder="">
-            </div>
-            <select name="to_3[]" id="multi_d_to_3" class="form-control" size="8" multiple="multiple"></select>
-
-            <hr style="margin: 20px 0 45px;">
-
-            <div class="input-group">
-                <span class="input-group-addon">Group name</span>
-                <input id="g4" type="text" class="form-control" placeholder="">
-            </div>
-            <select name="to_4[]" id="multi_d_to_4" class="form-control" size="8" multiple="multiple"></select>
-
-            <hr style="margin: 20px 0 50px;">
-
-            <div class="input-group">
-                <span class="input-group-addon">Group name</span>
-                <input id="g5" type="text" class="form-control" placeholder="">
-            </div>
-            <select name="to_5[]" id="multi_d_to_5" class="form-control" size="8" multiple="multiple"></select>
-        </div>
-        <!--
-    <div class="col-xs-3">
-      <br/><br/>
-      <table>
-        <tr>
-          <td><b>Group Name</b></td>
-        </tr>
-        <tr>
-          <td><input type="input" value=""></input></td>
-        </tr>
-      </table>
-      <hr style="margin: 78px 0 78px;" />
-      <table>
-        <tr>
-          <td><b>Group Name</b></td>
-        </tr>
-        <tr>
-          <td><input type="input" value=""></input></td>
-        </tr>
-      </table>
-      <hr style="margin: 78px 0 78px;" />
-      <table>
-        <tr>
-          <td><b>Group Name</b></td>
-        </tr>
-        <tr>
-          <td><input type="input" value=""></input></td>
-        </tr>
-      </table>
-      <hr style="margin: 78px 0 78px;" />
-      <table>
-        <tr>
-            <td><b>Group Name</b></td>
-        </tr>
-        <tr>
-            <td><input type="input" value=""></input></td>
-        </tr>
-      </table>
-      <hr style="margin: 78px 0 78px;" />
-      <table>
-        <tr>
-            <td><b>Group Name</b></td>
-        </tr>
-        <tr>
-            <td><input type="input" value=""></input></td>
-        </tr>
-      </table>
+      </div>
     </div>
-   -->
-    </div>
-    <br /><br />
+  </div>
 </div>
+
+<div class="bd-callout bd-callout-warning">
+  <span>Samples Selection</span>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    {% if pri_samples %}
+    <div class="card" style="margin-bottom: 10px">
+      <div class="card-header">My samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d"
+            class="form-control multi_d"
+            size="10"
+            multiple="multiple"
+          >
+            {% for sample in pri_samples %}
+            <option value="private">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="card">
+      <div class="card-header">Public samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d2"
+            class="form-control multi_d"
+            {%
+            if
+            pri_samples
+            %}
+            size="10"
+            {%
+            else
+            %}
+            size="28"
+            {%
+            endif
+            %}
+            multiple="multiple"
+          >
+            {% for sample in pub_samples %}
+            <option value="public">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">
+            <div class="form-group row" style="margin-bottom: 0">
+              <label for="g1" class="col-6 col-form-label">Group Name</label>
+              <div class="col-6">
+                <input
+                  type="text"
+                  id="g1"
+                  class="form-control form-control-sm"
+                  name="g1"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to"
+                  class="form-control"
+                  size="6"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">
+            <div class="form-group row" style="margin-bottom: 0">
+              <label for="g1" class="col-6 col-form-label">Group Name</label>
+              <div class="col-6">
+                <input
+                  type="text"
+                  id="g2"
+                  class="form-control form-control-sm"
+                  name="g2"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_2"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_2"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_2"
+                  class="form-control"
+                  size="6"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">
+            <div class="form-group row" style="margin-bottom: 0">
+              <label for="g1" class="col-6 col-form-label">Group Name</label>
+              <div class="col-6">
+                <input
+                  type="text"
+                  id="g3"
+                  class="form-control form-control-sm"
+                  name="g3"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_3"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_3"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_3"
+                  class="form-control"
+                  size="6"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">
+            <div class="form-group row" style="margin-bottom: 0">
+              <label for="g4" class="col-6 col-form-label">Group Name</label>
+              <div class="col-6">
+                <input
+                  type="text"
+                  id="g4"
+                  class="form-control form-control-sm"
+                  name="g3"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_4"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_4"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_4"
+                  class="form-control"
+                  size="6"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-header">
+            <div class="form-group row" style="margin-bottom: 0">
+              <label for="g1" class="col-6 col-form-label">Group Name</label>
+              <div class="col-6">
+                <input
+                  type="text"
+                  id="g5"
+                  class="form-control form-control-sm"
+                  name="g5"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_5"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_5"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_5"
+                  class="form-control"
+                  size="6"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="panel-body">
-    <input class="btn btn-primary btn-sm" id="submit" type="submit" value="Submit">
+  <input class="btn btn-primary" id="submit" type="submit" value="Submit" />
 </div>
-<hr />
-<!-- add loading hint -->
-<div id="query_hint"></div>
-<h2>Results:</h2>
-<div id="result"></div>
-</div>
-{% endblock %}
 
-{% block js %}
+{% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/compare_group.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
