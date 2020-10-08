@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Wheat Gmap</title>
+    <!-- <link
+      href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      rel="stylesheet"
+    /> -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    {% assets "css_all" -%}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {%- endassets %} {% block css %} {% endblock %}
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="{{url_for('static', filename='images/logo_icon.png') }}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='images/logo_icon.png')}}"
+    />
+  </head>
+
+  <body class="cover">
+    {% include "navbar.html" %}
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            class="d-block w-100"
+            src="{{ url_for('static', filename='images/Wheat-Field-cut.jpg')}}"
+            alt="First slide"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h1>WheatGmap</h1>
+            <p>
+              A Comprehensive Genomic Platform for Wheat Gene Mapping and Data
+              Sharing
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="myalert"></div>
+      {% for message in get_flashed_messages(with_categories=true) %}
+      <div class="alert alert-{{ message[0] }}">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+        {{ message[1] }}
+      </div>
+      {% endfor %} {% block content %} {% endblock %}
+
+      <div style="margin-top: 100px"></div>
+
+      <footer id="footer" class="footer navbar-fixed-bottom">
+        <div
+          class="container"
+          style="
+            border-top: 1px solid #e6e6e6;
+            padding-top: 20px;
+            background-color: #fff;
+          "
+        >
+          <p class="pull-right"><a href="#">Back to top</a></p>
+          <p style="margin-bottom: 20px">&copy; 2019 Tcuni, Inc.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+  {% assets "js_all" -%}
+  <script src="{{ ASSET_URL }}"></script>
+  {%- endassets %} {% block js %}
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  {% endblock %} {% assets "js_sup" -%}
+  <script src="{{ ASSET_URL }}"></script>
+  {%- endassets %}
+</html>

@@ -1,173 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_cover.html' %} {% block content %}
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Wheat Gmap</title>
+<div class="container marketing" style="margin-top: 30px">
+  <div class="d-flex jc-around">
+    <div>
+      <a href="https://www.sicau.edu.cn/" target="_blank">
+        <img
+          class="img"
+          src="{{ url_for('static', filename='images/SCAU.jpg')}}"
+          alt="Generic placeholder image"
+          width="auto"
+          height="60"
+        />
+      </a>
+    </div>
 
-  <!-- Bootstrap core CSS -->
-  {% assets 'css_cover' -%}
-  <link rel="stylesheet" href="{{ ASSET_URL }}">
-  {%- endassets %}
-</head>
-<link rel="apple-touch-icon-precomposed" href="{{url_for('static', filename='images/logo_icon.png') }}">
-<link rel="shortcut icon" href="{{ url_for('static', filename='images/logo_icon.png')}}">
-<!-- NAVBAR
-================================================== -->
+    <div>
+      <a href="http://www.icscaas.com.cn/" target="_blank">
+        <img
+          class="img"
+          src="{{ url_for('static', filename='images/CAAS_LOGO.png')}}"
+          alt="Generic placeholder image"
+          width="auto"
+          height="60"
+        />
+      </a>
+    </div>
 
-<body>
-  {% if not current_user.is_authenticated %}
-  <div class="navbar-wrapper">
-    <div class="container">
-
-      <nav class="navbar navbar-default navbar-inverse navbar-static-top">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-              aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Wheat Gmap</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="{{ url_for('auth.login') }}">login</a></li>
-              <li><a href="{{ url_for('auth.register') }}">register</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="{{ url_for('document.contactUS') }}">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
+    <div>
+      <a href="http://www.tcuni.com/" target="_blank">
+        <img
+          class="img"
+          src="{{ url_for('static', filename='images/logo.png')}}"
+          alt="Generic placeholder image"
+          width="auto"
+          height="60"
+        />
+      </a>
     </div>
   </div>
-  {% endif %}
-  <!-- Carousel
-    ================================================== -->
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-        <img class="first-slide" src="{{ url_for('static', filename='images/wheat01.jpg')}}" alt="First slide">
-        <div class="container">
-          <div class="carousel-caption">
-            <h1>WheatGmap</h1>
-            <p>A Comprehensive Genomic Platform for Wheat Gene Mapping and Data Sharing</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div><!-- /.carousel -->
-
-
-  <!-- Marketing messaging and featurettes
-    ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
-
-  <div class="container marketing">
-
-    <!-- Three columns of text below the carousel -->
-    <div class="row">  <!-- Main tools on cover -->
-
-      <div class="col-lg-3">
-        <h2>Mapping</h2>
-        <p><a href="{{ url_for('mapping.bsa_base') }}" role="button">Mapping via BSA &raquo;</a></p>
-        {% if not current_user.is_authenticated %}
-        <p><a href="{{ url_for('mapping.bsa_search', task_id='none') }}" role="button">Mapping Result &raquo;</a></p>
-        {% endif %}
-      </div>
-
-      <div class="col-lg-3">
-        <h2>Variation</h2>
-        <p><a href="{{ url_for('variants.query_sample') }}" role="button">Query by samples &raquo;</a></p>
-        <p><a href="{{ url_for('mapping.compare_group') }}" role="button">Query by group &raquo;</a></p>
-      </div>
-
-      <div class="col-lg-3">
-        <h2>Tools</h2>
-	<p><a href="{{ url_for('tools.blast') }}" role="button">Blast &raquo;</a></p>
-        <p><a href="{{ url_for('tools.gene_information') }}" role="button">Gene &raquo;</a></p>
-        <p><a href="{{ url_for('tools.get_sequence') }}" role="button">Sequencing &raquo;</a></p>
-        <p><a href="{{ url_for('expression.expression_by_gene') }}" role="button">Expression &raquo;</a></p>
-        <p><a href="{{ url_for('expression.enrichment') }}" role="button">Enrichment &raquo;</a></p>
-      </div>
-
-      <div class="col-lg-3">
-        <h2>Document</h2>
-        <p><a href="{{ url_for('document.geneMapping') }}" role="button">Gene Mapping &raquo;</a></p>
-        <p><a href="{{ url_for('document.dataAnalysis') }}"  role="button">Data Prepare &raquo;</a></p>
-        <p><a href="{{ url_for('document.dataSharing') }}" role="button">Data Share &raquo;</a></p>
-	<p><a href="{{ url_for('document.gallery') }}" role="button">Gallery &raquo;</a></p>
-      </div>
-    </div><!-- / Main tools on cover -->
-
-    </br>
-    </br>
-    </br>
-    </br>
-
-    <div class="row"> <!-- show institut logo -->
-      <div class="col-lg-4">
-        <img class="img" src="{{ url_for('static', filename='images/SCAU.jpg')}}" alt="Generic placeholder image"
-          width="214" height="60">
-      </div>
-
-      <div class="col-lg-4">
-        <img class="img" src="{{ url_for('static', filename='images/CAAS_LOGO.png')}}" alt="Generic placeholder image"
-          width="360" height="60">
-      </div>
-
-      <div class="col-lg-4">
-        <img class="img" src="{{ url_for('static', filename='images/logo.png')}}" alt="Generic placeholder image"
-          width="257" height="80">
-      </div>
-
-    </div><!-- /show institut logo -->
-
-
-    <!-- <hr class="featurette-divider"> -->
-    <!-- FOOTER -->
-    <!-- <footer>
-      <p class="pull-right"><a href="#">Back to top</a></p>
-      <p>&copy; 2019 <a href="http://www.tcuni.com">Tcuni, Inc.</a> &middot; Privacy &middot; <a href="#">Terms</a></p>
-    </footer> -->
-
-    <div style="margin-top: 100px;"></div>
-
-    <footer id="footer" class="footer navbar-fixed-bottom ">
-      <div
-        class="container"
-        style="border-top: 1px solid #e6e6e6; 
-         padding-top: 20px;           
-        background-color: #fff;"
-      >
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p style="margin-bottom: 20px;">
-          &copy; 2019 Tcuni, Inc.
-        </p>
-      </div>
-    </footer>
-
-  </div><!-- /.container -->
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  {% assets "js_sup" -%}
-  <script src="{{ ASSET_URL }}"></script>
-  {%- endassets %}
-</body>
-
-</html>
+  <!-- /show institut logo -->
+</div>
+{% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/utils/bsa.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
