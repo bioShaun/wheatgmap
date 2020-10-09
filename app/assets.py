@@ -7,16 +7,17 @@ datatable = Bundle(
     filters='cssmin',
     output='css/data_table.min.css')
 
-css_base = Bundle('css/lightbox.min.css',
-                  'css/dropzone.css',
-                  'css/bootstrap-select.css',
-                  'css/jquery-confirm.min.css',
-                  'css/main.css',
-                  'css/variety.css',
-                  'css/mapping_choose.css',
-                  datatable,
-                  filters='cssmin',
-                  output='css/all.min.css')
+css_base = Bundle(
+    'css/lightbox.min.css',
+    'css/dropzone.css',
+    #'css/bootstrap-select.css',
+    'css/jquery-confirm.min.css',
+    'css/main.css',
+    'css/variety.css',
+    'css/mapping_choose.css',
+    datatable,
+    filters='cssmin',
+    output='css/all.min.css')
 
 css_cover = Bundle('css/bootstrap.css',
                    'css/carousel.css',
@@ -51,15 +52,16 @@ js_fancybox = Bundle('fancybox/jquery.fancybox.js',
                      filters='jsmin',
                      output='js/fancybox.min.js')
 
-js_base = Bundle(js_comment,
-                 'datatables/jquery.dataTables.min.js',
-                 'js/bootstrap-select.js',
-                 'js/multiselect.min.js',
-                 'js/main.js',
-                 'js/layer/layer.js',
-                 js_datatable,
-                 filters='jsmin',
-                 output='js/all.min.js')
+js_base = Bundle(
+    js_comment,
+    'datatables/jquery.dataTables.min.js',
+    #'js/bootstrap-select.js',
+    'js/multiselect.min.js',
+    'js/main.js',
+    'js/layer/layer.js',
+    js_datatable,
+    filters='jsmin',
+    output='js/all.min.js')
 
 js_sup = Bundle('js/sup.js', filters='jsmin', output='js/sup.min.js')
 
