@@ -20,7 +20,7 @@ content %}
 <div class="row">
   <div class="col-md-4">
     {% if pri_samples %}
-    <div class="card" style="margin-bottom: 10px">
+    <div class="card select-from-card-double mb-10">
       <div class="card-header">My samples</div>
       <div class="card-body">
         <div>
@@ -39,7 +39,9 @@ content %}
       </div>
     </div>
     {% endif %}
-    <div class="card">
+    <div
+      class="card {% if pri_samples %} select-from-card-double {% else %} select-from-card-single {% endif %}"
+    >
       <div class="card-header">Public samples</div>
       <div class="card-body">
         <div>
@@ -55,7 +57,7 @@ content %}
             {%
             else
             %}
-            size="27"
+            size="25"
             {%
             endif
             %}
@@ -73,7 +75,7 @@ content %}
   <div class="col-md-8">
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">Wild Bulk (Required)</div>
           <div class="card-body">
             <div class="d-flex jc-around">
@@ -110,7 +112,7 @@ content %}
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">Mutant Bulk (Required)</div>
           <div class="card-body">
             <div class="d-flex jc-around">
@@ -150,7 +152,7 @@ content %}
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">Wild Parent (Optional)</div>
           <div class="card-body">
             <div class="d-flex jc-around">
@@ -187,7 +189,7 @@ content %}
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">Mutant Parent (Optional)</div>
           <div class="card-body">
             <div class="d-flex jc-around">
@@ -227,7 +229,7 @@ content %}
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card">
           <div class="card-header">Background (Optional)</div>
           <div class="card-body">
             <div class="d-flex jc-around">
@@ -271,7 +273,7 @@ content %}
   <span>Parameters</span>
 </div>
 
-<div class="row" style="margin-top: 10px; margin-bottom: 10px">
+<div class="row mb-20">
   <div class="col-md-7">
     <div class="card">
       <div class="card-header">SNP Density/varBScore</div>
@@ -639,10 +641,19 @@ content %}
   </div>
 </div>
 
-<div style="text-align: center">
-  <button class="btn btn-primary" id="submit" type="submit" value="Submit">
-    Submit
-  </button>
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col">
+    <button
+      class="btn btn-primary btn-block"
+      id="submit"
+      type="submit"
+      value="Submit"
+    >
+      Submit
+    </button>
+  </div>
+  <div class="col-4"></div>
 </div>
 
 {% endblock %} {% block js %}

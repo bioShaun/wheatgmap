@@ -100,10 +100,10 @@
   <span>Samples Selection</span>
 </div>
 
-<div class="row">
+<div class="row mb-20">
   <div class="col-md-4">
     {% if pri_samples %}
-    <div class="card" style="margin-bottom: 10px">
+    <div class="card select-from-card-double mb-10">
       <div class="card-header">My samples</div>
       <div class="card-body">
         <div>
@@ -122,7 +122,9 @@
       </div>
     </div>
     {% endif %}
-    <div class="card">
+    <div
+      class="card {% if pri_samples %} select-from-card-double {% else %} select-from-card-single {% endif %}"
+    >
       <div class="card-header">Public samples</div>
       <div class="card-body">
         <div>
@@ -138,7 +140,7 @@
             {%
             else
             %}
-            size="28"
+            size="25"
             {%
             endif
             %}
@@ -156,7 +158,7 @@
   <div class="col-md-8">
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">
             <div class="form-group row" style="margin-bottom: 0">
               <label for="g1" class="col-6 col-form-label">Group Name</label>
@@ -196,7 +198,7 @@
                   name="to[]"
                   id="multi_d_to"
                   class="form-control"
-                  size="6"
+                  size="5"
                   multiple="multiple"
                 ></select>
               </div>
@@ -205,7 +207,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">
             <div class="form-group row" style="margin-bottom: 0">
               <label for="g1" class="col-6 col-form-label">Group Name</label>
@@ -245,7 +247,7 @@
                   name="to[]"
                   id="multi_d_to_2"
                   class="form-control"
-                  size="6"
+                  size="5"
                   multiple="multiple"
                 ></select>
               </div>
@@ -257,7 +259,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">
             <div class="form-group row" style="margin-bottom: 0">
               <label for="g1" class="col-6 col-form-label">Group Name</label>
@@ -297,7 +299,7 @@
                   name="to[]"
                   id="multi_d_to_3"
                   class="form-control"
-                  size="6"
+                  size="5"
                   multiple="multiple"
                 ></select>
               </div>
@@ -306,7 +308,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card mb-10">
           <div class="card-header">
             <div class="form-group row" style="margin-bottom: 0">
               <label for="g4" class="col-6 col-form-label">Group Name</label>
@@ -346,7 +348,7 @@
                   name="to[]"
                   id="multi_d_to_4"
                   class="form-control"
-                  size="6"
+                  size="5"
                   multiple="multiple"
                 ></select>
               </div>
@@ -358,7 +360,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card" style="margin-bottom: 10px">
+        <div class="card select-to-card">
           <div class="card-header">
             <div class="form-group row" style="margin-bottom: 0">
               <label for="g1" class="col-6 col-form-label">Group Name</label>
@@ -398,7 +400,7 @@
                   name="to[]"
                   id="multi_d_to_5"
                   class="form-control"
-                  size="6"
+                  size="5"
                   multiple="multiple"
                 ></select>
               </div>
@@ -410,8 +412,18 @@
   </div>
 </div>
 
-<div class="panel-body">
-  <input class="btn btn-primary" id="submit" type="submit" value="Submit" />
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <input
+      class="btn btn-primary btn-block"
+      id="submit"
+      type="submit"
+      value="Submit"
+    />
+  </div>
+
+  <div class="col-4"></div>
 </div>
 
 {% endblock %} {% block js %}

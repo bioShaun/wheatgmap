@@ -99,7 +99,7 @@
   <span>Samples Selection</span>
 </div>
 
-<div class="row">
+<div class="row mb-20">
   {% if pri_samples %}
   <div class="col-md-4">
     <div class="card" style="height: 370px">
@@ -184,8 +184,18 @@
   </div>
 </div>
 
-<br />
-<input class="btn btn-primary" id="submit" type="submit" value="Submit" />
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <input
+      class="btn btn-primary btn-block"
+      id="submit"
+      type="submit"
+      value="Submit"
+    />
+  </div>
+  <div class="col-4"></div>
+</div>
 
 {% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/query_sample.js') }}"></script>

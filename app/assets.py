@@ -15,6 +15,7 @@ css_base = Bundle(
     'css/main.css',
     'css/variety.css',
     'css/mapping_choose.css',
+    'css/variant_card.css',
     datatable,
     filters='cssmin',
     output='css/all.min.css')
