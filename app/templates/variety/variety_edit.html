@@ -1,102 +1,98 @@
-{% extends 'base.html' %}
-
-{% from 'variety/_flat_table.html' import render_field %} 
-
-{% block css %} 
-{% endblock %} 
-
-{% block auth %}
+{% extends 'base.html' %} {% from 'variety/_flat_table.html' import render_field
+%} {% block css %} {% endblock %} {% block auth %}
 <li><a href="{{url_for('auth.login')}}">login</a></li>
-{% endblock %} 
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="va-edit">
-  <h3 style="text-align: center">{% if create %}Create {% else %} Update {% endif %} a Variety Information</h2>
+  <h3 style="text-align: center">
+    {% if create %}Create {% else %} Update {% endif %} a Variety Information
+  </h3>
   <form
     class="form-horizontal form-variety"
     method="post"
     action="{% if create %}{{ url_for('variety.create') }}{% else %}{{ url_for('variety.update', variety_id=variety_id) }}{% endif %}"
   >
-  <h4>Basic information</h4>
-    {{ form.csrf_token }} 
-    {{ render_field(form.variety_name, class_="form-control") }} 
-    {{ render_field(form.variety_type, 
-    class_="form-control va-form-select") }}         
-    {{ render_field(form.geographic, class_="form-control") }} 
-    {{ render_field(form.country, class_="form-control") }} 
-    {{ render_field(form.province, class_="form-control") }}     
-    {{ render_field(form.affiliation, class_="form-control") }} 
-    <div>
-      <h4>Morphological and Biological Characteristics  <button
-        type="button"
-        class="btn btn-default btn-xs"
-      >
-        <span class="glyphicon glyphicon-{% if create %}plus{% else %}minus{% endif %}"></span>
-      </button></h4>
-      <div class="va-optional-attr" {% if create %}hidden{% endif %}>
-        {{ render_field(form.flower_color, class_="form-control") }}     
-        {{ render_field(form.leaf_color, class_="form-control") }} 
+    <div class="card mb-10">
+      <div class="card-header"><h4>Basic information</h4></div>
+      <div class="card-body">
+        {{ form.csrf_token }} {{ render_field(form.variety_name,
+        class_="form-control") }} {{ render_field(form.variety_type,
+        class_="form-control va-form-select") }} {{
+        render_field(form.geographic, class_="form-control") }} {{
+        render_field(form.country, class_="form-control") }} {{
+        render_field(form.province, class_="form-control") }} {{
+        render_field(form.affiliation, class_="form-control") }}
       </div>
     </div>
 
-
-    <div>
-      <h4>Quality Characteristics  <button
-        type="button"
-        class="btn btn-default btn-xs"
-      >
-        <span class="glyphicon glyphicon-{% if create %}plus{% else %}minus{% endif %}"></span>
-      </button></h4>
-      <div class="va-optional-attr" {% if create %}hidden{% endif %}>
-        {{ render_field(form.protein_content, class_="form-control") }}     
-        {{ render_field(form.starch_content, class_="form-control") }} 
+    <div class="card mb-10">
+      <div class="card-header d-flex jc-between">
+        <h4>Morphological and Biological Characteristics</h4>
+        <span
+          class="iconfont icon-{% if create %}add{% else %}minus{% endif %}"
+        ></span>
+      </div>
+      <div class="card-body" {% if create %} style="display: none" {% endif %}>
+        {{ render_field(form.flower_color, class_="form-control") }} {{
+        render_field(form.leaf_color, class_="form-control") }}
       </div>
     </div>
 
-    <div>
-      <h4>Stress Resistance  <button
-        type="button"
-        class="btn btn-default btn-xs"
-      >
-        <span class="glyphicon glyphicon-{% if create %}plus{% else %}minus{% endif %}"></span>
-      </button></h4>
-      <div class="va-optional-attr" {% if create %}hidden{% endif %}>
-        {{ render_field(form.salt, class_="form-control va-form-select") }}     
-        {{ render_field(form.high_temperature, class_="form-control va-form-select") }} 
-        {{ render_field(form.low_temperature, class_="form-control va-form-select") }} 
+    <div class="card mb-10">
+      <div class="card-header d-flex jc-between">
+        <h4>Quality Characteristics</h4>
+        <span
+          class="iconfont icon-{% if create %}add{% else %}minus{% endif %}"
+        ></span>
+      </div>
+      <div class="card-body" {% if create %} style="display: none" {% endif %}>
+        {{ render_field(form.protein_content, class_="form-control") }} {{
+        render_field(form.starch_content, class_="form-control") }}
       </div>
     </div>
 
-    <div>
-      <h4>Insect Resistance  <button
-        type="button"
-        class="btn btn-default btn-xs"
-      >
-        <span class="glyphicon glyphicon-{% if create %}plus{% else %}minus{% endif %}"></span>
-      </button></h4>
-      <div class="va-optional-attr" {% if create %}hidden{% endif %}>
-        {{ render_field(form.sheath_blight, class_="form-control") }}     
-        {{ render_field(form.fusarium, class_="form-control") }} 
-        {{ render_field(form.total_erosion, class_="form-control") }} 
-        {{ render_field(form.powdery_mildew, class_="form-control") }}     
-        {{ render_field(form.leaf_rust, class_="form-control") }} 
-        {{ render_field(form.leaf_blight, class_="form-control") }} 
-        {{ render_field(form.stripe_rust, class_="form-control") }} 
-        {{ render_field(form.spinal_rust, class_="form-control") }} 
-        {{ render_field(form.smut, class_="form-control") }} 
+    <div class="card mb-10">
+      <div class="card-header d-flex jc-between">
+        <h4>Stress Resistance</h4>
+        <span
+          class="iconfont icon-{% if create %}add{% else %}minus{% endif %}"
+        ></span>
+      </div>
+      <div class="card-body" {% if create %} style="display: none" {% endif %}>
+        {{ render_field(form.salt, class_="form-control va-form-select") }} {{
+        render_field(form.high_temperature, class_="form-control
+        va-form-select") }} {{ render_field(form.low_temperature,
+        class_="form-control va-form-select") }}
       </div>
     </div>
 
-    <p align="center" style="margin-top: 10px;">
-      <input class="btn btn-primary btn-sm" type="submit" value="submit" />
+    <div class="card mb-10">
+      <div class="card-header d-flex jc-between">
+        <h4>Insect Resistance</h4>
+        <span
+          class="iconfont icon-{% if create %}add{% else %}minus{% endif %}"
+        ></span>
+      </div>
+      <div class="card-body" {% if create %} style="display: none" {% endif %}>
+        {{ render_field(form.sheath_blight, class_="form-control") }} {{
+        render_field(form.fusarium, class_="form-control") }} {{
+        render_field(form.total_erosion, class_="form-control") }} {{
+        render_field(form.powdery_mildew, class_="form-control") }} {{
+        render_field(form.leaf_rust, class_="form-control") }} {{
+        render_field(form.leaf_blight, class_="form-control") }} {{
+        render_field(form.stripe_rust, class_="form-control") }} {{
+        render_field(form.spinal_rust, class_="form-control") }} {{
+        render_field(form.smut, class_="form-control") }}
+      </div>
+    </div>
+
+    <p align="center" style="margin-top: 10px">
+      <input class="btn btn-primary" type="submit" value="submit" />
     </p>
   </form>
 </div>
 
-
-{% endblock %} 
-
-{% block js %}
+{% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/utils/varietyCreate.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
-

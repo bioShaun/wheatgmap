@@ -104,6 +104,9 @@
           <a class="dropdown-item" href="{{ url_for('expression.enrichment') }}"
             >Enrichment</a
           >
+          <a class="dropdown-item" href="{{ url_for('tools.jbrowse') }}"
+            >Genome Browser</a
+          >
         </div>
       </li>
       {% if current_user.is_authenticated %}

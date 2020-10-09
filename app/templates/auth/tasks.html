@@ -1,6 +1,9 @@
 {% extends 'base_auto_refresh.html' %} {% block content %}
-<h3>Tasks</h3>
-<div class="table-responsive va-info-table" style="margin-bottom: 50px;">
+<div class="bd-callout bd-callout-info">
+  <span>Tasks</span>
+</div>
+
+<div class="table-responsive va-info-table" style="margin-bottom: 50px">
   <table
     id="table-tasks"
     class="table"
@@ -38,22 +41,32 @@
           <a
             href="{{ url_for('data.upload_samples', upload_id=task_i.task_id) }}"
           >
-          {% else %}
-          <a href="{{ url_for('main.show_result', task_id=task_i.redis_id) }}">
-            {% endif %}
             <button
               class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"
             >
               Detail
             </button>
           </a>
+          {% else %}
+          <a href="{{ url_for('main.show_result', task_id=task_i.redis_id) }}">
+            <button
+              class="btn btn-info btn-sm {% if task_i.task_status != 'finished'%} disabled {% endif %}"
+            >
+              Detail
+            </button>
+          </a>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-<h3>Upload VCF</h3>
+
+<div class="bd-callout bd-callout-warning">
+  <span>Tasks</span>
+</div>
+
 <p>
   <b
     >Please read the VCF format
@@ -63,20 +76,20 @@
 </p>
 <table
   class="table"
-  style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;"
+  style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px"
 >
   <tbody>
     <tr>
       <td>
         <input id="vcf-file" input name="vcfile" type="file" />
-        <div class="progress progress-striped active" style="margin-top: 10px;">
+        <div class="progress progress-striped active" style="margin-top: 10px">
           <div
             class="progress-bar progress-bar-success"
             role="progressbar"
             aria-valuenow="60"
             aria-valuemin="0"
             aria-valuemax="100"
-            style="width: 0%;"
+            style="width: 0%"
           >
             <span class="sr-only">0%</span>
           </div>
@@ -87,7 +100,7 @@
           id="vcf-type"
           class="form-control"
           data-width="20%"
-          style="margin: 10px;"
+          style="margin: 10px"
         >
           <option value="WGS">WES</option>
           <option value="WES">WGS</option>
@@ -96,19 +109,21 @@
       </td>
       <td>
         <input
-          class="btn btn-default"
+          class="btn btn-primary"
           id="vcf-sub"
           type="submit"
           value="Upload"
-          style="margin: 10px;"
+          style="margin: 10px"
         />
       </td>
     </tr>
   </tbody>
 </table>
 
-<h3>Variety Information</h3>
-<div class="table-responsive va-info-table">
+<div class="bd-callout bd-callout-success">
+  <span>Variety Information</span>
+</div>
+<div class="table-responsive va-info-table fs-13 mb-10">
   <table
     id="table-variety"
     class="table"
@@ -146,14 +161,14 @@
         <td>{{va_i.create_time}}</td>
         <td>
           <a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
-            <button class="btn btn-info btn-sm">Detail</button>
+            <button class="btn btn-info btn-sm fs-13">Detail</button>
           </a>
           <a href="{{ url_for('variety.update', variety_id=va_i.id) }}">
-            <button class="btn btn-warning btn-sm">Edit</button>
+            <button class="btn btn-warning btn-sm fs-13">Edit</button>
           </a>
           <button
             id="{{ url_for('variety.remove', variety_id=va_i.id) }}"
-            class="btn btn-danger btn-sm delete-va"
+            class="btn btn-danger btn-sm delete-va fs-13"
             va-name="{{va_i.variety_name}}"
           >
             Delete
@@ -163,6 +178,8 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
+<div>
   <a href="{{ url_for('variety.create') }}">
     <button class="btn btn-primary">Add New Variety</button>
     <!-- <input class="btn btn-primary" value="Add New Variety" /> -->
@@ -172,4 +189,6 @@
 {% endblock %} {% block js %}
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script src="{{ url_for('static', filename='js/utils/account.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

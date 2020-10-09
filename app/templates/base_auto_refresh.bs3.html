@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="refresh" content="60" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="" />
@@ -10,12 +11,8 @@
 
     <title>Wheat Gmap</title>
     <link
-      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
     />
     {% assets "css_all" -%}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
@@ -30,8 +27,8 @@
     />
   </head>
 
-  <body class="main">
-    <!-- <div id="menu">
+  <body>
+    <div id="menu">
       <nav class="navbar navbar-default navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -233,10 +230,7 @@
           </div>
         </div>
       </nav>
-    </div> -->
-
-    {% include "navbar.html" %}
-
+    </div>
     <div class="container">
       <div class="myalert"></div>
       {% for message in get_flashed_messages(with_categories=true) %}
@@ -247,12 +241,20 @@
         {{ message[1] }}
       </div>
       {% endfor %} {% block content %} {% endblock %}
+      <!--     <hr />
+    <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>
+        &copy; 2019 <a href="http://www.tcuni.com">Tcuni, Inc.</a> &middot;
+        Privacy &middot; <a href="#">Terms</a>
+      </p>
+    </footer> -->
 
-      <div style="margin-top: 100px"></div>
+      <div style="margin-top: 100px;"></div>
 
       <footer id="footer" class="footer navbar-fixed-bottom">
         <div
-          class="container d-flex jc-between"
+          class="container"
           style="
             border-top: 1px solid #e6e6e6;
             padding-top: 20px;
@@ -260,17 +262,16 @@
           "
         >
           <p class="pull-right"><a href="#">Back to top</a></p>
-          <p style="margin-bottom: 20px">&copy; 2019 Tcuni, Inc.</p>
+          <p style="margin-bottom: 20px;">
+            &copy; 2019 Tcuni, Inc.
+          </p>
         </div>
       </footer>
     </div>
   </body>
   {% assets "js_all" -%}
   <script src="{{ ASSET_URL }}"></script>
-  {%- endassets %} {% block js %}
-  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  {% endblock %} {% assets "js_sup" -%}
+  {%- endassets %} {% block js %} {% endblock %} {% assets "js_sup" -%}
   <script src="{{ ASSET_URL }}"></script>
   {%- endassets %}
 </html>
