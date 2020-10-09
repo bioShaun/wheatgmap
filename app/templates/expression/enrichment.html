@@ -1,64 +1,73 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="row">
-  <div class="col-xs-8">
-    <h2>Gene-list Enrichment:</h2>
-    <div class="panel-heading">
-        <h3 class="panel-title">Select a specie, and input gene list or upload it to get a enrichment table.</h3>
-    </div>
-    <table style="width=100%">
-      <tbody>
-        <tr>
-          <td valign="top"></td>
-            <br>
-              <table class="table">
-                <tr>
-                  <td>
-                    <span><label>select species:</label>
-                    <select id="species" class="form-control" data-width="25%">
-                      <option value= selected="selected"></option>
-                      {% for specie in species %}
-                        <option value={{ specie }}>{{ specie }}</option>
-                      {% endfor %}
-                    </select>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span><label>input gene list or uoload file:</label>
-                    <textarea id="gene-list" rows="5" class="form-control" value="" placeholder="Input Gene List"></textarea>
-                    </span>
-                  </td>
-                 </tr>
-                 <tr>
-                  <td>
-                    <input id="gene-file" type="file">
-                    <div class="progress progress-striped active">
-                      <div class="progress-bar progress-bar-success" role="progressbar"
-                           aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                              style="width: 0%;">
-                              <span class="sr-only">0%</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                    <td>
-                      <button type="submit" class="btn btn-sm btn-primary" id="submit">Submit</button>
-                    </td>
-                </tr>
-              </table>
-            </tr>
-          </tbody>
-        </table>
+{% extends 'base.html' %} {% block content %}
+
+<div class="jumbotron">
+  <div class="container">
+    <h2 class="display-8">Gene-list Enrichment</h2>
+    <p>
+      Select a specie, and input gene list or upload it to get a enrichment
+      table.
+    </p>
   </div>
 </div>
-<div id="query_hint"></div>
-<h2>Enrichment Results:</h2>
-<div id="result-table"></div>
-{% endblock %}
-{% block js %}
-<script src="{{ url_for('static', filename='js/utils/enrich.js') }}"></script>
-{% endblock %}
 
+<div class="row mb-20">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <label for="species">Select Species</label>
+          <select id="species" class="form-control" data-width="25%">
+            <option value="selected" ="selected"></option>
+            {% for specie in species %}
+            <option value="{{ specie }}">{{ specie }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="gene-list">Input gene list or uoload file:</label>
+          <textarea
+            id="gene-list"
+            rows="5"
+            class="form-control"
+            value=""
+            placeholder="Input Gene List"
+          ></textarea>
+        </div>
+        <div>
+          <input class="mb-10" id="gene-file" type="file" />
+          <div class="progress progress-striped active">
+            <div
+              class="progress-bar progress-bar-success"
+              role="progressbar"
+              aria-valuenow="60"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="width: 0%"
+            >
+              <span class="sr-only">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+
+<div class="row mb-20">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <button type="submit" class="btn btn-primary btn-block" id="submit">
+      Submit
+    </button>
+  </div>
+
+  <div class="col-4"></div>
+</div>
+
+{% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/utils/enrich.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

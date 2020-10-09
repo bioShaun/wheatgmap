@@ -101,6 +101,9 @@
             href="{{ url_for('expression.expression_by_gene') }}"
             >Expression</a
           >
+          <a class="dropdown-item" href="{{ url_for('expression.enrichment') }}"
+            >Enrichment</a
+          >
         </div>
       </li>
       {% if current_user.is_authenticated %}
