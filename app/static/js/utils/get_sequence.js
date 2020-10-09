@@ -1,18 +1,14 @@
 function get_input_data() {
   //var table = $("#select_file").find("option:selected").text();
-  var table = $("#multi_d_to")
-    .find("option")
-    .text();
-  var chr = $("#select-chr")
-    .find("option:selected")
-    .text();
+  var table = $("#multi_d_to").find("option").text();
+  var chr = $("#select-chr").find("option:selected").text();
   var startPos = $("#pos-start").val();
   var endPos = $("#pos-end").val();
   var all_info = {
     table: table,
     chr: chr,
     start_pos: startPos,
-    end_pos: endPos
+    end_pos: endPos,
   };
   return all_info;
 }
@@ -25,7 +21,7 @@ function check_input_data(info) {
     table: "Vcf file",
     chr: "Chromosome",
     start_pos: "Start position",
-    end_pos: "End position"
+    end_pos: "End position",
   };
   for (var i = 0; i < keys.length; i++) {
     if (info[keys[i]].length == 0) {
@@ -45,8 +41,7 @@ function check_input_data(info) {
 
   return msg;
 }
-$(document).ready(function() {
-
+$(document).ready(function () {
   single_select_plugin();
   clear_select_plugin();
   /*
@@ -83,19 +78,20 @@ $(document).ready(function() {
     });
   });
   */
-  $("#submit").bind("click", function() {
+  $("#submit").bind("click", function () {
     var info = get_input_data();
     var error_msg = check_input_data(info);
     if (error_msg.length > 0) {
       // alert(error_msg);
       $.alert({
         title: "Input Error!",
-        content: error_msg
+        content: error_msg,
       });
       return;
     }
     info = JSON.stringify(info);
     $("#query_hint").empty();
+    $("#results-box").hide();
     var hint = $(
       '<span><img src="/static/images/hint.gif" />' +
         "loading data, please wait...</span>"
@@ -104,17 +100,18 @@ $(document).ready(function() {
     ajaxSend(
       "/tools/vcf/sequence/",
       { info: info },
-      function(data) {
+      function (data) {
         $("#query_hint").empty();
         $("#results-text").empty();
         if (data.msg != "ok") {
           $.alert({
             title: "Nothing Found!",
-            content: data.msg
+            content: data.msg,
           });
           return;
-          } else {
+        } else {
           //console.log(data.text);
+          $("#results-box").show();
           $("#results-text").html(data.text);
         }
       },

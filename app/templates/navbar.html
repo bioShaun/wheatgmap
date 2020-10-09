@@ -93,6 +93,9 @@
             href="{{ url_for('tools.gene_information') }}"
             >Gene</a
           >
+          <a class="dropdown-item" href="{{ url_for('tools.get_sequence') }}"
+            >Sequence</a
+          >
         </div>
       </li>
       {% if current_user.is_authenticated %}

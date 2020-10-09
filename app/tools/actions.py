@@ -198,7 +198,7 @@ def get_locus_result(genename, blast_results):
 
 def fetch_sequence(table, chr, start_pos, end_pos):
     cmd = "python {script} \
-    --refer /home/data/wheat/reference/Chinese_Spring_v1.0.fasta \
+    --refer /data/data/wheat/reference/Chinese_Spring_v1.0.fasta \
     --in_vcf {data_path}/{table}.vcf.gz \
     --sample_name {sample}  \
     --chrom {chr} \
