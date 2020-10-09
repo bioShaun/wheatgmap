@@ -281,3 +281,8 @@ pre {
 .mb-50 {
   margin-bottom: 50px;
 }
+
+.expression-echart-canvas {
+  width: 1200px;
+  height: 600px;
+}

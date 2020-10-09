@@ -96,6 +96,11 @@
           <a class="dropdown-item" href="{{ url_for('tools.get_sequence') }}"
             >Sequence</a
           >
+          <a
+            class="dropdown-item"
+            href="{{ url_for('expression.expression_by_gene') }}"
+            >Expression</a
+          >
         </div>
       </li>
       {% if current_user.is_authenticated %}
