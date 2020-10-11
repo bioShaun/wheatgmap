@@ -283,6 +283,17 @@ def userData():
     return render_template("auth/userData.html", stat=stat)
 
 
+@auth.route('/hot_edit_samples/', methods=['POST'])
+@login_required
+def hot_edit_samples():
+    data = request.get_json(force=True)
+    print(data)
+    for tc_id in data:
+        sample = Data.query.filter_by(tc_id=tc_id).first()
+        sample.update(**data[tc_id])
+    return jsonify({'msg': 'ok'})
+
+
 @auth.route('/fetch_samples/', methods=['GET', 'DELETE', 'PUT', 'POST'])
 @login_required
 def fetch_samples():

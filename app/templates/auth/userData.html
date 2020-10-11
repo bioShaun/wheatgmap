@@ -1,55 +1,61 @@
-{% extends 'base_bst.html' %} {% block css %}
+{% extends 'base.html' %} {% block css %}
 <link
   rel="stylesheet"
-  href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.full.min.css"
 />
 {% endblock %} {% block content %}
 
-<div class="panel-body">
-  <h3>Data Statistics</h3>
+<div class="bd-callout bd-callout-warning">
+  <span>Data Stats</span>
+</div>
 
-  <table
-    class="table"
-    style="border-bottom: 1px solid #e6e6e6; margin-bottom: 20px;"
-  >
-    <tbody>
-      <tr>
-        <td>
-          <strong>Public Samples</strong>
-        </td>
-        <td>{{ stat['pu_sample'] }}</td>
-      </tr>
-      <tr>
-        <td>
-          <strong>Private Samples</strong>
-        </td>
-        <td id="pr-sample">
-          <a id="pr-sample-href">{{ stat['pr_sample'] }}</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h3>Manage Samples</h3>
-  <div id="toolbar" class="btn-group">
-    <button
-      id="btn_delete"
-      type="button"
-      class="btn btn-default"
-      onclick="DeleteSample()"
-    >
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>delete
-    </button>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">WGS</th>
+          <th scope="col">WES</th>
+          <th scope="col">RNAseq</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Public</th>
+          <td id="pub-wgs">0</td>
+          <td id="pub-wes">0</td>
+          <td id="pub-rnaseq">0</td>
+        </tr>
+        <tr>
+          <th scope="row">Private</th>
+          <td id="pri-wgs">0</td>
+          <td id="pri-wes">0</td>
+          <td id="pri-rnaseq">0</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <table id="sample-table"></table>
+</div>
+
+<div class="bd-callout bd-callout-success">
+  <span>Data Detail</span>
+</div>
+<div id="userData"></div>
+
+<div class="d-flex jc-center">
+  <button class="btn btn-primary m-10" id="save-change" disabled>
+    Save Change
+  </button>
+  <button class="btn btn-warning m-10" id="save-cancel" disabled>
+    Discard Change
+  </button>
+  <button class="btn btn-success m-10" id="export-file">Export CSV</button>
 </div>
 {% endblock %} {% block js %}
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-<script src="{{ url_for('static', filename='js/bootstrap-table-editable.js') }}"></script>
-<script src="{{ url_for('static', filename='js/utils/samples.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/sampleData.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
