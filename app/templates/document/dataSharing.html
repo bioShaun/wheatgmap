@@ -1,27 +1,44 @@
 {% extends 'base.html' %} {% block content %}
-<div class="title" style="margin-bottom: 30px;">
-  <h3>Data Share</h3>
-  </br>
-  <h4>Share Genotype Data</h4>
-  <p><b>!!! Once the sample public, the data can be used by everyone and the operation is irreversible.</b></p>
-  <img class="img" src="{{url_for('static', filename='images/documents/sharing.png')}}" alt="public_sample" width="690" height="301">
-  <p>
-    1) Search the samples name you want to public.</br>
-    2) Select the samples</br>
-    3) Click the "Public" button. </br>
-  </p>
 
-</br>
-<h4>Share Phenotype Data</h4>
-<p>You can create a page for introduce the phenotype of your variety and linkage to your public genotype samples. </br>
-  People also can discuss some issues related to your public genotype and genotyoe on this page.</p>
-  <img class="img" src="{{url_for('static', filename='images/documents/phenotype.png')}}" alt="public_sample" width="1006" height="1814">
-<p>
-  1) Creat a new page for your variety/accession.</br>
-  2) Provide more phenotype as you can and submit.</br>
-  3) Linkage the phenotype page to genotype sample.</br>
-  4) Discuss with us.</br>
-</p>
-
+<div class="bd-callout bd-callout-info">
+  <span>Share Genotype Data</span>
 </div>
+
+<div class="card">
+  <img
+    src="{{url_for('static', filename='images/documents/sharing.png')}}"
+    class="card-img-top"
+    alt="public_sample"
+  />
+  <div class="card-body">
+    <p class="card-text">
+      <b>!!! Once the sample public, the data can be used by everyone.</b>
+    </p>
+    <p class="card-text">1) Search the samples name you want to public.</p>
+    <p class="card-text">2) Select the samples.</p>
+    <p class="card-text">3) Click the "Public" button.</p>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-warning">
+  <span>Share Phenotype Data</span>
+</div>
+
+<div class="card">
+  <img
+    src="{{url_for('static', filename='images/documents/phenotype.png')}}"
+    class="card-img-top"
+    alt="public_sample"
+  />
+  <div class="card-body">
+    <p class="card-text">1) Creat a new page for your variety/accession.</p>
+    <p class="card-text">2) Provide more phenotype as you can and submit.</p>
+    <p class="card-text">3) Linkage the phenotype page to genotype sample.</p>
+    <p class="card-text">3) Discuss with us.</p>
+  </div>
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
