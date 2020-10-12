@@ -286,6 +286,10 @@ pre {
   margin-bottom: 50px;
 }
 
+.mt-50 {
+  margin-top: 50px;
+}
+
 .expression-echart-canvas {
   width: 1200px;
   height: 600px;

@@ -1,15 +1,22 @@
 {% extends 'base.html' %} {% block content %}
-<div class="title" style="margin-bottom: 30px;"> 
-  <div>
-	<h3><b>The typical workflow for BSA gene mapping.</b></h3>
-	<img class="img" src="{{ url_for('static', filename='images/documents/WorkFlow.png')}}" alt="Workflow"  width="916" height="576">
-	</br>
-	</br>
-	</br>
-	</br>
-	<h3>For more details, please read  >> <a href="{{ url_for('static', filename='download/document/wheatGmap_Practice.pdf')}}" target="_blank"><B>WheatGmap Practice</B></a> </h3>
-  </div>
 
+<div class="card">
+  <div style="margin: 0 auto">
+    <img
+      src="{{ url_for('static', filename='images/documents/WorkFlow.png')}}"
+      class="card-img-top mt-50 mb-50"
+      alt="Workflow"
+    />
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">The typical workflow for BSA gene mapping</h5>
+    <a
+      href="{{ url_for('static', filename='download/document/wheatGmap_Practice.pdf')}}"
+      class="btn btn-primary"
+      target="_blank"
+      >WheatGmap Practice</a
+    >
+  </div>
 </div>
 
 {% endblock %}
