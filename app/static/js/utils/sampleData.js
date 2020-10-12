@@ -62,9 +62,9 @@ $(document).ready(function () {
             updateInfo[tcId] = { ...updateInfo[tcId], [field]: newVal };
             saveButton.removeAttr("disabled");
             cancelButton.removeAttr("disabled");
-            const tableStats = getTableStats(fullData);
-            setTableStats(tableStats);
           });
+          const tableStats = getTableStatsFromArr(fullData);
+          setTableStats(tableStats);
         }
       }
     },
@@ -81,13 +81,13 @@ $(document).ready(function () {
       success: function (res) {
         ori_data = res.map((val) => val);
         handsontable.loadData(res);
-        const tableStats = getTableStats(res);
+        const tableStats = getTableStatsFromObj(res);
         setTableStats(tableStats);
       },
     });
   }
 
-  function getTableStats(data) {
+  function getTableStatsFromObj(data) {
     const stats_obj = {};
     data.map((val) => {
       const pub_stats = val["opened"] ? "pub" : "pri";
@@ -95,13 +95,29 @@ $(document).ready(function () {
       const col_id = `${pub_stats}-${data_type}`;
       stats_obj[col_id] = stats_obj[col_id] ? stats_obj[col_id] + 1 : 1;
     });
-    console.log(stats_obj);
+    return stats_obj;
+  }
+
+  function getTableStatsFromArr(data) {
+    const stats_obj = {};
+    data.map((val) => {
+      const pub_stats = val[1] ? "pub" : "pri";
+      const data_type = val[3] ? val[3].toLowerCase() : "unknown";
+      const col_id = `${pub_stats}-${data_type}`;
+      stats_obj[col_id] = stats_obj[col_id] ? stats_obj[col_id] + 1 : 1;
+    });
     return stats_obj;
   }
 
   function setTableStats(stats) {
-    for (let col_i in stats) {
-      $(`#${col_i}`).text(stats[col_i]);
+    const pubStats = ["pub", "pri"];
+    const dataTypes = ["wgs", "wes", "rnaseq"];
+    for (let stat_i of pubStats) {
+      for (let data_type_i of dataTypes) {
+        const col_id = `${stat_i}-${data_type_i}`;
+        const stat_data_type = stats[col_id] ? stats[col_id] : 0;
+        $(`#${col_id}`).text(stat_data_type);
+      }
     }
   }
 
