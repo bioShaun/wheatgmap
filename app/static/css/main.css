@@ -302,3 +302,7 @@ pre {
 .m-10 {
   margin: 10px;
 }
+
+.horizon-center {
+  margin: 0 auto;
+}

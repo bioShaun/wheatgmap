@@ -1,0 +1,18 @@
+.gallery-pictures {
+  list-style: none;
+  max-width: 30rem;
+  padding: 0;
+}
+
+.gallery-pictures > li {
+  border: 1px solid transparent;
+  height: auto;
+  margin: 0 -1px -1px 0;
+  overflow: hidden;
+  width: calc(100% / 3);
+}
+
+.gallery-pictures > li > img {
+  cursor: zoom-in;
+  width: 100%;
+}
