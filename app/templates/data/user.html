@@ -1,30 +1,29 @@
 {% extends 'base.html' %} {% block content %}
 <div class="panel-body d-flex">
   {% if exists %}
-  <div class="user-profile" style="width: 300px;">
+  <div class="user-profile" style="width: 300px">
     <div class="photo">
-    {% if user.photo %}
+      {% if user.photo %}
       <img src="{{ user.photo }}" alt="" width="260px" />
       {% else %}
       <img src="{{ default_photo }}" alt="" width="230px" />
       {% endif %}
     </div>
     <div class="profile">
-        {% if validName %}
-        <h3>{{validName}}</h3>
-        {% endif %}
-        <h4>{{user.username}}</h4>
+      {% if validName %}
+      <h3>{{validName}}</h3>
+      {% endif %}
+      <h4>{{user.username}}</h4>
       {% if user.research %}
-      <div class="user-info-item" style="font-size: 16px;">
+      <div class="user-info-item" style="font-size: 16px">
         <p>{{user.research}}</p>
       </div>
-      {% endif %}
-      {% if user.institute %}
+      {% endif %} {% if user.institute %}
       <div class="user-info-item">
         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
         &nbsp;{{user.institute}}
       </div>
-      {% endif %}      
+      {% endif %}
       <div class="user-info-item">
         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
         &nbsp;{{user.email}}
@@ -37,19 +36,23 @@
       {% endif %}
     </div>
   </div>
-  <div class="detail flex-1" style="margin-left: 30px; max-width: 800px;">
+  <div class="detail flex-1" style="margin-left: 30px; max-width: 800px">
     {% if user.profile %}
     <div class="bio user-info-main">
-      <h4>Profile</h4>
+      <div class="bd-callout bd-callout-info">
+        <span>Profile</span>
+      </div>
       <pre>{{user.profile}}</pre>
     </div>
     {% endif %}
-    <div class="variety user-info-main ">
-      <h4>Varieties</h4>
-      <div class="user-info-table">
+    <div class="variety user-info-main">
+      <div class="bd-callout bd-callout-warning">
+        <span>Varieties</span>
       </div>
+      <div class="user-info-table"></div>
       <table id="varieties" class="table cell-border" cellspacing="0">
         <thead>
+          <tr>
             <th>Variety ID</th>
             <th>Variety Name</th>
             <th>Type</th>
@@ -63,53 +66,49 @@
         <tbody>
           {% for va_i in va %}
           <tr>
-            <td><a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
+            <td>
+              <a href="{{ url_for('variety.detail', variety_id=va_i.id) }}">
                 TC-Va-{{va_i.id}}
-              </a></td>
+              </a>
+            </td>
             <td>{{va_i.variety_name}}</td>
             <td>{{va_i.variety_type}}</td>
             <td>{{va_i.geographic}}</td>
             <td>{{va_i.country}}</td>
             <td>{{va_i.province}}</td>
-            <td>
-              {{va_i.affiliation}}
-            </td>
+            <td>{{va_i.affiliation}}</td>
             <td>{{va_i.create_time}}</td>
           </tr>
           {% endfor %}
         </tbody>
-      </table>       
+      </table>
     </div>
     <div class="data user-info-main">
-      <h4>Public Samples</h4>
-      <div class="user-info-table">
-    </div>
-    <table id="samples" class="table cell-border" cellspacing="0">
+      <div class="bd-callout bd-callout-info">
+        <span>Public Samples</span>
+      </div>
+      <div class="user-info-table"></div>
+      <table id="samples" class="table cell-border" cellspacing="0">
         <thead>
           <tr>
-            <th class="th-sm">TC ID</th>
-            <th class="th-sm">Name</th>
+            <th class="th-sm">WG ID</th>
+            <th class="th-sm">Sample Name</th>
             <th class="th-sm">Type</th>
-            <th class="th-sm">Scientific</th>
+            <th class="th-sm">Scientific Name</th>
             <th class="th-sm">Variety ID</th>
-            <th class="th-sm">High Level Tissue</th>
-            <th class="th-sm">High Level Age</th>
-            <th class="th-sm">Treatments</th>
             <th class="th-sm">Tissue</th>
             <th class="th-sm">Age</th>
-            <th class="th-sm">Stress Disease</th>
+            <th class="th-sm">Phenotype</th>
+            <th class="th-sm">Pooled Sample</th>
             <th class="th-sm">DOI</th>
-            <th class="th-sm">Bulked Segregant</th>
-            <th class="th-sm">Mixed Sample</th>
-            <th class="th-sm">Mutant Transgenosis</th>
-            <th class="th-sm">Other Inf</th>
-            <th class="th-sm">Provider</th>
           </tr>
         </thead>
         <tbody>
           {% for sample in samples %}
           <tr>
-            <td><a href="/data/samples/{{ sample.tc_id}}/">{{ sample.tc_id }}</a></td>
+            <td>
+              <a href="/data/samples/{{ sample.tc_id}}/">{{ sample.tc_id }}</a>
+            </td>
             <td>{{ sample.sample_name }}</td>
             <td>{{ sample.type }}</td>
             {% if sample.scientific_name is none %}
@@ -124,18 +123,6 @@
                 >{{ sample.variety_name }}</a
               >
             </td>
-            {% endif %} {% if sample.high_level_tissue is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.high_level_tissue }}</td>
-            {% endif %} {% if sample.high_level_age is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.high_level_age }}</td>
-            {% endif %} {% if sample.treatments is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.treatments }}</td>
             {% endif %} {% if sample.tissue is none %}
             <td>-</td>
             {% else %}
@@ -144,14 +131,6 @@
             <td>-</td>
             {% else %}
             <td>{{ sample.age }}</td>
-            {% endif %} {% if sample.stress_disease is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.stress_disease }}</td>
-            {% endif %} {% if sample.dol is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.dol }}</td>
             {% endif %} {% if sample.bulked_segregant is none %}
             <td>-</td>
             {% else %}
@@ -160,43 +139,35 @@
             <td>-</td>
             {% else %}
             <td>{{ sample.mixed_sample }}</td>
-            {% endif %} {% if sample.mutant_transgenosis is none %}
+            {% endif %} {% if sample.dol is none %}
             <td>-</td>
             {% else %}
-            <td>{{ sample.mutant_transgenosis }}</td>
-            {% endif %} {% if sample.other_inf is none %}
-            <td>-</td>
-            {% else %}
-            <td>{{ sample.other_inf }}</td>
+            <td>{{ sample.dol }}</td>
             {% endif %}
-            <td>
-              <a href="/data/user/{{ sample.provider }}/">{{ sample.provider }}</a>
-            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-
     </div>
   </div>
   {% else %}
   <br />
   <h5>{{ user.username }} no longer exists.</h5>
-  {% endif %} 
+  {% endif %}
 </div>
-{% endblock %} 
-{% block js %}
-
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function() {
-      $("#varieties").DataTable({
-        dom: "lBfrtip",
-        scrollX: true,
-      });
-      $("#samples").DataTable({
+  $(document).ready(function () {
+    $("#varieties").DataTable({
       dom: "lBfrtip",
-      scrollX: true
+      scrollX: true,
     });
+    $("#samples").DataTable({
+      dom: "lBfrtip",
+      scrollX: true,
     });
-  </script>
+  });
+</script>
 {% endblock %}
