@@ -55,13 +55,13 @@ $(document).ready(function () {
           } else {
             $("#query_hint").empty();
             var downloadBtn = $(
-              `<a href="${data.outdir}.zip"><button type="button" class="btn btn-success" aria-label="Left Align" style="margin-top: 10px;">Download Full Results  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button></a>`
+              `<a href="${data.outdir}.zip"><button type="button" class="btn btn-success mb-20" aria-label="Left Align" style="margin-top: 10px;">Download Full Results<span class="iconfont icon-decline-filling download-mark" aria-hidden="true"></span></button></a>`
             );
             var plot = $(
               `<div><img class="var-density" src="${data.outdir}/variant-density.plot.png" /></div>`
             );
-            downloadBtn.appendTo("#results");
             plot.appendTo("#results");
+            downloadBtn.appendTo("#results");
             console.log(data.outdir);
             return;
           }
