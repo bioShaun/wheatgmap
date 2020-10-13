@@ -1,27 +1,67 @@
 {% extends 'base.html' %} {% block content %}
-<div class="title" style="margin-bottom: 30px;">
-  <h3>Citation</h3>
-  </br>  
-  <h4>Genome and Gene annotation</h4>
-  <p>Appels, R., Eversole, K., Feuillet, C., Keller, B., Rogers, J., Stein, N., … Wang, L. (2018). 
-     Shifting the limits in wheat research and breeding using a fully annotated reference genome. Science.</p>
-  <p>Ramírez-González, R. H., Borrill, P., Lang, D., Harrington, S. A., Brinton, J., Venturini, L., Davey, M., Jacobs, J., Van Ex, F., Pasha, A., Khedikar, Y., Robinson, S. J., Cory, A. T., Florio, T., Concia, L., Juery, C., Schoonbeek, H., Steuernagel, B., Xiang, D., … Uauy, C. (2018). The transcriptional landscape of polyploid wheat. Science, 361(6403). https://doi.org/10.1126/science.aar6089</p>
-  </br>
-  <h4>BSA mapping</h4>
-  <p>Gorsi, B., Yost, H. J., Demarest, B. L., Bisgrove, B. W., Hill, J. T., & Su, Y.-C. (2013). 
-     MMAPPR: Mutation Mapping Analysis Pipeline for Pooled RNA-seq. Genome Research, 23(4), 687–697.</p>
-  <p>Mansfeld, B. N., & Grumet, R. (2018). QTLseqr: An R Package for Bulk Segregant Analysis 
-     with Next-Generation Sequencing. The Plant Genome, 11(2), 0. </p>
-  </br>
-  <h4>BSA Demo</h4>
-  <p>Harrington, S. A., Cobo, N., Karafiátová, M., Doležel, J., Borrill, P., & Uauy, C. (2019). Identification of a Dominant Chlorosis Phenotype Through a Forward Screen of the Triticum turgidum cv. Kronos TILLING Population. Frontiers in Plant Science, 10. https://doi.org/10.3389/fpls.2019.00963</p>
-  <p>Gardiner, L.-J., Bansept-Basler, P., El-Soda, M., Hall, A., & O’Sullivan, D. M. (2019). A framework for gene mapping in wheat demonstrated using the Yr7 yellow rust resistance gene. BioRxiv, 793604. https://doi.org/10.1101/793604</p>
-
-  <h4></h4>
-
+<div class="bd-callout bd-callout-info">
+  <span>Genome and Gene annotation</span>
 </div>
+<p>
+  <a href="https://doi.org/10.1126/science.aar7191"
+    >Shifting the limits in wheat research and breeding using a fully annotated
+    reference genome.</a
+  >
+  <i>Science 361(6403).</i>
+  Appels, R., Eversole, K., Feuillet, C., Keller, B., Rogers, J., Stein, N., …
+  Wang, L. (2018).
+</p>
+<p>
+  <a href="https://doi.org/10.1126/science.aar6089"
+    >The transcriptional landscape of polyploid wheat.</a
+  >
+  <i>Science, 361(6403).</i>
+  Ramírez-González, R. H., Borrill, P., Lang, D., Harrington, S. A., Brinton,
+  J., Venturini, L., Davey, M., Jacobs, J., Van Ex, F., Pasha, A., Khedikar, Y.,
+  Robinson, S. J., Cory, A. T., Florio, T., Concia, L., Juery, C., Schoonbeek,
+  H., Steuernagel, B., Xiang, D., … Uauy, C. (2018).
+</p>
+<div class="bd-callout bd-callout-warning">
+  <span>BSA mapping</span>
+</div>
+<p>
+  <a href="https://doi.org/10.1101/gr.146936.112"
+    >MMAPPR: Mutation Mapping Analysis Pipeline for Pooled RNA-seq.</a
+  >
+  <i>Genome Research, 23(4), 687–697.</i>
+  Gorsi, B., Yost, H. J., Demarest, B. L., Bisgrove, B. W., Hill, J. T., & Su,
+  Y.-C. (2013).
+</p>
+<p>
+  <a href="https://doi.org/10.3835/plantgenome2018.01.0006"
+    >QTLseqr: An R Package for Bulk Segregant Analysis with Next-Generation
+    Sequencing.</a
+  >
+  <i>The Plant Genome, 11(2), 0.</i>
+  Mansfeld, B. N., & Grumet, R. (2018).
+</p>
+<div class="bd-callout bd-callout-success">
+  <span>BSA Demo</span>
+</div>
+<p>
+  <a href="https://doi.org/10.3389/fpls.2019.00963"
+    >Identification of a Dominant Chlorosis Phenotype Through a Forward Screen
+    of the Triticum turgidum cv. Kronos TILLING Population.</a
+  >
+  <i>Frontiers in Plant Science, 10, 963.</i>
+  Harrington, S. A., Cobo, N., Karafiátová, M., Doležel, J., Borrill, P., &
+  Uauy, C. (2019).
+</p>
+<p>
+  <a href="https://doi.org/10.1371/journal.pone.0231157"
+    >A framework for gene mapping in wheat demonstrated using the Yr7 yellow
+    rust resistance gene.</a
+  >
+  <i>Plos one, 15(4), p.e0231157.</i>
+  Gardiner, L.-J., Bansept-Basler, P., El-Soda, M., Hall, A., & O’Sullivan, D.
+  M. (2020).
+</p>
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
-{% block js %}
-  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  {% endblock %}
