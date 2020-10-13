@@ -1,4 +1,4 @@
-{% extends 'base_bst.html' %} {% block css %}
+{% extends 'base.html' %} {% block css %}
 <link
   rel="stylesheet"
   href="{{url_for('static',filename='fancybox/jquery.fancybox.css')}}"
@@ -12,7 +12,7 @@
 <div
   id="result"
   task-id="{{task_id}}"
-  style="height: 600px; margin-top: 100px;"
+  style="height: 600px; margin-top: 100px"
 ></div>
 {% endblock %} {% block js %}
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -28,4 +28,6 @@
 <script src="{{ url_for('static', filename='js/jquery.albumSlider.min.js') }}"></script>
 <script src="{{ url_for('static', filename='fancybox/jquery.mousewheel-3.0.6.pack.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils/celery_task.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

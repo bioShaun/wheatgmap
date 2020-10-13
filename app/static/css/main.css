@@ -319,3 +319,7 @@ main > .container {
 .footer {
   border-top: solid 1px #ddd;
 }
+
+span.download-mark {
+  margin-left: 10px;
+}

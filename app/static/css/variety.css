@@ -30,7 +30,7 @@
   float: right;
 }
 
-.comment-number {
+span.comment-number {
   font-weight: normal;
   margin-left: 10px;
 }

@@ -603,7 +603,7 @@ function createPlot(files, name, params) {
     );
   }
   var liStr = liBuffer.join("\n");
-  var downloadBtn = `<a href="${name}"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 10px;">Download Full Results<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button></a>`;
+  var downloadBtn = `<a href="${name}"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 10px;">Download Full Results <span class="iconfont icon-decline-filling download-mark" aria-hidden="true"></span></button></a>`;
   plotStr =
     plotStr +
     "<ul class='imglist'>" +

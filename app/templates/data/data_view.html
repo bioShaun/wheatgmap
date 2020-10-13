@@ -1,9 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-<div class="title" style="margin-bottom: 30px;">
+<div class="title" style="margin-bottom: 30px">
   <h3>{{data.sample_name}}</h3>
-  <p>
-    ID: {{ data.tc_id }}, created at {{data.create_time}}
-  </p>
+  <p>ID: {{ data.tc_id }}, created at {{data.create_time}}</p>
 </div>
 
 <div class="va-img-display" id="va-img-display" imgDb="data">
@@ -65,13 +63,13 @@
     method="POST"
     enctype="multipart/form-data"
   ></form>
-  <button id="upload-btn" class="btn btn-warning">
-    Confirm
-  </button>
+  <button id="upload-btn" class="btn btn-warning">Confirm</button>
 </div>
 
 <div class="variety-view">
-  <h4>Data information</h4>
+  <div class="bd-callout bd-callout-info">
+    <span>Data information</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -79,32 +77,8 @@
         <td>{{data.type}}</td>
       </tr>
       <tr>
-        <th scope="row">Scientific</th>
+        <th scope="row">Scientific Name</th>
         <td>{{data.scientific_name}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Variety</th>
-        <td>
-          {% if va_name %}
-          <a
-            href="{{ url_for('variety.detail', variety_id=data.variety_name) }}"
-          >
-            {{data.variety_name}} ({{va_name}})
-          </a>
-          {% else %} {{data.variety_name}} {% endif %}
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">High Level Tissue</th>
-        <td>{{data.high_level_tissue}}</td>
-      </tr>
-      <tr>
-        <th scope="row">High Level Age</th>
-        <td>{{data.high_level_age}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Treatments</th>
-        <td>{{data.treatments}}</td>
       </tr>
       <tr>
         <th scope="row">Tissue</th>
@@ -115,28 +89,16 @@
         <td>{{data.age}}</td>
       </tr>
       <tr>
-        <th scope="row">Stress Disease</th>
-        <td>{{data.stress_disease}}</td>
+        <th scope="row">Phenotype</th>
+        <td>{{data.bulked_segregant}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Pooled Sample</th>
+        <td>{{data.mixed_sample}}</td>
       </tr>
       <tr>
         <th scope="row">DOI</th>
         <td>{{data.dol}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Bulked Segregant</th>
-        <td>{{data.bulked_segregant}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Mixed Sample</th>
-        <td>{{data.mixed_sample}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Mutant Transgenosis</th>
-        <td>{{data.mutant_transgenosis}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Other Inf</th>
-        <td>{{data.other_inf}}</td>
       </tr>
       <tr>
         <th scope="row">Provider</th>
@@ -156,11 +118,16 @@
     <textarea
       cols="30"
       rows="5"
+      class="form-control"
       placeholder="Login to comment or reply."
       disabled
     ></textarea>
-    <div class="form-group" style="text-align: right;">
-      <button class="btn btn-default disabled" type="submit" value="Add">
+    <div class="form-group" style="text-align: right; margin-top: 10px">
+      <button
+        class="btn btn-primary disabled"
+        type="submit"
+        value="Add Comment"
+      >
         Add
       </button>
     </div>
@@ -170,20 +137,20 @@
     method="post"
     action="{{ url_for('data.dataDetail', tc_id=data.tc_id) }}"
   >
-    {{ form.csrf_token }} {{ form.content(placeholder="Add your comment ......")
-    }}
-    <div class="form-group" style="text-align: right;">
-      <button class="btn btn-default" type="submit" value="Add">Add</button>
+    {{ form.csrf_token }} {{ form.content(class="form-control") }}
+    <div class="form-group" style="text-align: right; margin-top: 10px">
+      <button class="btn btn-primary" type="submit" value="Add">
+        Add Comment
+      </button>
     </div>
   </form>
   {% endif %}
 </div>
 
 <div class="comment-region">
-  <div class="comment-title">
-    <h3>
-      Comments
-    </h3>
+  <div class="bd-callout bd-callout-success">
+    <span>Comments</span
+    ><span class="comment-number">{{ comments |length}}</span>
   </div>
   {% for comm_i in comments %}
   <div class="comment-body">
@@ -241,4 +208,6 @@
 <script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
 <script src="{{ url_for('static', filename='js/lightbox.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils/reply.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
