@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<div class="title" style="margin-bottom: 30px;">
+<div class="title" style="margin-bottom: 30px">
   <h3>{{variety_item.variety_name}}</h3>
   <p>
     ID: TC-Va-{{ variety_item.id }}, created at {{variety_item.create_time}}
@@ -65,13 +65,13 @@
     method="POST"
     enctype="multipart/form-data"
   ></form>
-  <button id="upload-btn" class="btn btn-warning">
-    Confirm
-  </button>
+  <button id="upload-btn" class="btn btn-warning">Confirm</button>
 </div>
 
 <div class="variety-view">
-  <h4>Basic information</h4>
+  <div class="bd-callout bd-callout-info">
+    <span>Basic information</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -106,7 +106,9 @@
     </tbody>
   </table>
 
-  <h4>Morphological and Biological Characteristics</h4>
+  <div class="bd-callout bd-callout-warning">
+    <span>Morphological and Biological Characteristics</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -120,7 +122,9 @@
     </tbody>
   </table>
 
-  <h4>Quality Characteristics</h4>
+  <div class="bd-callout bd-callout-warning">
+    <span>Quality Characteristics</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -134,7 +138,9 @@
     </tbody>
   </table>
 
-  <h4>Stress Resistance</h4>
+  <div class="bd-callout bd-callout-warning">
+    <span>Stress Resistance</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -152,7 +158,9 @@
     </tbody>
   </table>
 
-  <h4>Insect Resistance</h4>
+  <div class="bd-callout bd-callout-warning">
+    <span>Insect Resistance</span>
+  </div>
   <table class="table table-bordered">
     <tbody>
       <tr>
@@ -204,8 +212,12 @@
       placeholder="Login to comment or reply."
       disabled
     ></textarea>
-    <div class="form-group" style="text-align: right;">
-      <button class="btn btn-default disabled" type="submit" value="Add">
+    <div class="form-group" style="text-align: right; margin-top: 10px">
+      <button
+        class="btn btn-primary disabled"
+        type="submit"
+        value="Add Comment"
+      >
         Add
       </button>
     </div>
@@ -215,20 +227,20 @@
     method="post"
     action="{{ url_for('variety.detail', variety_id=variety_item.id) }}"
   >
-    {{ form.csrf_token }} {{ form.content(placeholder="Add your comment ......")
-    }}
-    <div class="form-group" style="text-align: right;">
-      <button class="btn btn-default" type="submit" value="Add">Add</button>
+    {{ form.csrf_token }} {{ form.content(class="form-control") }}
+    <div class="form-group" style="text-align: right; margin-top: 10px">
+      <button class="btn btn-primary" type="submit" value="Add">
+        Add Comment
+      </button>
     </div>
   </form>
   {% endif %}
 </div>
 
 <div class="comment-region">
-  <div class="comment-title">
-    <h3>
-      Comments
-    </h3>
+  <div class="bd-callout bd-callout-success">
+    <span>Comments</span
+    ><span class="comment-number"> {{ comments |length}}</span>
   </div>
   {% for comm_i in comments %}
   <div class="comment-body">
@@ -286,4 +298,6 @@
 <script src="{{ url_for('static', filename='js/dropzone.js') }}"></script>
 <script src="{{ url_for('static', filename='js/lightbox.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils/reply.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
