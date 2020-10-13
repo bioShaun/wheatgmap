@@ -156,18 +156,6 @@ a:active {
 }
 
 /* flex */
-.d-flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.flex-column {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
 
 .flex-wrap {
   -ms-flex-wrap: wrap;
@@ -305,4 +293,21 @@ pre {
 
 .horizon-center {
   margin: 0 auto;
+}
+
+.py-3 {
+  padding-bottom: 1rem !important;
+  padding-top: 1rem !important;
+}
+
+main > .container {
+  padding: 80px 15px 0;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.footer {
+  border-top: solid 1px #ddd;
 }
