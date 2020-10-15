@@ -34,3 +34,13 @@ def celery_task():
             return jsonify({'msg': 'pending'})
         else:
             return jsonify({'msg': 'error'})
+
+
+@main.route('/vcf-upload/<dest>', methods=['GET'])
+def anony_upload(dest):
+    return render_template('anony_upload.html', dest=dest)
+
+
+@main.route('/choose-data/<dest>', methods=['GET'])
+def anony_choose(dest):
+    return render_template('anony_choose.html', dest=dest)

@@ -24,7 +24,7 @@ def query_sample():
                                pub_samples=pub_samples,
                                pri_samples=private_samples)
     else:
-        return render_template('variants/query_sample_anony_choose.html')
+        return redirect(url_for('main.anony_choose', dest='var-by-sample'))
 
 
 @variants.route('/query-anony/sample/<task_id>', methods=['GET'])
@@ -45,15 +45,11 @@ def query_sample_anony(task_id):
                                        pri_samples=upload_samples)
             else:
                 flash(task_info, 'warning')
-                return redirect(url_for('variants.query_sample_upload'))
+                return redirect(
+                    url_for('main.anony_upload', dest='var-by-sample'))
         else:
             flash('Invalid upload id, please check.', 'warning')
-            return redirect(url_for('variants.query_sample_upload'))
-
-
-@variants.route('/query/sample-upload/', methods=['GET'])
-def query_sample_upload():
-    return render_template('anony_upload.html')
+            return redirect(url_for('main.anony_upload', dest='var-by-sample'))
 
 
 @variants.route('/query/result/', methods=['POST'])

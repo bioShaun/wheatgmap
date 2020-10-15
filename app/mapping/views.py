@@ -25,7 +25,7 @@ def bsa_base():
                                pub_samples=pub_samples,
                                pri_samples=private_samples)
     else:
-        return render_template('mapping/mapping_bsa_anony_choose.html')
+        return redirect(url_for('main.anony_choose', dest='bsa-mapping'))
 
 
 @mapping.route('/bsa-base-anony/<task_id>', methods=['GET'])
@@ -46,15 +46,11 @@ def bsa_base_anony(task_id):
                                        pri_samples=upload_samples)
             else:
                 flash(task_info, 'warning')
-                return redirect(url_for('mapping.bsa_base_upload'))
+                return redirect(
+                    url_for('main.anony_upload', dest='bsa-mapping'))
         else:
             flash('Invalid upload id, please check.', 'warning')
-            return redirect(url_for('mapping.bsa_base_upload'))
-
-
-@mapping.route('/bsa-base-upload/', methods=['GET'])
-def bsa_base_upload():
-    return render_template('anony_upload.html')
+            return redirect(url_for('main.anony_upload', dest='bsa-mapping'))
 
 
 @mapping.route('/bsa/', methods=['GET'])
@@ -75,7 +71,7 @@ def compare_group():
                                pub_samples=pub_samples,
                                pri_samples=private_samples)
     else:
-        return render_template('mapping/compare_group_anony_choose.html')
+        return redirect(url_for('main.anony_choose', dest='var-by-group'))
 
 
 @mapping.route('/compare-anony/group/<task_id>', methods=['GET'])
@@ -96,15 +92,11 @@ def compare_group_anony(task_id):
                                        pri_samples=upload_samples)
             else:
                 flash(task_info, 'warning')
-                return redirect(url_for('mapping.compare_group_upload'))
+                return redirect(
+                    url_for('main.anony_upload', dest='var-by-group'))
         else:
             flash('Invalid upload id, please check.', 'error')
-            return redirect(url_for('mapping.compare_group_upload'))
-
-
-@mapping.route('/compare-group-upload/', methods=['GET'])
-def compare_group_upload():
-    return render_template('anony_upload.html')
+            return redirect(url_for('main.anony_upload', dest='var-by-group'))
 
 
 @mapping.route('/bsa/run/', methods=['GET', 'POST'])
