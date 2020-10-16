@@ -29,6 +29,9 @@
           <a class="dropdown-item" href="{{ url_for('mapping.bsa_base') }}"
             >Mapping via BSA</a
           >
+          <a class="dropdown-item" href="{{ url_for('mapping.var_filter') }}"
+            >Variant Filter</a
+          >
           {% if not current_user.is_authenticated %}
           <a
             class="dropdown-item"

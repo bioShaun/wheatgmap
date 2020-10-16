@@ -8,9 +8,11 @@ from app.utils import processor, parseInput, finish_task
 from app.app import celery
 from flask_login import current_user
 import json
+from pathlib import PurePath
 
 UPLOAD_PATH = os.path.join(basedir, 'app', 'static', 'download')
 MAPPING_PATH = os.path.join(UPLOAD_PATH, 'gene_mapping')
+VAR_FILTER_PATH = os.path.join(UPLOAD_PATH, 'var_filter')
 ANN_PATH = os.path.join(UPLOAD_PATH, 'vcf_ann')
 gene_bed_file = Config.GENE_POS
 #VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
@@ -117,3 +119,21 @@ def compare_info(info):
             }
         }
     return {'task': 'compare_info', 'result': {'header': [], 'body': []}}
+
+
+def launch_var_filter(info):
+
+    cmd = (f"snpFilter-mp -p '{info}' --vcf_dir {Config.VCF_TABLE_BYCHR_PATH} "
+           f"-o {VAR_FILTER_PATH} --vcf_ann_dir {Config.VCF_ANN_BYCHR_PATH} ")
+
+    print(cmd)
+
+    result = processor.shRun(cmd)
+    print(result)
+    plot_path = result[0]
+    result_base = PurePath(plot_path).parent.parent
+
+    zip_cmd = f'cd {result_base} && zip -r variantFilter.zip variantFilter'
+    print(zip_cmd)
+    processor.shRun(zip_cmd)
+    return re.sub(r'\S+wheat.*/app', '', str(plot_path))

@@ -4,9 +4,10 @@ from datetime import datetime
 from flask import render_template, request, jsonify, flash, url_for, redirect
 from flask_login import current_user
 from . import mapping
-from .actions import run_bsa, compare_info
+from .actions import run_bsa, compare_info, launch_var_filter
 from app.utils import redis_task, fetch_vcf, fetch_vcf_by_task, tasks_status
 from app.auth.models import TaskInfo
+from pathlib import PurePath
 
 
 def current_username():
@@ -26,6 +27,34 @@ def bsa_base():
                                pri_samples=private_samples)
     else:
         return redirect(url_for('main.anony_choose', dest='bsa-mapping'))
+
+
+@mapping.route('/var-filter/', methods=['GET'])
+def var_filter():
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
+    if current_user.is_authenticated:
+        return render_template('mapping/var_filter.html',
+                               pub_samples=pub_samples,
+                               pri_samples=private_samples)
+    else:
+        return redirect(url_for('main.anony_choose', dest='var-filter'))
+
+
+@mapping.route('/var-filter/launch/', methods=['POST'])
+def var_density_plot():
+    if request.method == 'POST':
+        info = request.form['info']
+        print(info)
+        out_plot = launch_var_filter(info)
+        out_file = PurePath(out_plot).parent.parent / 'variantFilter.zip'
+        if out_plot:
+            return jsonify({
+                'msg': 'ok',
+                'out_plot': str(out_plot),
+                'out_file': str(out_file)
+            })
+        return jsonify({'msg': 'failed'})
 
 
 @mapping.route('/bsa-base-anony/<task_id>', methods=['GET'])
@@ -51,6 +80,31 @@ def bsa_base_anony(task_id):
         else:
             flash('Invalid upload id, please check.', 'warning')
             return redirect(url_for('main.anony_upload', dest='bsa-mapping'))
+
+
+@mapping.route('/var-filter-anony/<task_id>', methods=['GET'])
+def var_filter_anony(task_id):
+    name = current_username()
+    pub_samples, _ = fetch_vcf(name)
+    if task_id == 'no':
+        return render_template('mapping/var_filter.html',
+                               pub_samples=pub_samples,
+                               pri_samples=[])
+    else:
+        task_info = tasks_status(task_id)
+        if task_info:
+            if task_info == 'all_done':
+                upload_samples = fetch_vcf_by_task(task_id)
+                return render_template('mapping/var_filter.html',
+                                       pub_samples=pub_samples,
+                                       pri_samples=upload_samples)
+            else:
+                flash(task_info, 'warning')
+                return redirect(url_for('main.anony_upload',
+                                        dest='var-filter'))
+        else:
+            flash('Invalid upload id, please check.', 'warning')
+            return redirect(url_for('main.anony_upload', dest='var-filter'))
 
 
 @mapping.route('/bsa/', methods=['GET'])

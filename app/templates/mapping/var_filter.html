@@ -1,0 +1,426 @@
+{% extends 'base.html' %} {% block css %}
+<link
+  href="{{ url_for('static',filename='css/var_density.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+<div class="jumbotron">
+  <div class="container">
+    <h2 class="display-8">Variant Filter</h2>
+    <p>1. Wild Bulk and Mutant Bulk are <b>required</b>.</p>
+    <p>2. Wild Parent and Mutant Parent are suggested if available.</p>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-info">
+  <span>Data Selection</span>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    {% if pri_samples %}
+    <div class="card select-from-card-double mb-10">
+      <div class="card-header">My samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d"
+            class="form-control multi_d"
+            size="10"
+            multiple="multiple"
+          >
+            {% for sample in pri_samples %}
+            <option value="private">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div
+      class="card {% if pri_samples %} select-from-card-double {% else %} select-from-card-single {% endif %}"
+    >
+      <div class="card-header">Public samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d2"
+            class="form-control multi_d"
+            {%
+            if
+            pri_samples
+            %}
+            size="10"
+            {%
+            else
+            %}
+            size="25"
+            {%
+            endif
+            %}
+            multiple="multiple"
+          >
+            {% for sample in pub_samples %}
+            <option value="public">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card select-from-card-double mb-10">
+          <div class="card-header">Wild Bulk (Required)</div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to"
+                  class="form-control"
+                  size="10"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card select-from-card-double mb-10">
+          <div class="card-header">Mutant Bulk (Required)</div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_2"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_2"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_2"
+                  class="form-control"
+                  size="10"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card select-from-card-double mb-10">
+          <div class="card-header">Wild Parent (Optional)</div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_3"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_3"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_3"
+                  class="form-control"
+                  size="10"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card select-from-card-double mb-10">
+          <div class="card-header">Mutant Parent (Optional)</div>
+          <div class="card-body">
+            <div class="d-flex jc-around">
+              <div class="d-flex flex-column jc-center">
+                <button
+                  type="button"
+                  id="multi_d_rightSelected_4"
+                  class="add-btn btn btn-outline-success btn-sm"
+                >
+                  <span class="iconfont icon-arrow-right-filling"></span>
+
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  id="multi_d_leftSelected_4"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <span class="iconfont icon-arrow-left-filling"></span>
+                  REMOVE
+                </button>
+              </div>
+              <div style="flex: 1; margin-left: 10px">
+                <select
+                  name="to[]"
+                  id="multi_d_to_4"
+                  class="form-control"
+                  size="10"
+                  multiple="multiple"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-warning">
+  <span>Parameters</span>
+</div>
+
+<div class="row mb-20">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <div class="form-group row">
+            <label for="min_depth" class="col-sm-6 col-form-label"
+              >Minimal Read Depth</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="input"
+                class="form-control"
+                id="min_depth"
+                placeholder="5"
+              />
+            </div>
+          </div>
+          <div>
+            <label> <b>Allele Frequency Difference</b> </label>
+          </div>
+          <div class="form-group row">
+            <label for="afd" class="col-sm-6 col-form-label"
+              >[Wild/Mutant] Value (0.5-1)</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0.5"
+                max="1"
+                step="0.01"
+                class="form-control"
+                id="afd"
+                placeholder="0.67 for F2 or 0.9 for others (required)"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="afd_deviation" class="col-sm-6 col-form-label"
+              >[Wild/Mutant] Deviation (0-0.3)</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.3"
+                step="0.01"
+                value="0.05"
+                class="form-control"
+                id="afd_deviation"
+                placeholder="0.05"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="p_afd" class="col-sm-6 col-form-label"
+              >[Wild/Mutant Parent] Value (0.5-1)</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0.5"
+                max="1"
+                step="0.01"
+                value="1"
+                class="form-control"
+                id="p_afd"
+                placeholder="1"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="p_afd_deviation" class="col-sm-6 col-form-label"
+              >[Wild/Mutant Parent] Deviation (0-0.3)</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.3"
+                step="0.01"
+                value="0.05"
+                class="form-control"
+                id="p_afd_deviation"
+                placeholder="0.05"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label> <b>Max Heterozygosity ratio [0-0.5]</b> </label>
+          </div>
+
+          <div class="form-group row">
+            <label for="wild_freq" class="col-sm-6 col-form-label"
+              >Wild Bulk</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.5"
+                step="0.01"
+                value="0.4"
+                class="form-control"
+                id="wild_freq"
+                placeholder="0.4"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mut_freq" class="col-sm-6 col-form-label"
+              >Mutant Bulk</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.5"
+                step="0.01"
+                value="0.4"
+                class="form-control"
+                id="mut_freq"
+                placeholder="0.4"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="p_wild_freq" class="col-sm-6 col-form-label"
+              >Wild Parent</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.5"
+                step="0.01"
+                value="0"
+                class="form-control"
+                id="p_wild_freq"
+                placeholder="0"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="p_mut_freq" class="col-sm-6 col-form-label"
+              >Mutant Parent</label
+            >
+            <div class="col-sm-6">
+              <input
+                type="number"
+                min="0"
+                max="0.5"
+                step="0.01"
+                value="0"
+                class="form-control"
+                id="p_mut_freq"
+                placeholder="0"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+
+<div class="row mb-20">
+  <div class="col-4"></div>
+  <div class="col">
+    <button
+      class="btn btn-primary btn-block"
+      id="submit"
+      type="submit"
+      value="Submit"
+    >
+      Submit
+    </button>
+  </div>
+  <div class="col-4"></div>
+</div>
+
+<div id="query_hint" class="ta-center mb-20"></div>
+<div id="results" class="ta-center"></div>
+
+{% endblock %} {% block js %}
+<script src="{{ url_for('static', filename='js/utils/var_filter.js') }}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
