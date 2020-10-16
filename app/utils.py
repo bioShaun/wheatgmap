@@ -213,7 +213,7 @@ def vcfValidator(vcf):
             print("ad wrong")
             return 'Allelic depths information is missing from vcf.'
 
-        chr_size_df = pd.read_csv(Config.CHROM_SIZE,
+        chr_size_df = pd.read_csv(Config.COMPLETE_CHROM_SIZE,
                                   sep='\t',
                                   header=None,
                                   names=['chrom_len'],

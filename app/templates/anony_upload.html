@@ -15,10 +15,14 @@
     <button
       {% if dest == "bsa-mapping" %}
       id="search-upload"
+      {% elif dest == "var-filter" %}
+      id="search-upload-var-filter"      
       {% elif dest == "var-by-group" %}
       id="search-upload-query-group"
       {% elif dest == "var-by-sample" %}
       id="search-upload-query-sample"      
+      {% elif dest == "var-density" %}
+      id="search-upload-density"           
       {% else %}
       id="none"
       {% endif %}

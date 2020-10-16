@@ -69,6 +69,22 @@ function search_upload_task_query_group() {
   return;
 }
 
+function search_query_density() {
+  var search_text = $("#input-task").val();
+  if (search_text) {
+    window.location.href = "/variants/variant-density-anony/" + search_text;
+  }
+  return;
+}
+
+function search_var_filter() {
+  var search_text = $("#input-task").val();
+  if (search_text) {
+    window.location.href = "/mapping/var-filter-anony/" + search_text;
+  }
+  return;
+}
+
 $(document).ready(function () {
   add_sample_href();
 
@@ -219,4 +235,10 @@ $(document).ready(function () {
   // search upload query sample
   var search_query_group_but = $("#search-upload-query-group");
   search_query_group_but.on("click", search_upload_task_query_group);
+
+  var search_query_density_but = $("#search-upload-density");
+  search_query_density_but.on("click", search_query_density);
+
+  var search_var_filter_but = $("#search-upload-var-filter");
+  search_var_filter_but.on("click", search_var_filter);
 });

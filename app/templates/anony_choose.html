@@ -2,15 +2,19 @@
 <div class="mapping-choose-box d-flex jc-around ai-center">
   <div class="mapping-choose-item">     
     <a 
-    {% if dest == 'bsa-mapping' %}
-    href="{{ url_for('mapping.bsa_base_anony', task_id='no') }}"
-    {% elif dest == 'var-by-group' %}
-    href="{{ url_for('mapping.compare_group_anony', task_id='no') }}"
-    {% elif dest == 'var-by-sample' %}
-    href="{{ url_for('variants.query_sample_anony', task_id='no') }}"
-    {% else %}
-    href="#"
-    {% endif %}
+        {% if dest == 'bsa-mapping' %}
+        href="{{ url_for('mapping.bsa_base_anony', task_id='no') }}"
+        {% elif dest == 'var-filter' %}
+        href="{{ url_for('mapping.var_filter_anony', task_id='no') }}"        
+        {% elif dest == 'var-by-group' %}
+        href="{{ url_for('mapping.compare_group_anony', task_id='no') }}"
+        {% elif dest == 'var-by-sample' %}
+        href="{{ url_for('variants.query_sample_anony', task_id='no') }}"
+        {% elif dest == 'var-density' %}
+        href="{{ url_for('variants.var_density_anony', task_id='no') }}"    
+        {% else %}
+        href="#"
+        {% endif %}
     >
       <button type="button" class="btn btn-success btn-lg mapping-choose-btn">
         Public Data
@@ -21,13 +25,19 @@
   <div class="mapping-choose-item">
       
     <a 
-    {% if dest == 'bsa-mapping' %}
-    href="{{ url_for('main.anony_upload', dest='bsa-mapping') }}"
-    {% elif dest == 'var-by-group' %}
-    href="{{ url_for('main.anony_upload', dest='var-by-group') }}"    
-    {% elif dest == 'var-by-sample' %}
-    href="{{ url_for('main.anony_upload', dest='var-by-sample') }}"        
-    {% endif %}
+        {% if dest == 'bsa-mapping' %}
+        href="{{ url_for('main.anony_upload', dest='bsa-mapping') }}"
+        {% elif dest == 'var-filter' %}
+        href="{{ url_for('main.anony_upload', dest='var-filter') }}"    
+        {% elif dest == 'var-by-group' %}
+        href="{{ url_for('main.anony_upload', dest='var-by-group') }}"    
+        {% elif dest == 'var-by-sample' %}
+        href="{{ url_for('main.anony_upload', dest='var-by-sample') }}"        
+        {% elif dest == 'var-density' %}
+        href="{{ url_for('main.anony_upload', dest='var-density') }}"        
+        {% else %}    
+        href="#"
+        {% endif %}   
     >
       <button type="button" class="btn btn-warning btn-lg mapping-choose-btn">
         Upload Data

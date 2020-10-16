@@ -1,0 +1,188 @@
+{% extends 'base.html' %} {% block css %}
+<link
+  href="{{ url_for('static', filename='css/main.css') }}"
+  rel="stylesheet"
+/>
+<link
+  href="{{ url_for('static',filename='css/var_density.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+
+<div class="jumbotron">
+  <div class="container">
+    <h2 class="display-8">Variant Density</h2>
+    <p>This tool will help you compare variant density between samples.</p>
+    <p>
+      If you do not found the sample you want, you may need login and upload it.
+    </p>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-info">
+  <span>Sample Selection (At most 4 samples are allowed)</span>
+</div>
+
+<div class="row mb-20">
+  {% if pri_samples %}
+  <div class="col-md-4">
+    <div class="card" style="height: 370px">
+      <div class="card-header">My samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d"
+            class="form-control multi_d"
+            size="10"
+            multiple="multiple"
+          >
+            {% for sample in pri_samples %}
+            <option value="private">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="col-md-4">
+    <div class="card" style="height: 370px">
+      <div class="card-header">Public samples</div>
+      <div class="card-body">
+        <div>
+          <select
+            name="from[]"
+            id="multi_d2"
+            class="form-control multi_d"
+            size="10"
+            multiple="multiple"
+          >
+            {% for sample in pub_samples %}
+            <option value="public">{{ sample }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card" style="height: 370px">
+      <div class="card-header">Selected samples</div>
+      <div class="card-body">
+        <div class="d-flex jc-around">
+          <div class="d-flex flex-column jc-center">
+            <button
+              type="button"
+              id="multi_d_rightSelected"
+              class="btn btn-outline-success btn-sm"
+              style="margin-bottom: 10px"
+            >
+              <span class="iconfont icon-arrow-right-filling"></span>
+
+              ADD
+            </button>
+            <button
+              type="button"
+              id="multi_d_leftSelected"
+              class="btn btn-outline-warning btn-sm"
+            >
+              <span class="iconfont icon-arrow-left-filling"></span>
+              REMOVE
+            </button>
+          </div>
+          <div style="flex: 1; margin-left: 10px">
+            <select
+              name="to[]"
+              id="multi_d_to"
+              class="form-control"
+              size="12"
+              multiple="multiple"
+            ></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bd-callout bd-callout-warning">
+  <span>Parameters</span>
+</div>
+
+<div class="row mb-20">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <div class="form-group row">
+            <label for="var-density-window" class="col-sm-8 col-form-label"
+              >Window</label
+            >
+            <div class="col-sm-4">
+              <input
+                type="input"
+                class="form-control"
+                id="var-density-window"
+                placeholder="1000000"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="var-density-depth" class="col-sm-8 col-form-label"
+              >Minimal Read Depth</label
+            >
+            <div class="col-sm-4">
+              <input
+                type="input"
+                class="form-control"
+                id="var-density-depth"
+                placeholder="1"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="var-alt-freq" class="col-sm-8 col-form-label"
+              >Minimal Alt Allele Frequency</label
+            >
+            <div class="col-sm-4">
+              <input
+                type="input"
+                class="form-control"
+                id="var-alt-freq"
+                placeholder="0"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col-4"></div>
+  <div class="col">
+    <button
+      class="btn btn-primary btn-block"
+      id="submit"
+      type="submit"
+      value="Submit"
+    >
+      Submit
+    </button>
+  </div>
+  <div class="col-4"></div>
+</div>
+
+<!-- add loading hint -->
+
+<div id="query_hint" class="ta-center mb-20"></div>
+<div id="results" class="ta-center"></div>
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/var_density.js') }}"></script>
+{% endblock %}

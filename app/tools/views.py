@@ -4,11 +4,10 @@ import itertools
 from . import tools
 from .actions import fetch_blast_result, get_locus_result, \
     batch_query_gene, fetch_sequence, allowed_file, run_pca, \
-        run_vcf, run_annotation, async_run_annotation, query_gene_by_pos, launch_var_density_plot
+        run_vcf, run_annotation, async_run_annotation, query_gene_by_pos
 from flask import render_template, request, jsonify, session
 from werkzeug import secure_filename
-from settings import basedir, Config
-from app.auth.models import Data
+from settings import basedir
 from flask_login import current_user
 from app.utils import fetch_vcf
 
@@ -72,33 +71,6 @@ def get_sequence():
     return render_template('tools/get_sequence.html',
                            pub_samples=pub_samples,
                            pri_samples=private_samples)
-
-
-@tools.route('/variant-density/')
-def var_density():
-    name = current_name()
-    pub_samples, private_samples = fetch_vcf(name)
-    return render_template('tools/var_density_compare.html',
-                           pub_samples=pub_samples,
-                           pri_samples=private_samples)
-
-
-@tools.route('/variant-density/plot/', methods=['POST'])
-def var_density_plot():
-    if request.method == 'POST':
-        info = request.form['info']
-        info = json.loads(info)
-        window = int(info['var_window'])
-        min_depth = int(info['var_depth'])
-        alt_freq = float(info['var_alt_freq'])
-        print(info)
-        out_dir = launch_var_density_plot(sample_list=info['group'],
-                                          min_depth=min_depth,
-                                          window=window,
-                                          min_alt_freq=alt_freq)
-        if out_dir:
-            return jsonify({'msg': 'ok', 'outdir': str(out_dir)})
-        return jsonify({'msg': 'failed'})
 
 
 @tools.route('/pca/plot/')
