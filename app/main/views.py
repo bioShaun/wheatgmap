@@ -9,11 +9,9 @@ FLOWER_URL = 'http://127.0.0.1:5555'
 
 @main.route('/')
 def index():
-    # data_info = Data.query.filter_by(opened=1, sign=0).order_by(
-    #     Data.create_time.desc()).limit(10).all()
-    # test
-    data_info = Data.query.filter_by(sign=0).order_by(
+    data_info = Data.query.filter_by(opened=1, sign=0).order_by(
         Data.create_time.desc()).limit(5).all()
+
     wgs_count = Data.query.filter_by(opened=1, sign=0, type="WGS").count()
     wes_count = Data.query.filter_by(opened=1, sign=0, type="WES").count()
     rna_count = Data.query.filter_by(opened=1, sign=0, type="RNAseq").count()
@@ -22,7 +20,6 @@ def index():
                            wgs_count=wgs_count,
                            wes_count=wes_count,
                            rna_count=rna_count)
-    #return redirect(url_for('data.samples'))
 
 
 @main.route('/task/result/<task_id>', methods=['GET'])
