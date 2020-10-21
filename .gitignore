@@ -7,6 +7,8 @@ plink.*
 migrations/*
 app/static/download/
 __pycache__/
+.pytest_cache
+
 supervisor.sock
 *.pdf
 app/static/.webassets-cache/
@@ -27,3 +29,5 @@ gunicorn*pid
 
 # viewerjs
 app/static/viewerjs
+
+
