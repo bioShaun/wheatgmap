@@ -46,7 +46,7 @@ $(document).ready(function () {
       hint.appendTo("#query_hint");
       $("#results").empty();
       ajaxSend(
-        "/tools/variant-density/plot/",
+        "/variants/variant-density/plot/",
         { info: info },
         function (data) {
           if (data.msg != "ok") {

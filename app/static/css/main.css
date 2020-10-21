@@ -286,6 +286,10 @@ pre {
   margin-top: 50px;
 }
 
+.mt-75 {
+  margin-top: 50px;
+}
+
 .expression-echart-canvas {
   width: 1200px;
   height: 600px;
@@ -322,4 +326,8 @@ main > .container {
 
 span.download-mark {
   margin-left: 10px;
+}
+
+.pub-stats > p {
+  font-size: 12px;
 }

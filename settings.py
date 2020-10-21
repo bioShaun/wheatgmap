@@ -24,7 +24,7 @@ class Config(object):
     VCF_TABLE_BYCHR_PATH = '/data/wheatdb/data/vcfTablePkl/'
     VCF_ANN_BYCHR_PATH = '/data/wheatdb/data/vcfannDB/'
     COMPLETE_CHROM_SIZE = '/data/wheatdb/data/ref/full.chr.size'
-    CHROM_SIZE = '/data/wheatdb/data/ref/chr.size'
+    CHROM_SIZE = '/data/wheatdb/data/ref/clean.chr.size'
     GENE_POS = '/data/wheatdb/data/ref/gene.5kbupdown.window.bed'
     IMG_PATH = '/static/download/imgs'
     UPLOADED_PHOTOS_DEST = '/static/download/photos'

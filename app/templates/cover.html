@@ -1,6 +1,200 @@
-{% extends 'base_cover.html' %} {% block content %}
+{% extends 'base.html' %} {% block css %}
+<link
+  href="{{ url_for('static',filename='css/cover.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
 
-<div class="container marketing" style="margin-top: 30px">
+<div class="row mt-75">
+  <div class="col-md-3">
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('mapping.bsa_base') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/variant/map-1.svg')}}"
+          alt="Mapping via BSA"
+        />
+      </div>
+      <div class="tag-text">Mapping via BSA</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('mapping.var_filter') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/variant/map-2.svg')}}"
+          alt="Variant Filter"
+        />
+      </div>
+      <div class="tag-text">Variant Filter</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{url_for('variants.query_sample')}}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/variant/var-1.svg')}}"
+          alt="Query by Sample"
+        />
+      </div>
+      <div class="tag-text">Query by Sample</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('mapping.compare_group') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/variant/var-2.svg')}}"
+          alt="Compare by Group"
+        />
+      </div>
+      <div class="tag-text">Compare by Group</div>
+    </a>
+  </div>
+  <div class="col-md-3">
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('variants.var_density') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/variant/var-3.svg')}}"
+          alt="Variant Density"
+        />
+      </div>
+      <div class="tag-text">Variant Density</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('tools.blast') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-1.svg')}}"
+          alt="Blast"
+        />
+      </div>
+      <div class="tag-text">Blast</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('tools.gene_information') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-2.svg')}}"
+          alt="Gene"
+        />
+      </div>
+      <div class="tag-text">Gene</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('tools.get_sequence') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-3.svg')}}"
+          alt="Sequence"
+        />
+      </div>
+      <div class="tag-text">Sequence</div>
+    </a>
+  </div>
+  <div class="col-md-3">
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('expression.expression_by_gene') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-4.svg')}}"
+          alt="Expression"
+        />
+      </div>
+      <div class="tag-text">Expression</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('expression.enrichment') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-5.svg')}}"
+          alt="Enrichment"
+        />
+      </div>
+      <div class="tag-text">Enrichment</div>
+    </a>
+    <a
+      class="cover-tag d-flex align-items-center mb-20"
+      href="{{ url_for('tools.jbrowse') }}"
+    >
+      <div class="tag-img">
+        <img
+          src="{{ url_for('static', filename='images/cover/tool/tool-6.svg')}}"
+          alt="Genome Browser"
+        />
+      </div>
+      <div class="tag-text">Genome Browser</div>
+    </a>
+  </div>
+  <div class="col">
+    <div class="list-group">
+      <div
+        class="list-group-item list-group-item-action ta-center"
+        style="background-color: #f8f9fa"
+      >
+        <p class="mb-1" style="font-weight: 600">Public Data</p>
+      </div>
+      <div class="list-group-item list-group-item-action">
+        <div class="d-flex justify-content-around pub-stats">
+          <p style="margin: 0">
+            WGS <span class="badge badge-primary">{{wgs_count}}</span>
+          </p>
+          <p style="margin: 0">
+            WES <span class="badge badge-success">{{wes_count}}</span>
+          </p>
+          <p style="margin: 0">
+            RNAseq <span class="badge badge-warning">{{rna_count}}</span>
+          </p>
+        </div>
+      </div>
+      {% for data_i in data_info %}
+      <a
+        href="{{ url_for('data.dataDetail',tc_id=data_i.tc_id) }}"
+        class="list-group-item list-group-item-action"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <p class="mb-1">{{data_i.tc_id}}</p>
+          {% if data_i.variety_name %}
+          <small>[{{ data_i.variety_name }}]</small>
+          {% endif %}
+        </div>
+        <small
+          >Uploaded by {{data_i.provider}} at
+          {{data_i.create_time.strftime("%Y-%m-%d")}}</small
+        >
+      </a>
+      {% endfor %}
+      <a
+        href="{{ url_for('data.samples') }}"
+        class="list-group-item list-group-item-action active"
+      >
+        <div class="ta-center">
+          <h5 class="mb-1">Click to Find More</h5>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container marketing mt-75 mb-20">
   <div class="d-flex jc-around">
     <div>
       <a href="https://www.sicau.edu.cn/" target="_blank">

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1024 1024" style="enable-background:new 0 0 1024 1024;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{clip-path:url(#SVGID_3_);}
+	.st2{fill:#C9CED3;}
+	.st3{fill:#FFFFFF;}
+	.st4{fill:#2B3847;}
+	.st5{fill:#D4E2F1;}
+	.st6{fill:#ABC6E3;}
+	.st7{fill:#7FA2C2;}
+	.st8{fill:#EDEDED;}
+	.st9{fill:#C4C6C8;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="512" y1="47" x2="512" y2="977">
+	<stop  offset="0" style="stop-color:#BAD7F5"/>
+	<stop  offset="1" style="stop-color:#E2F0FF"/>
+</linearGradient>
+<circle class="st0" cx="512" cy="512" r="465"/>
+<g>
+	<defs>
+		<circle id="SVGID_2_" cx="512" cy="512" r="465"/>
+	</defs>
+	<clipPath id="SVGID_3_">
+		<use xlink:href="#SVGID_2_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st1">
+		<g>
+			<rect x="485.34" y="712.52" class="st2" width="316.26" height="224.71"/>
+			<path class="st3" d="M917.75,993.04H369.19c-6.84,0-12.39-5.55-12.39-12.39v-31.03c0-6.84,5.55-12.39,12.39-12.39h548.56
+				c6.84,0,12.39,5.55,12.39,12.39v31.03C930.13,987.49,924.59,993.04,917.75,993.04z"/>
+		</g>
+		<g>
+			<path class="st3" d="M1057.84,837.9H229.1c-10.23,0-18.51-8.29-18.51-18.51V249.26c0-10.23,8.29-18.51,18.51-18.51h828.74
+				c10.23,0,18.51,8.29,18.51,18.51v570.13C1076.35,829.61,1068.07,837.9,1057.84,837.9z"/>
+			<path class="st4" d="M1057.84,730.4H229.1c-10.23,0-18.51-8.29-18.51-18.51V249.26c0-10.23,8.29-18.51,18.51-18.51h828.74
+				c10.23,0,18.51,8.29,18.51,18.51v462.63C1076.35,722.11,1068.07,730.4,1057.84,730.4z"/>
+			<circle class="st4" cx="643.47" cy="785.93" r="22.19"/>
+			<path class="st5" d="M259.67,260.87c-12.21,0-22.11,9.9-22.11,22.11v395.17c0,10.95,7.96,20.01,18.4,21.78l763.62-439.06H259.67z
+				"/>
+			<path class="st6" d="M1027.27,700.27c12.21,0,22.11-9.9,22.11-22.11V282.99c0-12.21-9.9-22.11-22.11-22.11h-7.69L255.95,699.94
+				c1.21,0.2,2.44,0.34,3.71,0.34H1027.27z"/>
+		</g>
+		<path class="st3" d="M963.97,405.28h-642c-13.47,0-24.39-10.92-24.39-24.39v-9.48c0-13.47,10.92-24.39,24.39-24.39h642
+			c13.47,0,24.39,10.92,24.39,24.39v9.48C988.35,394.37,977.43,405.28,963.97,405.28z"/>
+		<path class="st3" d="M854.39,538.98H321.97c-13.47,0-24.39-10.92-24.39-24.39v-9.48c0-13.47,10.92-24.39,24.39-24.39h532.42
+			c13.47,0,24.39,10.92,24.39,24.39v9.48C878.77,528.07,867.85,538.98,854.39,538.98z"/>
+	</g>
+</g>
+<g>
+	<polygon class="st7" points="139.2,978.54 572.45,610.4 164.69,883.29 	"/>
+	<polygon class="st3" points="572.45,610.4 17.94,759.92 126.16,850.9 126.16,850.9 	"/>
+	<polygon class="st8" points="572.45,610.4 164.69,883.29 313.44,1008.34 	"/>
+	<polygon class="st9" points="139.2,978.54 164.69,883.29 164.69,883.29 126.16,850.9 	"/>
+	<polygon class="st9" points="126.16,850.9 126.16,850.9 164.69,883.29 572.45,610.4 	"/>
+</g>
+</svg>
