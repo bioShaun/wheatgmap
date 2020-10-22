@@ -12,14 +12,11 @@ function get_input_data() {
   var background = [];
   var ed = "ed";
   var qtlseqr = "qtlseqr";
-  var filter_method = $("input[name='filter_method']:checked").val();
-  var ref_freq = $("input[name='ref_freq']:checked").val();
-  var p_ref_freq = $("input[name='p_ref_freq']:checked").val();
-  var background_ref_freq = $(
-    "input[name='background_ref_freq']:checked"
-  ).val();
+  var ref_freq = $("#ref_freq").val();
+  var p_ref_freq = $("#p_ref_freq").val();
+  var background_ref_freq = $("#background_ref_freq").val();
   var pop_stru = $("input[name='pop_stru']:checked").val();
-  var qtlseqr_ref_freq = $("input[name='qtlseqr_ref_freq']:checked").val();
+  var qtlseqr_ref_freq = $("#qtlseqr_ref_freq").val();
 
   $("#multi_d_to option").each(function () {
     wild_bulk.push($(this).text());
@@ -54,7 +51,6 @@ function get_input_data() {
     background_ref_freq: background_ref_freq,
     min_depth: min_depth,
     qtlseqr_min_depth: qtlseqr_min_depth,
-    filter_method: filter_method,
     pop_stru: pop_stru,
     qtlseqr_ref_freq: qtlseqr_ref_freq,
   };

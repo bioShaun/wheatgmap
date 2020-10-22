@@ -1,0 +1,14 @@
+.tooltip-inner {
+  background: #fafafa !important;
+  text-align: left !important;
+  color: #363636 !important;
+  border: 1px solid #dedede;
+  max-width: 400px !important;
+}
+.tooltip-arrow {
+  border-bottom-color: #ffffff !important;
+  opacity: 0;
+}
+.tooltip {
+  opacity: 1 !important;
+}
