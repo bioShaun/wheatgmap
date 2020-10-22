@@ -1,0 +1,33 @@
+span.badge {
+  font-size: 8px;
+  font-weight: 100;
+  vertical-align: middle;
+}
+
+.tooltip-inner {
+  background: #17a2b8 !important;
+  text-align: left !important;
+  color: #fff !important;
+  border: none !important;
+  max-width: 400px !important;
+}
+
+.bs-tooltip-auto[x-placement^="bottom"] .arrow::before,
+.bs-tooltip-bottom .arrow::before {
+  border-bottom-color: #17a2b8 !important;
+}
+.bs-tooltip-auto[x-placement^="top"] .arrow::before,
+.bs-tooltip-top .arrow::before {
+  border-top-color: #17a2b8 !important;
+}
+.bs-tooltip-auto[x-placement^="left"] .arrow::before,
+.bs-tooltip-left .arrow::before {
+  border-left-color: #17a2b8 !important;
+}
+.bs-tooltip-auto[x-placement^="right"] .arrow::before,
+.bs-tooltip-right .arrow::before {
+  border-right-color: #17a2b8 !important;
+}
+.tooltip {
+  opacity: 1 !important;
+}
