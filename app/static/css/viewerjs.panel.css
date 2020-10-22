@@ -1,0 +1,7 @@
+.imgline > ul {
+  list-style: none;
+}
+
+.imgline > ul > li > img {
+  margin: 5px;
+}
