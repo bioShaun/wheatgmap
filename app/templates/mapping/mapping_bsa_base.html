@@ -123,28 +123,59 @@
   <form>
 
     <div class="form-group row">
-        <label for="min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth</label>
+        <label for="min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Minimum Read Depth"
+            >?</span
+          ></label>
         <div class="col-xs-7">
           <input id="min_depth" type="input" value="" placeholder="5"></input></td>
         </div>
     </div>
 
     <div class="form-group row">
-      <label for="w-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Window Size</label>
+      <label for="w-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Window Size
+        <span
+        class="badge"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="SNP Window Size"
+        >?</span
+      >
+    </label>
       <div class="col-xs-7">
         <input id="w-snp-num" type="input" value="" placeholder="20"></input></td>
       </div>
     </div>
 
     <div class="form-group row">
-      <label for="s-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Step Size</label>
+      <label for="s-snp-num" class="col-xs-5" style="font-weight:normal;">SNP Step Size
+        <span
+        class="badge"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="SNP Step Size"
+        >?</span
+      >    
+    </label>
       <div class="col-xs-7">
         <input id="s-snp-num" type="input" value="" placeholder="5"></input>
       </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Filter Method</label>
+    <!-- <div class="form-group row">
+        <label class="col-xs-5" style="font-weight:normal;">Filter Method
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Filter Method"
+            >?</span
+          >              
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="filter_method" id="filter_method0" value="symmetrical"> symmetrical
@@ -153,10 +184,18 @@
                 <input type="radio" name="filter_method" id="filter_method1" value="nonsymmetrical" checked> nonsymmetrical
               </label>                  
         </div>
-    </div>    
+    </div>     -->
 
     <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant</b>]</label>
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant</b>]
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Allele Frequency Filter [<b>Wild/Mutant</b>]"
+            >?</span
+          >               
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="ref_freq" id="ref_freq0" value="0.1"> 0.1/0.9
@@ -174,7 +213,15 @@
     </div>
 
     <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant Parent</b>]</label>
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Wild/Mutant Parent</b>]
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Allele Frequency Filter [<b>Wild/Mutant Parent</b>]"
+            >?</span
+          >                
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="p_ref_freq" id="p_ref_freq0" value="0.1"> 0.1/0.9
@@ -192,7 +239,15 @@
     </div>    
     
     <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Background</b>]</label>
+        <label class="col-xs-5" style="font-weight:normal;">Allele Frequency Filter [<b>Background</b>]
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Allele Frequency Filter [<b>Background</b>]"
+            >?</span
+          >          
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="background_ref_freq" id="background_ref_freq0" value="0.1"> 0.1/0.9
@@ -215,14 +270,30 @@
   <form>
 
     <div class="form-group row">
-        <label for="qtlseqr_min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth</label>
+        <label for="qtlseqr_min_depth" class="col-xs-5" style="font-weight:normal;">Minimum Read Depth
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Minimum Read Depth"
+            >?</span
+          >                
+        </label>
         <div class="col-xs-7">
           <input id="qtlseqr_min_depth" type="input" value="" placeholder="5"></input></td>
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Population Structure</label>
+        <label class="col-xs-5" style="font-weight:normal;">Population Structure
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Population Structure"
+            >?</span
+          >               
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="pop_stru" id="popStruc1" value="RIL" checked> RIL
@@ -234,7 +305,15 @@
     </div>
 
     <div class="form-group row">
-        <label class="col-xs-5" style="font-weight:normal;">Ref Allele Frequency(AFD)</label>
+        <label class="col-xs-5" style="font-weight:normal;">Ref Allele Frequency(AFD)
+            <span
+            class="badge"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Ref Allele Frequency(AFD)"
+            >?</span
+          >             
+        </label>
         <div class="col-xs-7">
             <label class="radio-inline">
                 <input type="radio" name="qtlseqr_ref_freq" id="qtlseqr_ref_freq0" value="0.1"> 0.1

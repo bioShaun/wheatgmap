@@ -229,3 +229,14 @@ pre {
   margin-bottom: 10px;
   border-bottom: 1px solid #e1e4e8;
 }
+
+.badge {
+  font-size: 8px;
+  font-weight: 100;
+}
+
+span.badge {
+  border-radius: 5px;
+  padding: 1px;
+  background-color: darkgray;
+}

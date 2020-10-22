@@ -135,4 +135,5 @@ $(document).ready(function () {
       "POST"
     );
   });
+  $('[data-toggle="tooltip"]').tooltip();
 });
