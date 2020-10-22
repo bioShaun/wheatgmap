@@ -1,4 +1,11 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% block css %}
+<link
+  href="{{ url_for('static', filename='css/atom-one-dark.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %}
+{% block content %}
 <div class="title" style="margin-bottom: 30px;">
   <h3>VCF Prepare</h3>
 </br>
@@ -16,45 +23,48 @@
   <p>Here are two demo for cohort variants-calling below:</p>
   </br>
   <p><B>GATK</B></p>
-  <div type="margin-left:20%">
-    <p># mutant gvcf</br>
-      gatk HaplotypeCaller \</br>
-      --input mutant.bam \</br>
-      --output mutant.g.vcf.gz \</br>
-      --reference refer \</br>
-      --emit-ref-confidence GVCF</br>
-      </br>
-      # wild gvcf</br>
-      gatk HaplotypeCaller \</br>
-      --input wild.bam \</br>
-      --output wild.g.vcf.gz \</br>
-      --reference refer \</br>
-      --emit-ref-confidence GVCF</br>
-      </br>
-      # merge gvcf
-      gatk CombineGVCFs \</br>
-      --output bsa.g.vcf.gz \</br>
-      --reference $refer \</br>
-      --variant mutant.g.vcf.gz \</br>
-      --variant wild.g.vcf.gz</br>
-      </br>
-      # call vcf
-      gatk GenotypeGVCFs \</br>
-      --reference $refer \\/br>
-      --variant bsa.g.vcf.gz \</br>
-      --output bsa.vcf.gz</br>
-    </p>
+  <pre style="padding: 0;"><code>
+    gatk HaplotypeCaller \
+        --input mutant.bam \
+        --output mutant.g.vcf.gz \
+        --reference refer \
+        --emit-ref-confidence GVCF
+    
+    # wild gvcf
+    gatk HaplotypeCaller \
+        --input wild.bam \
+        --output wild.g.vcf.gz \
+        --reference refer \
+        --emit-ref-confidence GVCF
+    
+    # merge gvcf
+    gatk CombineGVCFs \
+        --output bsa.g.vcf.gz \
+        --reference $refer \
+        --variant mutant.g.vcf.gz \
+        --variant wild.g.vcf.gz
+    
+    # call vcf
+    gatk GenotypeGVCFs \
+        --reference $refer \
+        --variant bsa.g.vcf.gz \
+        --output bsa.vcf.gz      
+  </code></pre>
   </div>
   </br>
   </br>
   <p><B>Samtools/Bcftools</B></p>
-  <p>
-    bcftools mpileup -Ou --annotate "FORMAT/AD" \</br>
-    -f ref.fa aln.mutant_bulk.bam aln.wild_bulk.bam | \</br>
-    bcftools call -Ou -mv | \</br>
-    bcftools filter -Oz -s LowQual -e '%QUAL<20 || DP>100' > bsa.vcf.gz
-  </p>
+  <pre style="padding: 0;"><code>
+    bcftools mpileup -Ou --annotate "FORMAT/AD" \
+        -f ref.fa aln.mutant_bulk.bam aln.wild_bulk.bam | \
+            bcftools call -Ou -mv | \
+                bcftools filter -Oz -s LowQual -e '%QUAL<20 || DP>100' > bsa.vcf.gz      
+  </code></pre>
   <p><a href="http://www.htslib.org/workflow/" target="_blank">read more</a> </p>
 
 </div>
+{% endblock %}
+{% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/initHightlight.js') }}"></script>
 {% endblock %}
