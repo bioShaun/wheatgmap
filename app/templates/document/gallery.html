@@ -1,6 +1,12 @@
-{% extends 'base.html' %} {% block css %} <link rel="stylesheet" href={{
-url_for('static', filename='viewerjs/dist/viewer.css') }}> <link
-rel="stylesheet" href={{ url_for('static', filename='css/viewjs.panel.css') }}>
+{% extends 'base.html' %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='viewerjs/dist/viewer.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/viewjs.panel.css') }}"
+/>
 {% endblock %} {% block content %}
 
 <div class="card mb-20">
