@@ -12,6 +12,7 @@ function ajaxSend(
     type: request_method || "GET",
     success: callback,
     error: function (request, textStatus, errorThrown) {
+      console.log(errorThrown)
       alert("Request failed, please try again.");
     },
     return_type: return_type || "json",

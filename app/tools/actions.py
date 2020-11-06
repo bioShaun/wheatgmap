@@ -207,6 +207,7 @@ def fetch_sequence(table, chr, start_pos, end_pos):
                                 chr=chr,
                                 start_pos=start_pos,
                                 end_pos=end_pos)
+    print(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     p.wait()
     result = p.stdout.readlines()
