@@ -81,41 +81,46 @@ $(document).ready(function () {
   $("#submit").click(function () {
     var gene_name = $("#gene_name").val();
     var group = [];
+
+    var hint = $(
+      '<span><img src="/static/images/hint.gif" />' +
+        "  under processing, please wait...</span>"
+    );
+    hint.appendTo("#query_hint");
     $("#multi_d_to option").each(function () {
       group.push($(this).text());
     });
     var info = { gene_name: gene_name, group: group };
     if (check_gene(info)) {
       info = JSON.stringify(info);
-      $("#query_hint").empty();
-      var hint = $(
-        '<span><img src="/static/images/hint.gif" />' +
-          "loading data, please wait...</span>"
+      $("#expression-echart-container").empty();
+      var exp_box = $(
+        '<div id="results-plot" class="expression-echart-canvas"></div>'
       );
-      hint.appendTo("#query_hint");
+      exp_box.appendTo("#expression-echart-container");
+      $("#results-box").fadeOut();
       ajaxSend(
         "/expression/search/result/",
         { info: info },
         function (data) {
+          $("#query_hint").empty();
           if (data.msg != "ok") {
             createAlert(data.msg);
-            $("#query_hint").empty();
             return;
           } else {
-            $("#results-plot").empty();
-            $("#query_hint").empty();
             expr_line(group, data.data);
+            $("#results-box").fadeIn();
             /*
-          generate_plot(createPlotData(groupA, groupB, data.bodyData));
-          tableStr = createTable(data.headData, data.bodyData, tableType='expr');
-          $("#results-table").html(tableStr);
-          $("#results_table").DataTable({
-            dom: 'lBfrtip',
-            "scrollX": true,
-            buttons: [
-              'csv'
-            ]
-          }); */
+            generate_plot(createPlotData(groupA, groupB, data.bodyData));
+            tableStr = createTable(data.headData, data.bodyData, tableType='expr');
+            $("#results-table").html(tableStr);
+            $("#results_table").DataTable({
+              dom: 'lBfrtip',
+              "scrollX": true,
+              buttons: [
+                'csv'
+              ]
+            }); */
           }
         },
         "POST"

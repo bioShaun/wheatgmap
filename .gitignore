@@ -28,3 +28,5 @@ gunicorn*pid
 # viewerjs
 
 
+all.min.css
+
