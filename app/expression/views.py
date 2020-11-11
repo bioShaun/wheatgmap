@@ -23,7 +23,7 @@ def enrichment():
 
 @expression.route('/search/gene/')
 def expression_by_gene():
-    samples = fetch_sample(table='iwgsc_refseq', fixed_column_num=2)
+    samples = fetch_sample(table='rename_iwgsc_refseq', fixed_column_num=2)
     return render_template('expression/show_by_gene.html', samples=samples)
 
 

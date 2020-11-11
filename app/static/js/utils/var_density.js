@@ -49,11 +49,11 @@ $(document).ready(function () {
         "/variants/variant-density/plot/",
         { info: info },
         function (data) {
+          $("#query_hint").empty();
           if (data.msg != "ok") {
             layer.alert(data.msg);
             return;
           } else {
-            $("#query_hint").empty();
             var downloadBtn = $(
               `<a href="${data.outdir}.zip"><button type="button" class="btn btn-success mb-20" aria-label="Left Align" style="margin-top: 10px;">Download Full Results<span class="iconfont icon-decline-filling download-mark" aria-hidden="true"></span></button></a>`
             );

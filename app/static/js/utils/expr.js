@@ -35,10 +35,9 @@ function create_expr(head, genes, series) {
     },
     dataZoom: {
       show: true,
-      start: 30,
-      end: 70,
       realtime: true,
     },
+    grid: { bottom: "55%" },
     legend: {
       //right: '15%',
       data: genes,
@@ -57,7 +56,7 @@ function create_expr(head, genes, series) {
       {
         axisLabel: {
           interval: 0,
-          rotate: 25,
+          rotate: 75,
         },
         type: "category",
         data: head,
@@ -82,13 +81,18 @@ $(document).ready(function () {
   $("#submit").click(function () {
     var gene_name = $("#gene_name").val();
     var group = [];
+
+    var hint = $(
+      '<span><img src="/static/images/hint.gif" />' +
+        "  under processing, please wait...</span>"
+    );
+    hint.appendTo("#query_hint");
     $("#multi_d_to option").each(function () {
       group.push($(this).text());
     });
     var info = { gene_name: gene_name, group: group };
     if (check_gene(info)) {
       info = JSON.stringify(info);
-      $("#query_hint").empty();
       $("#expression-echart-container").empty();
       var exp_box = $(
         '<div id="results-plot" class="expression-echart-canvas"></div>'
@@ -99,6 +103,7 @@ $(document).ready(function () {
         "/expression/search/result/",
         { info: info },
         function (data) {
+          $("#query_hint").empty();
           if (data.msg != "ok") {
             createAlert(data.msg);
             return;
