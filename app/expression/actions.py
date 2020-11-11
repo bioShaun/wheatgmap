@@ -95,7 +95,7 @@ def async_run_enrich(specie, genefile):
         return {'task': 'enrich', 'result': {'header': [], 'body': [], 'href': []}}
 
 
-def fetch_expression_data(gene_id, samples, table="iwgsc_refseq"):
+def fetch_expression_data(gene_id, samples, table="rename_iwgsc_refseq"):
     sample_str = ','.join(samples)
     cmd = "select {samples} from {table} where gene='{gene}'".format(
         samples=sample_str,
@@ -108,7 +108,7 @@ def fetch_expression_data(gene_id, samples, table="iwgsc_refseq"):
     return list(results[0])
 
 
-def fetch_expression_plot_data(samples, table="iwgsc_refseq"):
+def fetch_expression_plot_data(samples, table="rename_iwgsc_refseq"):
     pca = PCA(n_components=2)
     sample_str = ','.join(['gene'] + samples)
     cmd = "select {samples} from {table}".format(
