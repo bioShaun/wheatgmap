@@ -29,3 +29,8 @@ gunicorn*pid
 
 
 all.min.js
+
+
+app/static/reference
+app/static/vcf_private_sample
+
