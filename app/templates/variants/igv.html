@@ -1,0 +1,126 @@
+{% extends 'base.html' %} {% block content %}
+
+<div id="query-box">
+  <div class="bd-callout bd-callout-info">
+    <span>Sample Selection (At most 4 samples are allowed)</span>
+  </div>
+
+  <div class="row mb-20">
+    {% if pri_samples %}
+    <div class="col-md-4">
+      <div class="card" style="height: 370px">
+        <div class="card-header">My samples</div>
+        <div class="card-body">
+          <div>
+            <select
+              name="from[]"
+              id="multi_d"
+              class="form-control multi_d"
+              size="10"
+              multiple="multiple"
+            >
+              {% for sample in pri_samples %}
+              <option value="private">{{ sample }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="col-md-4">
+      <div class="card" style="height: 370px">
+        <div class="card-header">Public samples</div>
+        <div class="card-body">
+          <div>
+            <select
+              name="from[]"
+              id="multi_d2"
+              class="form-control multi_d"
+              size="10"
+              multiple="multiple"
+            >
+              {% for sample in pub_samples %}
+              <option value="public">{{ sample }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card" style="height: 370px">
+        <div class="card-header">Selected samples</div>
+        <div class="card-body">
+          <div class="d-flex jc-around">
+            <div class="d-flex flex-column jc-center">
+              <button
+                type="button"
+                id="multi_d_rightSelected"
+                class="btn btn-outline-success btn-sm"
+                style="margin-bottom: 10px"
+              >
+                <span class="iconfont icon-arrow-right-filling"></span>
+
+                ADD
+              </button>
+              <button
+                type="button"
+                id="multi_d_leftSelected"
+                class="btn btn-outline-warning btn-sm"
+              >
+                <span class="iconfont icon-arrow-left-filling"></span>
+                REMOVE
+              </button>
+            </div>
+            <div style="flex: 1; margin-left: 10px">
+              <select
+                name="to[]"
+                id="multi_d_to"
+                class="form-control"
+                size="12"
+                multiple="multiple"
+              ></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-20">
+    <div class="col-4"></div>
+    <div class="col">
+      <button
+        class="btn btn-primary btn-block"
+        id="submit"
+        type="submit"
+        value="Submit"
+      >
+        Submit
+      </button>
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div>
+
+<div id="igv-box" style="display: none">
+  <div class="card mb-20">
+    <div class="card-body">
+      <div id="igv-div" class="mb-20"></div>
+    </div>
+  </div>
+
+  <div class="ta-center mb-20">
+    <button id="reset-btn" class="btn btn-primary">Reset</button>
+  </div>
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/igv@2.7.1/dist/igv.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/launch_igv.js') }}"></script>
+{% endblock %}

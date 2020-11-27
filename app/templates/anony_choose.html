@@ -11,7 +11,9 @@
         {% elif dest == 'var-by-sample' %}
         href="{{ url_for('variants.query_sample_anony', task_id='no') }}"
         {% elif dest == 'var-density' %}
-        href="{{ url_for('variants.var_density_anony', task_id='no') }}"    
+        href="{{ url_for('variants.var_density_anony', task_id='no') }}"
+        {% elif dest == 'igv' %}
+        href="{{ url_for('variants.igv_anony', task_id='no') }}"            
         {% else %}
         href="#"
         {% endif %}
@@ -34,7 +36,9 @@
         {% elif dest == 'var-by-sample' %}
         href="{{ url_for('main.anony_upload', dest='var-by-sample') }}"        
         {% elif dest == 'var-density' %}
-        href="{{ url_for('main.anony_upload', dest='var-density') }}"        
+        href="{{ url_for('main.anony_upload', dest='var-density') }}"       
+        {% elif dest == 'igv' %}
+        href="{{ url_for('main.anony_upload', dest='igv') }}"              
         {% else %}    
         href="#"
         {% endif %}   

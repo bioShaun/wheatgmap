@@ -77,6 +77,14 @@ function search_query_density() {
   return;
 }
 
+function search_query_igv() {
+  var search_text = $("#input-task").val();
+  if (search_text) {
+    window.location.href = "/variants/igv-anony/" + search_text;
+  }
+  return;
+}
+
 function search_var_filter() {
   var search_text = $("#input-task").val();
   if (search_text) {
@@ -238,6 +246,9 @@ $(document).ready(function () {
 
   var search_query_density_but = $("#search-upload-density");
   search_query_density_but.on("click", search_query_density);
+
+  var search_query_density_but = $("#search-upload-igv");
+  search_query_density_but.on("click", search_query_igv);
 
   var search_var_filter_but = $("#search-upload-var-filter");
   search_var_filter_but.on("click", search_var_filter);

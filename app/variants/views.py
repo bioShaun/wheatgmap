@@ -120,3 +120,40 @@ def var_density_plot():
         if out_dir:
             return jsonify({'msg': 'ok', 'outdir': str(out_dir)})
         return jsonify({'msg': 'failed'})
+
+
+@variants.route('/igv/' , methods=['GET'])
+def igv():
+    name = current_username()
+    pub_samples, private_samples = fetch_vcf(name)
+    if current_user.is_authenticated:
+        return render_template('variants/igv.html',
+                               pub_samples=pub_samples,
+                               pri_samples=private_samples)
+    else:
+        return redirect(url_for('main.anony_choose', dest='igv'))
+
+
+@variants.route('/igv-anony/<task_id>', methods=['GET'])
+def igv_anony(task_id):
+    name = current_username()
+    pub_samples, _ = fetch_vcf(name)
+    if task_id == 'no':
+        return render_template('variants/igv.html',
+                               pub_samples=pub_samples,
+                               pri_samples=[])
+    else:
+        task_info = tasks_status(task_id)
+        if task_info:
+            if task_info == 'all_done':
+                upload_samples = fetch_vcf_by_task(task_id)
+                return render_template('variants/igv.html',
+                                       pub_samples=pub_samples,
+                                       pri_samples=upload_samples)
+            else:
+                flash(task_info, 'warning')
+                return redirect(
+                    url_for('main.anony_upload', dest='igv'))
+        else:
+            flash('Invalid upload id, please check.', 'warning')
+            return redirect(url_for('main.anony_upload', dest='igv'))    
