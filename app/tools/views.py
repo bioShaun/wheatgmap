@@ -1,10 +1,12 @@
 import os
 import json
 import itertools
+from sys import pycache_prefix
 from . import tools
-from .actions import fetch_blast_result, get_locus_result, \
+from .actions import fetch_blast_result, fetch_exp_item, get_locus_result, \
     batch_query_gene, fetch_sequence, allowed_file, run_pca, \
-        run_vcf, run_annotation, async_run_annotation, query_gene_by_pos
+        run_vcf, run_annotation, async_run_annotation, query_gene_by_pos, fetch_lnc_pcg_pairs, fetch_pcg_exp, fetch_lnc_exp,pearson_cor, \
+        fetch_exp_item, echarts_cluster_heatmap_data
 from flask import render_template, request, jsonify, session
 from werkzeug import secure_filename
 from settings import basedir
@@ -21,11 +23,13 @@ current_name = lambda: current_user.username if current_user.is_authenticated el
 def fetch_blast_table():
     if request.method == 'POST':
         info = json.loads(request.form['info'])
-        if ',' in info['genes']:
+        gene_str = info['genes']
+        if ',' in gene_str:
             gene_list1 = list(
-                itertools.chain(*[each.split(',') for each in a.split()]))
+                itertools.chain(
+                    *[each.split(',') for each in gene_str.split()]))
         else:
-            gene_list1 = info['genes'].split()
+            gene_list1 = gene_str.split()
         gene_list2 = query_gene_by_pos(**info)
         gene_list = list(set(gene_list1 + gene_list2))
         if len(gene_list) == 0:
@@ -161,3 +165,46 @@ def fetch_annotation_result():
             return jsonify({'msg': 'async', 'task_id': task.id})
         result = run_annotation(filename, annotation_database)
         return jsonify({'msg': 'ok', 'result': result})
+
+
+@tools.route('/lncRNA/', methods=['GET'])
+def lncRNA_view():
+    return render_template('tools/lncRNA.html')
+
+
+@tools.route('/fetch-lncRNA/', methods=['POST'])
+def fetch_lnc():
+    if request.method == 'POST':
+        payload = json.loads(request.form['data'])
+        lnc_pcg_pair = fetch_lnc_pcg_pairs(payload)
+        lnc_pcg_pair_list = [item.as_dict() for item in lnc_pcg_pair]
+        return jsonify(lnc_pcg_pair_list)
+
+
+@tools.route('/fetch-lncRNA-expression/', methods=['POST'])
+def fetch_exp():
+    if request.method == 'POST':
+        payload = json.loads(request.form['data'])
+        mrna = payload['mrna']
+        lncrna = payload['lncrna']
+        tissue = payload['tissue']
+        mrna_lnc_pair = payload['mrna_lnc_pair']
+
+        mrna_exp = fetch_pcg_exp(mrna, tissue)
+        lnc_exp = fetch_lnc_exp(lncrna, tissue)
+
+        mrna_exp_arr = fetch_exp_item(mrna, mrna_exp)
+        lnc_exp_arr = fetch_exp_item(lncrna, lnc_exp)
+        if len(tissue) >= 5:
+            pearson_res = pearson_cor(mrna, lncrna, mrna_exp_arr, lnc_exp_arr,
+                                      mrna_lnc_pair)
+        else:
+            pearson_res = []
+        heatmap_y, heatmap_data = echarts_cluster_heatmap_data(
+            [*mrna, *lncrna], [*mrna_exp_arr, *lnc_exp_arr])
+        return jsonify({
+            "exp": [*mrna_exp, *lnc_exp],
+            "pcc": pearson_res,
+            "heatmap_y": heatmap_y,
+            "heatmap_data": heatmap_data
+        })

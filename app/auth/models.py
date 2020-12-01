@@ -439,6 +439,29 @@ class GeneExpression(dbCRUD, db.Model):
     def findbygene(gene_id):
         return GeneExpression.query.filter_by(gene_id=gene_id).all()
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class LncExpression(dbCRUD, db.Model):
+    __tablename__ = 'lncExpression'
+    id = Column(db.Integer, primary_key=True)
+    gene_id = Column(db.String(20))
+    tissue = Column(db.String(50))
+    tpm = Column(FLOAT(precision=10, scale=2))
+
+    def __init__(self, gene_id, tissue, tpm):
+        self.gene_id = gene_id
+        self.tissue = tissue
+        self.tpm = tpm
+
+    @staticmethod
+    def findbygene(gene_id):
+        return LncExpression.query.filter_by(gene_id=gene_id).all()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 def generateDTcls(cls):
     class DT(cls):
@@ -551,3 +574,52 @@ class TaskInfo(dbCRUD, db.Model):
     @staticmethod
     def findByRedisId(redis_id):
         return TaskInfo.query.filter_by(redis_id=redis_id).first()
+
+
+class RnaNeighbor(dbCRUD, db.Model):
+
+    __tablename__ = 'rnaNeighbor'
+
+    id = Column(db.Integer, primary_key=True)
+    chrom = Column(db.String(6))
+    mRNA_start = Column(db.Integer)
+    mRNA_end = Column(db.Integer)
+    mRNA_strand = Column(db.String(1))
+    mRNA_transcript = Column(db.String(25))
+    mRNA_gene = Column(db.String(25))
+    lncRNA_start = Column(db.Integer)
+    lncRNA_end = Column(db.Integer)
+    lncRNA_strand = Column(db.String(1))
+    lncRNA_transcript = Column(db.String(25))
+    lncRNA_gene = Column(db.String(25))
+    direction = Column(db.String(9))
+    type = Column(db.String(10))
+    distance = Column(db.Integer)
+    subtype = Column(db.String(11))
+    location = Column(db.String(10))
+    isBest = Column(db.Integer)
+
+    def __init__(self, chrom, mRNA_start, mRNA_end, mRNA_strand,
+                 mRNA_transcript, mRNA_gene, lncRNA_start, lncRNA_end,
+                 lncRNA_strand, lncRNA_transcript, lncRNA_gene, direction,
+                 type, distance, subtype, location, isBest):
+        self.chrom = chrom
+        self.mRNA_start = mRNA_start
+        self.mRNA_end = mRNA_end
+        self.mRNA_strand = mRNA_strand
+        self.mRNA_transcript = mRNA_transcript
+        self.mRNA_gene = mRNA_gene
+        self.lncRNA_start = lncRNA_start
+        self.lncRNA_end = lncRNA_end
+        self.lncRNA_strand = lncRNA_strand
+        self.lncRNA_transcript = lncRNA_transcript
+        self.lncRNA_gene = lncRNA_gene
+        self.direction = direction
+        self.type = type
+        self.distance = distance
+        self.subtype = subtype
+        self.location = location
+        self.isBest = isBest
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

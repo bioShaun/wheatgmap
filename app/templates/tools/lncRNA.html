@@ -1,0 +1,199 @@
+{% extends 'base.html' %} {% block css %}
+<link
+  href="{{ url_for('static',filename='css/lncRNA.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+
+<div class="jumbotron">
+  <div class="container">
+    <h2 class="display-8">mRNA neighboring lncRNA</h2>
+    <p class="lead">
+      Search lncRNA within 100kb upstream/downstream mRNA and show their
+      expression pattern across different tissues.
+    </p>
+    <hr class="my-4" />
+    <p>1: Input one or more gene ID <b>OR</b> select a chromsome and region.</p>
+    <p>2: Click the "Search"</p>
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col-md-6">
+    <div class="card" style="height: 210px">
+      <div class="card-body">
+        <form role="search" method="" action="#">
+          <textarea
+            id="genes"
+            rows="5"
+            class="form-control"
+            value=""
+            placeholder="Input Gene ID.(e.g TraesCS1D01G311400)"
+          ></textarea>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card" style="height: 210px">
+      <div class="card-body">
+        <div class="form-group row">
+          <label for="select-chr" class="col-3 col-form-label">Chromsome</label>
+          <div class="col-9">
+            <select
+              class="selectpicker form-control form-control-sm"
+              name="chr"
+              id="select-chr"
+            >
+              <option value="selected" ="selected"></option>
+              <option value="chr1A">chr1A</option>
+              <option value="chr1B">chr1B</option>
+              <option value="chr1D">chr1D</option>
+              <option value="chr2A">chr2A</option>
+              <option value="chr2B">chr2B</option>
+              <option value="chr2D">chr2D</option>
+              <option value="chr3A">chr3A</option>
+              <option value="chr3B">chr3B</option>
+              <option value="chr3D">chr3D</option>
+              <option value="chr4A">chr4A</option>
+              <option value="chr4B">chr4B</option>
+              <option value="chr4D">chr4D</option>
+              <option value="chr5A">chr5A</option>
+              <option value="chr5B">chr5B</option>
+              <option value="chr5D">chr5D</option>
+              <option value="chr6A">chr6A</option>
+              <option value="chr6B">chr6B</option>
+              <option value="chr6D">chr6D</option>
+              <option value="chr7A">chr7A</option>
+              <option value="chr7B">chr7B</option>
+              <option value="chr7D">chr7D</option>
+              <option value="chrUn">chrUn</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="pos-start" class="col-3 col-form-label"
+            >Start Position</label
+          >
+          <div class="col-9">
+            <input
+              type="text"
+              id="pos-start"
+              class="form-control form-control-sm"
+              name="pos_start"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="pos-end" class="col-3 col-form-label">End Position</label>
+          <div class="col-9">
+            <input
+              type="text"
+              id="pos-end"
+              class="form-control form-control-sm"
+              name="pos_end"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mb-20">
+  <button type="submit" class="btn btn-sm btn-success" id="submit">
+    Search
+  </button>
+  <button type="reset" class="btn btn-sm btn-warning" id="reset">Reset</button>
+</div>
+
+<div class="card lnc-pcg-pair" style="display: none"></div>
+
+<div class="expression mb-20" style="display: none">
+  <div class="bd-callout bd-callout-info">
+    <span>Expression</span>
+  </div>
+
+  <div class="exp-query mb-20">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label for="select-mrna" class="col-2 col-form-label">mRNA</label>
+          <div class="col-10">
+            <select
+              class="selectpicker form-control form-control-sm"
+              data-actions-box="true"
+              name="chr"
+              id="select-mrna"
+              data-size="10"
+              multiple
+            ></select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row">
+          <label for="select-lnc" class="col-2 col-form-label">lncRNA</label>
+          <div class="col-10">
+            <select
+              class="selectpicker form-control form-control-sm"
+              data-actions-box="true"
+              data-size="10"
+              name="chr"
+              id="select-lnc"
+              multiple
+            ></select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group row">
+          <label for="select-tissue" class="col-2 col-form-label">Tissue</label>
+          <div class="col-10">
+            <select
+              class="selectpicker form-control form-control-sm"
+              data-actions-box="true"
+              data-size="10"
+              name="chr"
+              id="select-tissue"
+              multiple
+            ></select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary btn-sm" id="query-exp">Query</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-results mb-20">
+    <div class="row">
+      <div class="col-xl-6 mb-20">
+        <div class="exp-table card" style="display: none"></div>
+      </div>
+      <div class="col-xl-6">
+        <div class="exp-cor card" style="display: none"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="exp-plot"></div>
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts-en.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+<script src="{{ url_for('static', filename='js/utils/lncRNA.js') }}"></script>
+{% endblock %}

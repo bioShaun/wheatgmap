@@ -1,5 +1,9 @@
+import enum
 import os
 import re
+from typing import List
+
+from sqlalchemy.orm import query
 from app.db import DB
 import pandas as pd
 import numpy as np
@@ -12,7 +16,11 @@ from settings import basedir
 from app.utils import processor, addOuterLink
 from app.app import celery
 from settings import Config
-from app.auth.models import GeneExpression
+from app.auth.models import GeneExpression, LncExpression, RnaNeighbor
+from scipy import stats
+from itertools import product
+from scipy.cluster.hierarchy import complete, leaves_list
+from scipy.spatial.distance import pdist
 
 UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 vcf_seq_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_SEQ)
@@ -225,6 +233,8 @@ def _pandas_read(filename, header):
         df = pd.read_excel(filename, header=header)
     elif suffix == 'txt':
         df = pd.read_table(filename, header=header)
+    else:
+        return pd.DataFrame([])
     return df
 
 
@@ -312,3 +322,80 @@ def async_run_annotation(vcf_file, annotation_database):
         '.ann.vcf.*'))
     result = annotation_prefix + '.zip'
     return {'task': 'vcf_ann', 'result': result}
+
+
+def fetch_lnc_pcg_pairs(options):
+    print(options)
+    genes = [each for each in options['genes'] if each]
+    if genes:
+        return RnaNeighbor.query.filter(RnaNeighbor.mRNA_gene.in_(genes)).all()
+    else:
+        chrom = options['chrom']
+        start = options['start']
+        end = options['end']
+        print(chrom)
+        print(start)
+        print(end)
+        return RnaNeighbor.query.filter(RnaNeighbor.chrom == chrom,
+                                        RnaNeighbor.mRNA_start >= start,
+                                        RnaNeighbor.mRNA_end <= end).all()
+
+
+def fetch_pcg_exp(geneList: List[str], sampleList: List[str]):
+    query_out = GeneExpression.query.filter(
+        GeneExpression.gene_id.in_(geneList),
+        GeneExpression.tissue.in_(sampleList)).all()
+    return [item.as_dict() for item in query_out]
+
+
+def fetch_lnc_exp(geneList: List[str], sampleList: List[str]):
+    query_out = LncExpression.query.filter(
+        LncExpression.gene_id.in_(geneList),
+        LncExpression.tissue.in_(sampleList)).all()
+    return [item.as_dict() for item in query_out]
+
+
+def normalized_tpm(tpm):
+    return np.log2(tpm + 1)
+
+
+def fetch_exp_item(genes, expItems):
+    expList = []
+    for gene in genes:
+        gene_exp_list = []
+        for exp_i in expItems:
+            if exp_i['gene_id'] == gene:
+                gene_exp_list.append(normalized_tpm(exp_i['tpm']))
+        expList.append(gene_exp_list)
+    return expList
+
+
+def pearson_cor(mrna, lncrna, mrnaExp, lncExp, mrna_lnc_pair):
+    exp_product = list(product(mrnaExp, lncExp))
+    results = []
+    for n, gene_pair in enumerate(product(mrna, lncrna)):
+        gene_pair_str = '-'.join(gene_pair)
+        if gene_pair_str in mrna_lnc_pair:
+            pcc, pval = stats.pearsonr(exp_product[n][0], exp_product[n][1])
+            if pcc is np.nan:
+                pcc = 0
+                pval = 1
+            results.append({
+                "mRNA": gene_pair[0],
+                "lncRNA": gene_pair[1],
+                "pcc": round(pcc, 3),
+                "p-value": pval
+            })
+    return results
+
+
+def echarts_cluster_heatmap_data(geneList, expItems):
+    Z = complete(pdist(expItems))
+    cluster_order = leaves_list(Z)
+    reorder_exp = [expItems[i] for i in cluster_order]
+    reorder_gene = [geneList[i] for i in cluster_order]
+    heatmap_data = []
+    for i, expList_i in enumerate(reorder_exp):
+        for j, tpm_i in enumerate(expList_i):
+            heatmap_data.append([j, i, tpm_i])
+    return reorder_gene, heatmap_data
