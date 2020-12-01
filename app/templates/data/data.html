@@ -104,14 +104,28 @@
       ],
       ajax: function (data, callback) {
         var param = {};
-        param.gene = "test_gene";
+        param.draw = data.draw;
+        param.start = data.start;
+        param.length = data.length;
+        //param.search = data.search.value;
+        param.search = search_item;
+        param.page = param.start / param.length + 1;
+        if (data.order) {
+          param.order = data.order[0]["dir"] + " " + data.order[0]["column"];
+        } else {
+          param.order = "";
+        }
         $.ajax({
           type: "POST",
-          url: "{{ url_for('tools.fetch_lnc') }}",
+          url: "{{ url_for('data.data_dt') }}",
           data: { data: JSON.stringify(param) },
           success: function (res) {
-            console.log(res);
-            callback(res);
+            var returnData = {};
+            returnData.draw = res.draw;
+            returnData.recordsTotal = res.recordsTotal;
+            returnData.recordsFiltered = res.recordsFiltered;
+            returnData.data = res.data;
+            callback(returnData);
           },
           error: function () {
             console.log("error");
