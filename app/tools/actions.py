@@ -333,9 +333,6 @@ def fetch_lnc_pcg_pairs(options):
         chrom = options['chrom']
         start = options['start']
         end = options['end']
-        print(chrom)
-        print(start)
-        print(end)
         return RnaNeighbor.query.filter(RnaNeighbor.chrom == chrom,
                                         RnaNeighbor.mRNA_start >= start,
                                         RnaNeighbor.mRNA_end <= end).all()

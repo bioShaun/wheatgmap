@@ -331,3 +331,11 @@ span.download-mark {
 .pub-stats > p {
   font-size: 12px;
 }
+
+.small-datatable {
+  font-size: 0.75rem;
+}
+
+.small-datatable > th {
+  font-size: 12px;
+}

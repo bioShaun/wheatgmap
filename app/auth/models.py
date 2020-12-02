@@ -623,3 +623,23 @@ class RnaNeighbor(dbCRUD, db.Model):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class ExpSampleInfo(dbCRUD, db.Model):
+    __tablename__ = 'expSampleInfo'
+
+    id = Column(db.Integer, primary_key=True)
+    sample_name = Column(db.String(50))
+    study_title = Column(db.String(30))
+    high_level_variety = Column(db.String(20))
+    high_level_tissue = Column(db.String(13))
+    high_level_age = Column(db.String(12))
+    high_level_stress_disease = Column(db.String(10))
+    variety = Column(db.String(136))
+    tissue = Column(db.String(46))
+    age = Column(db.String(47))
+    stress_disease = Column(db.String(65))
+    doi = Column(db.String(83))
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

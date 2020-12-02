@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from app.auth.models import ExpSampleInfo
 import os
 import time
 import subprocess
@@ -16,6 +17,7 @@ UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 KOBAS_PATH = '/home/zxchen/miniconda3/envs/kobas/bin/python'
 ENRICH_SCRIPT = '/home/scripts/omWheatGeneEnrich/genelist_enrich.py'
 
+
 def run_enrich(specie, genes):
     tmp_dir = randSeq(k=5)
     enrich_dir = os.path.join(UPLOAD_FOLDER, 'enrich', tmp_dir)
@@ -28,7 +30,11 @@ def run_enrich(specie, genes):
     cmd = "{pypath} {script} \
      -s '{specie}' \
      -g {genelist} \
-     -o {dir}".format(pypath=KOBAS_PATH, script=ENRICH_SCRIPT, specie=specie, genelist=filepath, dir=enrich_dir)
+     -o {dir}".format(pypath=KOBAS_PATH,
+                      script=ENRICH_SCRIPT,
+                      specie=specie,
+                      genelist=filepath,
+                      dir=enrich_dir)
     result = processor.shRun(cmd)
     href = []
     body = []
@@ -42,13 +48,13 @@ def run_enrich(specie, genes):
             href.append(row_list[8])
             body.append(row_list[:7] + row_list[9:])
             row = f.readline()
-        # processor.Run("rm -rf {0}".format(enrich_dir)) 
+        # processor.Run("rm -rf {0}".format(enrich_dir))
         return {'header': head, 'body': body, 'href': href}
     except IOError as e:
         print(e)
         # processor.Run("rm -rf {0}".format(enrich_dir))
         return {'header': [], 'body': [], 'href': []}
-  
+
     return result
 
 
@@ -65,13 +71,17 @@ def async_run_enrich(specie, genefile):
         f.close()
     else:
         filepath = os.path.join(enrich_dir, genefile)
-        processor.Run("mv {gene_file} {tmpDir}".format(
-                gene_file=os.path.join(UPLOAD_FOLDER, 'enrich', genefile),
-                tmpDir=enrich_dir))
+        processor.Run("mv {gene_file} {tmpDir}".format(gene_file=os.path.join(
+            UPLOAD_FOLDER, 'enrich', genefile),
+                                                       tmpDir=enrich_dir))
     cmd = "{pypath} {script}\
      -s '{specie}' \
      -g {genelist} \
-     -o {dir}".format(pypath=KOBAS_PATH, script=ENRICH_SCRIPT, specie=specie, genelist=filepath, dir=enrich_dir)
+     -o {dir}".format(pypath=KOBAS_PATH,
+                      script=ENRICH_SCRIPT,
+                      specie=specie,
+                      genelist=filepath,
+                      dir=enrich_dir)
     # print(cmd)
     # print(os.environ['HOME'])
     processor.shRun(cmd)
@@ -87,20 +97,32 @@ def async_run_enrich(specie, genefile):
             href.append(row_list[8])
             body.append(row_list[:7] + row_list[9:])
             row = f.readline()
-        # processor.Run("rm -rf {0}".format(enrich_dir)) 
-        return {'task': 'enrich', 'result': {'header': head, 'body': body, 'href': href}}
+        # processor.Run("rm -rf {0}".format(enrich_dir))
+        return {
+            'task': 'enrich',
+            'result': {
+                'header': head,
+                'body': body,
+                'href': href
+            }
+        }
     except IOError as e:
         print(e)
         # processor.Run("rm -rf {0}".format(enrich_dir))
-        return {'task': 'enrich', 'result': {'header': [], 'body': [], 'href': []}}
+        return {
+            'task': 'enrich',
+            'result': {
+                'header': [],
+                'body': [],
+                'href': []
+            }
+        }
 
 
 def fetch_expression_data(gene_id, samples, table="rename_iwgsc_refseq"):
     sample_str = ','.join(samples)
     cmd = "select {samples} from {table} where gene='{gene}'".format(
-        samples=sample_str,
-        table=table,
-        gene=gene_id)
+        samples=sample_str, table=table, gene=gene_id)
     db = DB()
     results = db.execute(cmd)
     if len(results) == 0:
@@ -111,17 +133,24 @@ def fetch_expression_data(gene_id, samples, table="rename_iwgsc_refseq"):
 def fetch_expression_plot_data(samples, table="iwgsc_refseq"):
     pca = PCA(n_components=2)
     sample_str = ','.join(['gene'] + samples)
-    cmd = "select {samples} from {table}".format(
-        samples=sample_str,
-        table=table
-    )
-    engine = create_engine('mysql+pymysql://wheatdb:wheatdb@localhost:3306/VCFDB')
+    cmd = "select {samples} from {table}".format(samples=sample_str,
+                                                 table=table)
+    engine = create_engine(
+        'mysql+pymysql://wheatdb:wheatdb@localhost:3306/VCFDB')
     df = pd.read_sql_query(cmd, engine)
-    mat = [list(each) for each in pca.fit_transform(np.log2(df.iloc[:,1:].astype('float')+1).T)]
+    mat = [
+        list(each) for each in pca.fit_transform(
+            np.log2(df.iloc[:, 1:].astype('float') + 1).T)
+    ]
     group = list(df.columns[1:])
     sample = copy.copy(group)
-    
+
     for i in range(len(mat)):
         mat[i].append(group[i])
         mat[i].append(sample[i])
     return mat
+
+
+def fetch_exp_sample():
+    sample_inf = ExpSampleInfo.query.filter().all()
+    return [item.as_dict() for item in sample_inf]

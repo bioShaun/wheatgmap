@@ -1,29 +1,23 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block css %}
+<link
+  href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
 
-<div class="bd-callout bd-callout-info">
-  <span>Gene Selection</span>
+<div class="bd-callout bd-callout-success">
+  <span>Sample Information</span>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card" style="height: 210px">
-      <div class="card-body">
-        <p>Input Gene ID/Symbol/Name list seperated with space or comma.</p>
-        <form role="search" method="" action="#">
-          <textarea
-            id="gene_name"
-            rows="5"
-            class="form-control"
-            value=""
-            placeholder="Input Gene ID.(e.g TraesCS1D01G311400)"
-          ></textarea>
-        </form>
-      </div>
-    </div>
-  </div>
+<div class="small-datatable">
+  <table id="sample" class="display" style="width: 100%"></table>
 </div>
 
-<div class="bd-callout bd-callout-info">
+<div class="bd-callout bd-callout-warning">
   <span>Sample Selection</span>
 </div>
 
@@ -89,6 +83,29 @@
   </div>
 </div>
 
+<div class="bd-callout bd-callout-info">
+  <span>Gene Selection</span>
+</div>
+
+<div class="row mb-20">
+  <div class="col-md-6">
+    <div class="card" style="height: 210px">
+      <div class="card-body">
+        <p>Input Gene ID/Symbol/Name list seperated with space or comma.</p>
+        <form role="search" method="" action="#">
+          <textarea
+            id="gene_name"
+            rows="5"
+            class="form-control"
+            value=""
+            placeholder="Input Gene ID.(e.g TraesCS1D02G311400)"
+          ></textarea>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row mb-20">
   <div class="col-4">
     <input
@@ -114,4 +131,7 @@
 <script src="{{ url_for('static', filename='js/utils/expr.js') }}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
 {% endblock %}

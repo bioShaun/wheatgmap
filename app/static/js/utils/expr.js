@@ -74,10 +74,84 @@ function create_expr(head, genes, series) {
   return option;
 }
 
+function initSampleTable() {
+  const tableColumns = [
+    { data: "sample_name", bSortable: true, title: "Sample" },
+    { data: "tissue", bSortable: true, title: "Tissue" },
+    { data: "age", bSortable: true, title: "Age" },
+    { data: "variety", bSortable: true, title: "Variety" },
+    { data: "stress_disease", bSortable: true, title: "Stress Disease" },
+    { data: "high_level_tissue", bSortable: true, title: "High Level Tissue" },
+    { data: "high_level_age", bSortable: true, title: "High Level Age" },
+    {
+      data: "high_level_variety",
+      bSortable: true,
+      title: "High Level Variety",
+    },
+    {
+      data: "high_level_stress_disease",
+      bSortable: true,
+      title: "High Level Stress Disease",
+    },
+    { data: "study_title", bSortable: true, title: "Study Title" },
+    { data: "doi", bSortable: true, title: "DOI" },
+  ];
+  $("#sample").DataTable({
+    columns: tableColumns,
+    dom: "Bfrtip",
+    scrollX: true,
+    buttons: [
+      {
+        extend: "colvis",
+        postfixButtons: ["colvisRestore"],
+      },
+    ],
+    columnDefs: [
+      {
+        targets: 5,
+        visible: false,
+      },
+      {
+        targets: 6,
+        visible: false,
+      },
+      {
+        targets: 7,
+        visible: false,
+      },
+      {
+        targets: 8,
+        visible: false,
+      },
+      {
+        targets: 9,
+        visible: false,
+      },
+      {
+        targets: 10,
+        visible: false,
+      },
+    ],
+    ajax: function (data, callback) {
+      $.ajax({
+        type: "GET",
+        url: "/expression/exp-sample/",
+        success: function (res) {
+          callback({ data: res });
+        },
+        error: function () {
+          console.log("error");
+        },
+      });
+    },
+  });
+}
+
 $(document).ready(function () {
   // multiselect plugin
   select_plugin();
   clear_select_plugin();
+  initSampleTable();
   $("#submit").click(function () {
     var gene_name = $("#gene_name").val();
     var group = [];

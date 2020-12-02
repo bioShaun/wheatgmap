@@ -5,7 +5,7 @@ import json
 import re
 from werkzeug import secure_filename
 from flask import render_template, request, jsonify
-from .actions import run_enrich, async_run_enrich, fetch_expression_data, fetch_expression_plot_data
+from .actions import run_enrich, async_run_enrich, fetch_expression_data, fetch_expression_plot_data, fetch_exp_sample
 from settings import basedir
 from app.utils import parseInput, fetch_sample, redis_task
 from flask_login import login_required, current_user
@@ -79,3 +79,9 @@ def fetch_expression_plot():
         result = fetch_expression_plot_data(samples)
         return jsonify({'msg': 'ok', 'table': result})
     return jsonify({'msg': 'error', 'table': []})
+
+
+@expression.route('/exp-sample/', methods=['GET'])
+def exp_sample():
+    sample_inf = fetch_exp_sample()
+    return jsonify(sample_inf)

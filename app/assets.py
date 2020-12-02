@@ -16,7 +16,7 @@ css_base = Bundle(
     'css/variety.css',
     'css/mapping_choose.css',
     'css/variant_card.css',
-    datatable,
+    #datatable,
     filters='cssmin',
     output='css/all.min.css')
 
@@ -60,7 +60,7 @@ js_base = Bundle(
     'js/multiselect.min.js',
     'js/main.js',
     'js/layer/layer.js',
-    js_datatable,
+    #js_datatable,
     filters='jsmin',
     output='js/all.min.js')
 
