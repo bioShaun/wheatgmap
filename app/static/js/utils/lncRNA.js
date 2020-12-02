@@ -203,8 +203,8 @@ function prepare_table_container() {
   $(".lnc-pcg-pair").empty();
   var plot = $(
     `
-    <div class="data card-body">
-        <table id="lncRNA" class="table cell-border" cellspacing="0"></table>
+    <div class="small-datatable card-body">
+        <table id="lncRNA" class="table table-striped table-bordered table-hover" cellspacing="0"></table>
     </div>    
     `
   );
@@ -216,8 +216,8 @@ function prepare_exp_table_container() {
   $(".exp-table").empty();
   var exp_table_container = $(
     ` 
-    <div class="data card-body">
-        <table id="expression" class="table cell-border" cellspacing="0"></table>
+    <div class="small-datatable card-body">
+        <table id="expression" class="table table-striped table-bordered table-hover" cellspacing="0"></table>
     </div> 
     `
   );
@@ -229,8 +229,8 @@ function prepare_cor_table_container() {
   $(".exp-cor").empty();
   var exp_table_container = $(
     ` 
-      <div class="data card-body">
-          <table id="pearson" class="table cell-border" cellspacing="0"></table>
+      <div class="small-datatable card-body">
+          <table id="pearson" class="table table-striped table-bordered table-hover" cellspacing="0"></table>
       </div> 
       `
   );
@@ -291,11 +291,44 @@ function initTable(gene_info) {
     { data: "subtype", bSortable: true, title: "subtype" },
     { data: "location", bSortable: true, title: "location" },
   ];
-  $("#lncRNA").DataTable({
+  var lnc_table = $("#lncRNA").DataTable({
     columns: tableColumns,
     dom: "Bfrtip",
-    buttons: [{ extend: "csv", filename: "mRNA-neighbor-lncRNA" }],
+    buttons: [
+      { extend: "csv", filename: "mRNA-neighbor-lncRNA" },
+      { extend: "colvis", postfixButtons: ["colvisRestore"] },
+    ],
     scrollX: true,
+    columnDefs: [
+      {
+        targets: 0,
+        visible: false,
+      },
+      {
+        targets: 1,
+        visible: false,
+      },
+      {
+        targets: 2,
+        visible: false,
+      },
+      {
+        targets: 3,
+        visible: false,
+      },
+      {
+        targets: 6,
+        visible: false,
+      },
+      {
+        targets: 7,
+        visible: false,
+      },
+      {
+        targets: 8,
+        visible: false,
+      },
+    ],
     ajax: function (data, callback) {
       $.ajax({
         type: "POST",
@@ -313,6 +346,8 @@ function initTable(gene_info) {
       });
     },
   });
+
+  lnc_table.buttons().container().appendTo("#lncRNA_filter");
 }
 
 function initExpTable(exp_info) {
@@ -322,7 +357,7 @@ function initExpTable(exp_info) {
     { data: "tissue", bSortable: true, title: "Tissue" },
     { data: "tpm", bSortable: true, title: "Tpm" },
   ];
-  $("#expression").DataTable({
+  var exp_table = $("#expression").DataTable({
     columns: tableColumns,
     dom: "Bfrtip",
     buttons: [{ extend: "csv", filename: "mRNA-lncRNA-expression" }],
@@ -349,6 +384,8 @@ function initExpTable(exp_info) {
       });
     },
   });
+
+  exp_table.buttons().container().appendTo("#expression_filter");
 }
 
 function initCorTable(data) {
@@ -359,12 +396,14 @@ function initCorTable(data) {
     { data: "pcc", bSortable: true, title: "PCC" },
     { data: "p-value", bSortable: true, title: "P-value" },
   ];
-  $("#pearson").DataTable({
+  var cor_table = $("#pearson").DataTable({
     columns: tableColumns,
     dom: "Bfrtip",
     buttons: [{ extend: "csv", filename: "mRNA-lncRNA-correlation" }],
     data: data,
   });
+
+  cor_table.buttons().container().appendTo("#pearson_filter");
 }
 
 function initExpression(data) {
@@ -378,6 +417,7 @@ function initExpression(data) {
 }
 
 $(document).ready(function () {
+  addExample();
   $("#submit").click(function () {
     var gene_info = extract_target();
     initTable(gene_info);

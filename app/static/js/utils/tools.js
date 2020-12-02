@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  addExample();
   $("#submit").click(function () {
     var genes = $("#genes").val();
     var chr = $("#select-chr").find("option:selected").text();
@@ -50,11 +51,15 @@ $(document).ready(function () {
           ];
           var tableStr = createTable(headData, data.result, "expr");
           $("#results-table").html(tableStr);
-          $(".table").DataTable({
+          var table = $(".table").DataTable({
             ordering: false,
-            dom: "Bfrtip",
-            buttons: ["copy", "csv", "excel", "pdf", "print"],
+            lengthChange: false,
+            buttons: ["copy", "csv"],
           });
+          table
+            .buttons()
+            .container()
+            .appendTo("#example_wrapper .col-md-6:eq(0)");
         }
       },
       "POST"

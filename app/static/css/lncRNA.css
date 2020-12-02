@@ -1,11 +1,3 @@
-.data {
-  font-size: 0.75rem;
-}
-
-.data > th {
-  font-size: 12px;
-}
-
 .col-form-label {
   font-size: 12px;
 }

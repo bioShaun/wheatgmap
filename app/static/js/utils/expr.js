@@ -96,10 +96,9 @@ function initSampleTable() {
     { data: "study_title", bSortable: true, title: "Study Title" },
     { data: "doi", bSortable: true, title: "DOI" },
   ];
-  $("#sample").DataTable({
+  var table = $("#sample").DataTable({
     columns: tableColumns,
     dom: "Bfrtip",
-    scrollX: true,
     buttons: [
       {
         extend: "colvis",
@@ -145,6 +144,8 @@ function initSampleTable() {
       });
     },
   });
+
+  table.buttons().container().appendTo(".dataTables_filter");
 }
 
 $(document).ready(function () {
@@ -152,8 +153,9 @@ $(document).ready(function () {
   select_plugin();
   clear_select_plugin();
   initSampleTable();
+  addExample();
   $("#submit").click(function () {
-    var gene_name = $("#gene_name").val();
+    var gene_name = $("#genes").val();
     var group = [];
 
     var hint = $(

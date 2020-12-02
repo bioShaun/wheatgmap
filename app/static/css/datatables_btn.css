@@ -1,0 +1,4 @@
+.dataTables_filter {
+  display: flex;
+  justify-content: space-between;
+}

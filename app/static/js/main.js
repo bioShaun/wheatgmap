@@ -12,7 +12,7 @@ function ajaxSend(
     type: request_method || "GET",
     success: callback,
     error: function (request, textStatus, errorThrown) {
-      console.log(errorThrown)
+      console.log(errorThrown);
       alert("Request failed, please try again.");
     },
     return_type: return_type || "json",
@@ -53,7 +53,7 @@ function createHref(gene) {
 function createTable(headData, bodyData, tableType) {
   var htmlBuffer = [];
   htmlBuffer.push(
-    "<table class='table table-strip table-bordered region_table'>"
+    '<table id="example" class="table table-striped table-bordered table-hover" width="100%">'
   );
   // for header
   htmlBuffer.push("<thead>\n<tr>");
@@ -654,4 +654,14 @@ function check_location(info, maxRange = 1000000) {
     }
   }
   return "";
+}
+
+function addExample(
+  inputId = "genes",
+  linkId = "gene-example-link",
+  exampleGene = "TraesCS1D02G311400"
+) {
+  $(`#${linkId}`).click(function () {
+    $(`#${inputId}`).val(exampleGene);
+  });
 }

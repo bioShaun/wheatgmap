@@ -339,3 +339,7 @@ span.download-mark {
 .small-datatable > th {
   font-size: 12px;
 }
+
+.small-datatable span {
+  font-size: 0.75rem;
+}
