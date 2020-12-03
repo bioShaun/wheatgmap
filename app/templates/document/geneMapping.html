@@ -1,13 +1,48 @@
 {% extends 'base.html' %} {% block content %}
 <div class="title" style="margin-bottom: 30px;"> 
   <div>
-	<h3><b>The typical workflow for BSA gene mapping.</b></h3>
-	<img class="img" src="{{ url_for('static', filename='images/documents/WorkFlow.png')}}" alt="Workflow"  width="916" height="576">
-	</br>
-	</br>
-	</br>
-	</br>
 	<h3>For more details, please read  >> <a href="{{ url_for('static', filename='download/document/wheatGmap_Practice.pdf')}}" target="_blank"><B>WheatGmap Practice</B></a> </h3>
+	</br>
+	<img class="img" src="{{ url_for('static', filename='images/documents/WorkFlow.png')}}" alt="Workflow"  width="916" height="576">
+	<h3><b>The typical workflow for user running BSA gene mapping.</b></h3>
+	</br>
+	</br>
+	<img class="img" src="{{ url_for('static', filename='images/documents/BSA.png')}}" alt="BSA"  width="600">
+	<h3><b>The workflow of the background system runing BSA.</b></h3>
+        </br>
+	</br>
+	<h3>Parameter instruction</h3>
+</br>
+<h4><b>Minimum Read Depth</b></h4>
+<p>This parameter is used to filter out low-coverage/depth variants. The default is 5. Any variant coverage lower than stated value will be ignored. </p>
+</br>
+<h4><b>SNP Window Size</b></h4>
+<p>This refers to the number of SNPs in a sliding window. The default is 20. A size of 5-30 is suggested. The algorithm will calculate the SNP linkage-coefficient within a window. A smaller value will give a better resolution, and more SNPs in a given window will decrease more noise. Different parameters should be tested to obtain the best results.</p>
+</br>
+<h4><b>SNP Step Size</b></h4>
+<p>This refers to the number of SNPs in a sliding step. The default is 5. A size of 5-20 is suggested. A smaller value will give better resolution, but will take more time to calculate. When the data originate from an advanced generation population, it is possible to increase the number of SNPs step size appropriately. The default of 5 works well for most datasets.</p>
+</br>
+<h4><b>Allele Frequency Filter [Wild/Mutant]</b></h4>
+<p>This parameter will filter out SNPs with a high heterozygosity rate. We suggest 0.39 for F2 populations and 0.3 for F3/DH/RIL populations.</p>
+<p><b>F2 population:</b> The target genotype of the dominant-character bulk data from the F2 population is heterozygous, and the candidate gene allele frequency in the dominant-character bulk is expected to be 1/3 (AA:Aa=1:2). Thus, the parameter should be set to 0.36/0.39/0.43 or any value higher than 1/3 and lower than 0.5 for F2 populations. If the phenotype of all F2 plants has been validated in F3 and shown not to segregate, then the two bulk genotypes are expected to be homozygous, and the parameter should follow the rule as below.</p>
+<p><b>F3/RIL/DH populations:</b> The genotype at the target locus is expected to be homozygous in both bulks. The allele frequency should be equal or very close to 0 or 1. This parameter should be set to 0.1/0.2/0.3 or any value lower than 0.3.</p>
+</br>
+<h4><b>Allele Frequency Filter [Wild/Mutant Parent]</b></h4>
+<p>If the parental data are provided, this parameter will filter out SNPs with high heterozygosity. Usually, most alleles in the parental genotype are homozygous. The allele frequency is equal or very close to 0 or 1. We suggest setting this value to 0.05 or 0.1 to avoid the effect of sequencing errors.</p>
+</br>
+<h4><b>Allele Frequency Filter [Background]</b></h4>
+<p>If a dataset is added to the background to help improve gene mapping, much care should be taken regarding the genetic backgrounds and phenotypes of the samples. The expected allele frequency of samples in this bulk will depend on which samples are selected.</p>
+</br>
+<h4><b>Minimum Read Depth</b></h4>
+<p>This parameter filters out low-coverage/depth variations. The default is 5. Any variant with a coverage less than the chosen value will be ignored.</p>
+</br>
+<h4><b>Population Structure</b></h4>
+<p>F2: The dominant-character bulk data from the F2 population is heterozygous.</p>
+<p>RIL/DH/F3/Homozygous Plants Bulk: The population genotypes of candidate genes are expected to be homozygous in both of the bulks.</p>
+</br>
+<h4><b>Ref Allele Frequency</b></h4>
+<p>This refers to the total reference allele coverage of the two bulks/total coverage (both reference and allele) of the two bulks. The default is 0.3, and a value of 0.1~0.5 is suggested.</p>
+
   </div>
 
 </div>

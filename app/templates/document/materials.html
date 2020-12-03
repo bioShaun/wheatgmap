@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+<div class="title" style="margin-bottom: 30px;">
+<h3>Materials and data preparation</h3>
+</br>
+</br>
+<h4>Population types: Sequencing data from the following types of populations can be used for BSA with the WheatGmap platform. </h4>
+</br>
+<p><b>Temporary segregating populations:</b> This type of genetic population is the basis for most gene mapping efforts. F2 and F3 segregating populations are most widely used for bulked segregant analysis (BSA), and they are time-efficient.</p>
+</br>
+<p><b>Permanent segregating populations:</b> This type of population can be used to map multiple significant candidate regions, as the same population can be used for multiple phenotypes but relies on the same genotype information.</p>
+</br>
+<p><b>MutMap:</b> Mutant backcross populations, especially ethyl methanesulfonate (EMS) mutant backcross populations, are an excellent choice for gene mapping. EMS-induced mutations generally produce a C>T or G>A nucleotide change; in addition, using a backcrossed population decreases the differences between the parental genetic background and segregating pool, making this type of population ideal for functional gene mapping. But when there were few single nucleotide polymorphisms (SNPs) between two pooled samples, the statistical module may not work well. In such cases, plotting the SNP density with the expected allele frequency will help identify the candidate region.</p>
+</br>
+</br>
+<h4>How many individual plants for each bulk?</h4>
+<p>Usually, 20~30 individual plants are sufficient, but in some cases as few as 10 individual plants or more than 50, can also be used. The number of individual plants in each bulk will depend on the type and size of the population. More individual plants in a pool will provide a better theoretical result, but raise the minimal sequencing coverage needed to ascertain that all plants within the pool are represented. The accuracy of phenotyping is, however, more important than the number of individual plants.</p>
+</br>
+</br>
+<h4>Data Type</h4>
+<p><b>WES/WCS:</b> Whole-exome/capture sequencing is an economical and efficient option. The information obtained by WES is not as complete as that obtained by WGS, but in most cases is sufficient to meet mapping requirements. Sequencing data size depends on the genetic panel being used, but a 30× exome coverage generally works well.</p>
+</br>
+<p><b>RNA-seq:</b> A highly economical solution that can analyze both the structural variation and expression of genes. However, the requirements for sample preparation are strict. Only a single tissue at a given time can be considered, with a limited number of expressed genes obtained from each sample. At least 10 Gbases per bulk is suggested. </p>
+</br>
+<p><b>WGS:</b> Whole-genome sequencing is a powerful tool, but it is not recommended for wheat BSA. The cost of WGS is still too high as it needs 30× wheat genome coverage with at least 450 Gbases sequencing data for each bulk required.</p>
+</br>
+</br>
+<h4>Samples Repeat</h4>
+<p>Repeated samples are not necessary but are recommended, especially for RNA-seq. </p>
+</br>
+</br>
+<h4>Sequencing Data from Two Parents</h4>
+<p>Such data are not necessary, but recommended.</p>
+
+</div>
+{% endblock %}

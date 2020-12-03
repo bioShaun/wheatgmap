@@ -6,6 +6,7 @@ plink.*
 *.db
 migrations/*
 app/static/download/
+app/static/download
 __pycache__/
 .pytest_cache
 

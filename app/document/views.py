@@ -5,6 +5,10 @@ from flask import render_template
 def geneMapping():
     return render_template('document/geneMapping.html')
 
+@document.route('/materials/', methods=['GET'])
+def materials():
+    return render_template('document/materials.html')
+
 @document.route('/dataAnalysis/', methods=['GET'])
 def dataAnalysis():
     return render_template('document/dataAnalysis.html')

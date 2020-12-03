@@ -129,4 +129,4 @@ class DB(object):
 
 if __name__ == '__main__':
     db = DB()
-    db.createTable('iwgsc_refseq', filepath='/home/data/wheat/public/expression/iwgsc_refseq.tpm.txt', sep='\t', cell_type=('VARCHAR(20)','TEXT'), load_data=True, block_size=5000)
+    db.createTable('rename_iwgsc_refseq', filepath='/data/gmap/db/rename_iwgsc_refseq.txt', sep='\t', cell_type=('VARCHAR(20)','TEXT'), load_data=True, block_size=5000)

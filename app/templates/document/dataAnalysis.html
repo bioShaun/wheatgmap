@@ -61,6 +61,130 @@
                 bcftools filter -Oz -s LowQual -e '%QUAL<20 || DP>100' > bsa.vcf.gz      
   </code></pre>
   <p><a href="http://www.htslib.org/workflow/" target="_blank">read more</a> </p>
+</br>
+<p><B>Full pipeline of variants calling</B></p>
+<pre style="padding: 0;"><code>
+
+# raw to clean read
+fastp \
+	--in1 ${sample_name}.raw.R1.fq.gz \
+	--in2 ${sample_name}.raw.R2.fq.gz \
+	--out1 ${sample_name}.clean.R1.fq.gz \
+	--out2 ${sample_name}.clean.R2.fq.gz \
+	--json ${sample_name}.json \
+	--html ${sample_name}.html
+
+# RNA-seq reads align to reference
+STAR \
+	--genomeDir ${star_index_file} \
+	--readFilesIn ${clean.reads}  \
+	--runThreadN ${cpu_thread} \
+	--twopassMode Basic \
+	--outSAMunmapped Within \
+	--outSAMtype BAM Unsorted  \
+	--readFilesCommand zcat \
+	--outSAMattrRGline  ID:${sample_name} SM:${sample_name} LB:${sample_name} PI:350 PL:Illumina \
+	--outFileNamePrefix ${sample_name}
+
+# WGS/WES reads align to reference
+bwa mem -M -a \
+	-R \"@RG\tID:${sample_name}\tSM:${sample_name}\tLB:${sample_name}\tPI:350\tPL:Illumina\" \
+	-t ${task.cpus} \
+	-K 10000000 \
+	${bwa_index_file}/${genome_fa.getName()} \
+	${sample_name}.clean.R1.fq.gz \
+	${sample_name}.clean.R2.fq.gz | \
+	samtools view -O bam  \
+	-q 30 \
+	--threads ${task.cpus} \
+	-o ${sample_name}.bam
+
+# mate tag fix
+samtools fixmate --threads ${task.cpus} \
+	-m ${bam} ${sample_name}.fixmate.bam
+
+# bam sort
+samtools sort -m 2400M --threads ${task.cpus} \
+	-o ${sample_name}.sort.bam \
+	${sample_name}.fixmate.bam
+
+# remove reads PCR duplication
+samtools markdup -r \
+	--threads ${task.cpus} \
+	${bam} \
+	${sample_name}.rmdup.bam
+
+# SplitN for RNA-seq data
+gatk SplitNCigarReads \
+	--reference ${fasta} \
+	--input ${bam} \
+	--output ${sample_name}.qc.bam \
+	--max-reads-in-memory 1000000  \
+
+# BaseRecalibrator
+gatk BaseRecalibrator \
+	--reference ${refer} \
+	--input ${bam} \
+	--output ${sample_name}.recal.table \
+	--known-sites ${known_vcf}
+
+# BQSR for WGS/WES
+gatk ApplyBQSR \
+	--bqsr-recal-file ${recal_table_file} \
+	--input ${bam} \
+	--output ${sample_name}.qc.bam \
+	--read-filter AmbiguousBaseReadFilter \
+	--read-filter MappingQualityReadFilter \
+	--read-filter NonZeroReferenceLengthAlignmentReadFilter \
+	--read-filter ProperlyPairedReadFilter \
+	--minimum-mapping-quality 30 
+
+# call GVCF by HaplotypeCaller
+gatk HaplotypeCaller  \
+	--input ${bam} \
+	--output ${sample_name}.${chr_name}.hc.g.vcf.gz \
+	--reference ${refer} \
+	--intervals ${bed} \
+	--emit-ref-confidence GVCF \
+	--read-filter AmbiguousBaseReadFilter \
+	--read-filter MappingQualityReadFilter \
+	--read-filter NonZeroReferenceLengthAlignmentReadFilter \
+	--read-filter ProperlyPairedReadFilter \
+	--minimum-mapping-quality 30 
+
+gatk GenotypeGVCFs \
+	--reference ${refer} \
+	--variant ${gvcf} \
+	--intervals ${padded_bed_file} \
+	--output ${sample_name}.raw.vcf.gz
+</code></pre>
+
+</br>
+<h3>Enrichment</h3>
+<p><B>Fasta and db files were downloaded from ftp://ftp.cbi.pku.edu.cn/pub/KOBAS_3.0_DOWNLOAD/</B></p>
+<pre style="padding: 0;"><code>
+# Arabidopsis thaliana
+blastp -query IWGSC.RefSeq.V1.1.HC.LC.pep.fasta -db ath.pep.db -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+run_kobas.py -i wheat_vs_ath.pep.blasttab -t blastout:tab -s ath -d K/G # hypergeometric test / Fisher's exact test
+
+# Oryza sativa japonica
+blastp -query IWGSC.RefSeq.V1.1.HC.LC.pep.fasta -db osa.pep.db -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+run_kobas.py -i wheat_vs_osa.pep.blasttab -t blastout:tab -s osa -d K/G # hypergeometric test / Fisher's exact test
+
+</code></pre>
+
+</br>
+<h3>VCF Annotation</h3>
+<pre style="padding: 0;"><code>
+java -Xmx20g -jar snpEff \
+	-csvStats $out_name.ann.vcf.csv \
+	-htmlStats $out_name.ann.vcf.html \
+	-c snpEff.config \
+	-v $database_name \
+	-quiet \
+	$in_vcf > $out_name.ann.vcf
+
+</code></pre>
 
 </div>
 {% endblock %}
