@@ -328,14 +328,21 @@ def fetch_lnc_pcg_pairs(options):
     print(options)
     genes = [each for each in options['genes'] if each]
     if genes:
-        return RnaNeighbor.query.filter(RnaNeighbor.mRNA_gene.in_(genes)).all()
+        mrna_res = RnaNeighbor.query.filter(
+            RnaNeighbor.mRNA_gene.in_(genes)).all()
+        lnc_res = RnaNeighbor.query.filter(
+            RnaNeighbor.lncRNA_gene.in_(genes)).all()
     else:
         chrom = options['chrom']
         start = options['start']
         end = options['end']
-        return RnaNeighbor.query.filter(RnaNeighbor.chrom == chrom,
-                                        RnaNeighbor.mRNA_start >= start,
-                                        RnaNeighbor.mRNA_end <= end).all()
+        mrna_res = RnaNeighbor.query.filter(RnaNeighbor.chrom == chrom,
+                                            RnaNeighbor.mRNA_start >= start,
+                                            RnaNeighbor.mRNA_end <= end).all()
+        lnc_res = RnaNeighbor.query.filter(
+            RnaNeighbor.chrom == chrom, RnaNeighbor.lncRNA_start >= start,
+            RnaNeighbor.lncRNA_end <= end).all()
+    return mrna_res + lnc_res
 
 
 def fetch_pcg_exp(geneList: List[str], sampleList: List[str]):

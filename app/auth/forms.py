@@ -1,22 +1,42 @@
+import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, EqualTo, Length, Email
+from wtforms.validators import DataRequired, EqualTo, Length, Email, ValidationError
 from app.auth.models import User
+
+
+def legal_username_check(form, field):
+    if not re.match("^[0-9a-zA-Z_]+$", field.data):
+        raise ValidationError(
+            "Only Alphabets, Numbers and Underscore are allowed.")
 
 
 class RegisterForm(FlaskForm):
 
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm = PasswordField('Verify Password',
-                            validators=[
-                                DataRequired(),
-                                EqualTo('password',
-                                        message='password must match')
-                            ])
-    institute = StringField('Institute', validators=[DataRequired()])
-    telephone = StringField('Telephone', validators=[DataRequired()])
+    username = StringField(
+        "Username",
+        validators=[DataRequired(),
+                    Length(3, 80), legal_username_check])
+    email = StringField("Email",
+                        validators=[DataRequired(),
+                                    Email(),
+                                    Length(1, 50)])
+    password = PasswordField("Password",
+                             validators=[DataRequired(),
+                                         Length(6, 50)])
+    confirm = PasswordField(
+        "Verify Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="password must match")
+        ],
+    )
+    institute = StringField("Institute",
+                            validators=[DataRequired(),
+                                        Length(1, 80)])
+    telephone = StringField("Telephone",
+                            validators=[DataRequired(),
+                                        Length(1, 20)])
     pub_phone = SelectField('Public Telephone',
                             choices=[(0, "No"), (1, "Yes")],
                             coerce=int)
