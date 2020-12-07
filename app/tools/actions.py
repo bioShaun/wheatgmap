@@ -97,6 +97,7 @@ def batch_query_gene(gene_list, max_input=1000):
 
 
 def fetch_gene_seq(geneId, feature):
+    geneId = transfer_id(geneId)
     seq_res = GeneSeq.query.filter_by(gene_id=geneId, feature=feature).all()
     seq_list = [item.as_dict() for item in seq_res]
     tr_seq_dict = {}
