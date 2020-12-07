@@ -12,13 +12,13 @@ from sqlalchemy import or_
 from sqlalchemy.dialects.mysql import FLOAT
 
 Column = db.Column
-filter_null = lambda x: x if x else '-'
-VA_IMG_DIR = os.path.join(basedir, 'app', 'static/images/variety')
+filter_null = lambda x: x if x else "-"
+VA_IMG_DIR = os.path.join(basedir, "app", "static/images/variety")
 
 
 class dbCRUD:
 
-    __tablename__ = ''
+    __tablename__ = ""
 
     def save(self, commit=True):
         db.session.add(self)
@@ -36,11 +36,11 @@ class dbCRUD:
         return commit and db.session.commit()
 
     def __repr__(self):
-        return f'<{self.__tablename__}: {self.id}>'
+        return f"<{self.__tablename__}: {self.id}>"
 
 
 class User(UserMixin, dbCRUD, db.Model):
-    __tablename__ = 'user'
+    __tablename__ = "user"
     id = Column(db.Integer, primary_key=True)
     username = Column(db.String(80), nullable=False, unique=True)
     first_name = Column(db.String(50))
@@ -58,17 +58,19 @@ class User(UserMixin, dbCRUD, db.Model):
     is_active = Column(db.Boolean)
     is_admin = Column(db.Boolean)
 
-    def __init__(self,
-                 username,
-                 email,
-                 password,
-                 phone,
-                 pub_phone,
-                 photo,
-                 institute,
-                 is_active=False,
-                 is_admin=False,
-                 create_at=datetime.now()):
+    def __init__(
+        self,
+        username,
+        email,
+        password,
+        phone,
+        pub_phone,
+        photo,
+        institute,
+        is_active=False,
+        is_admin=False,
+        create_at=datetime.now(),
+    ):
         self.username = username
         self.email = email
         self.institute = institute
@@ -82,22 +84,22 @@ class User(UserMixin, dbCRUD, db.Model):
             self.password_hash = generate_password_hash(password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.id})
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"confirm": self.id})
 
     @classmethod
     def confirm(cls, token):
-        s = Serializer(current_app.config['SECRET_KEY'])
+        s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token)
         except:
             return None
-        user = cls.query.filter_by(id=data.get('confirm', '')).first()
+        user = cls.query.filter_by(id=data.get("confirm", "")).first()
         return user
 
     @property
     def password(self):
-        raise AttributeError('password is not readable!')
+        raise AttributeError("password is not readable!")
 
     @password.setter
     def password(self, password):
@@ -107,10 +109,10 @@ class User(UserMixin, dbCRUD, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<user: {}>'.format(self.username)
+        return "<user: {}>".format(self.username)
 
 
-'''
+"""
 class Snptable(db.Model):
     id = Column(db.Integer, primary_key=True)
     tablename = Column(db.String(45))
@@ -119,11 +121,11 @@ class Snptable(db.Model):
 
     def __repr__(self):
         return '<snp table {}>'.format(self.id)
-'''
+"""
 
 
 class Data(db.Model):
-    __tablename__ = 'data'
+    __tablename__ = "data"
     id = Column(db.Integer, primary_key=True)
     tc_id = Column(db.String(10), nullable=False)
     sample_name = Column(db.String(45), nullable=False)
@@ -146,17 +148,19 @@ class Data(db.Model):
     sign = Column(db.Boolean)
     create_time = Column(db.DateTime)
     upload_id = Column(db.String(36))
-    figures = db.relationship('DataFigure', backref='fig', lazy=True)
+    figures = db.relationship("DataFigure", backref="fig", lazy=True)
 
-    def __init__(self,
-                 tc_id,
-                 provider,
-                 sample_name,
-                 type,
-                 opened=False,
-                 sign=False,
-                 upload_id='',
-                 create_time=datetime.now()):
+    def __init__(
+        self,
+        tc_id,
+        provider,
+        sample_name,
+        type,
+        opened=False,
+        sign=False,
+        upload_id="",
+        create_time=datetime.now(),
+    ):
         self.tc_id = tc_id
         self.provider = provider
         self.sample_name = sample_name
@@ -182,22 +186,18 @@ class Data(db.Model):
         return commit and db.session.commit()
 
     def __repr__(self):
-        return '<data: {}>'.format(self.id)
+        return "<data: {}>".format(self.id)
 
 
 class Variety(db.Model):
-    __tablename__ = 'variety'
+    __tablename__ = "variety"
     id = Column(db.Integer, primary_key=True)
     variety_name = Column(db.String(45))
     content = Column(db.Text)
     create_time = Column(db.DateTime)
     provider = Column(db.String(45))
 
-    def __init__(self,
-                 content,
-                 variety_name,
-                 provider,
-                 create_time=datetime.now()):
+    def __init__(self, content, variety_name, provider, create_time=datetime.now()):
         self.content = content
         self.variety_name = variety_name
         self.provider = provider
@@ -219,22 +219,18 @@ class Variety(db.Model):
         return commit and db.session.commit()
 
     def __repr__(self):
-        return '<variety: {}>'.format(self.id)
+        return "<variety: {}>".format(self.id)
 
 
 class Comment(db.Model):
-    __tablename__ = 'comment'
+    __tablename__ = "comment"
     id = Column(db.Integer, primary_key=True)
     parent_id = Column(db.Integer, nullable=False)
     content = Column(db.Text)
     provider = Column(db.String(45))
     create_time = Column(db.DateTime)
 
-    def __init__(self,
-                 parent_id,
-                 content,
-                 provider,
-                 create_time=datetime.now()):
+    def __init__(self, parent_id, content, provider, create_time=datetime.now()):
         self.parent_id = parent_id
         self.content = content
         self.provider = provider
@@ -256,11 +252,11 @@ class Comment(db.Model):
         return commit and db.session.commit()
 
     def __repr__(self):
-        return '<comment: {}>'.format(self.id)
+        return "<comment: {}>".format(self.id)
 
 
 class VarietyComment(dbCRUD, db.Model):
-    __tablename__ = 'varietyComment'
+    __tablename__ = "varietyComment"
     id = Column(db.Integer, primary_key=True)
     comment_type = Column(db.String(10))
     provider = db.Column(db.Integer)
@@ -268,12 +264,14 @@ class VarietyComment(dbCRUD, db.Model):
     content = Column(db.Text)
     create_time = Column(db.DateTime)
 
-    def __init__(self,
-                 content,
-                 variety,
-                 provider,
-                 comment_type="commnet",
-                 create_time=datetime.now()):
+    def __init__(
+        self,
+        content,
+        variety,
+        provider,
+        comment_type="commnet",
+        create_time=datetime.now(),
+    ):
         self.content = content
         self.variety = variety
         self.provider = provider
@@ -287,8 +285,9 @@ class VarietyComment(dbCRUD, db.Model):
 
     @property
     def reply(self):
-        reply_obj = VarietyComment.query.filter_by(variety=self.id,
-                                                   comment_type="reply").all()
+        reply_obj = VarietyComment.query.filter_by(
+            variety=self.id, comment_type="reply"
+        ).all()
         return reply_obj
 
     def delete_reply(self, commit=True):
@@ -297,7 +296,7 @@ class VarietyComment(dbCRUD, db.Model):
 
 
 class VarietyDetail(dbCRUD, db.Model):
-    __tablename__ = 'varietyDetail'
+    __tablename__ = "varietyDetail"
     id = Column(db.Integer, primary_key=True)
     variety_name = Column(db.String(45))
     variety_type = Column(db.String(12))
@@ -324,34 +323,36 @@ class VarietyDetail(dbCRUD, db.Model):
     stripe_rust = Column(db.String(45))
     spinal_rust = Column(db.String(45))
     smut = Column(db.String(45))
-    figures = db.relationship('VarietyFigure', backref='fig', lazy=True)
+    figures = db.relationship("VarietyFigure", backref="fig", lazy=True)
 
-    def __init__(self,
-                 variety_name,
-                 variety_type,
-                 geographic,
-                 country,
-                 province,
-                 affiliation,
-                 basic_info_sup,
-                 flower_color,
-                 leaf_color,
-                 protein_content,
-                 starch_content,
-                 salt,
-                 high_temperature,
-                 low_temperature,
-                 sheath_blight,
-                 fusarium,
-                 total_erosion,
-                 powdery_mildew,
-                 leaf_rust,
-                 leaf_blight,
-                 stripe_rust,
-                 spinal_rust,
-                 smut,
-                 provider,
-                 create_time=datetime.now()):
+    def __init__(
+        self,
+        variety_name,
+        variety_type,
+        geographic,
+        country,
+        province,
+        affiliation,
+        basic_info_sup,
+        flower_color,
+        leaf_color,
+        protein_content,
+        starch_content,
+        salt,
+        high_temperature,
+        low_temperature,
+        sheath_blight,
+        fusarium,
+        total_erosion,
+        powdery_mildew,
+        leaf_rust,
+        leaf_blight,
+        stripe_rust,
+        spinal_rust,
+        smut,
+        provider,
+        create_time=datetime.now(),
+    ):
         self.variety_name = variety_name
         self.variety_type = variety_type
         self.geographic = geographic
@@ -383,8 +384,9 @@ class VarietyDetail(dbCRUD, db.Model):
         return User.query.get(self.provider)
 
     def delete(self, commit=True):
-        va_comment = VarietyComment.query.filter_by(provider=self.provider,
-                                                    variety=self.id).all()
+        va_comment = VarietyComment.query.filter_by(
+            provider=self.provider, variety=self.id
+        ).all()
         for va_i in va_comment:
             va_i.delete(commit=commit)
             va_i.delete_reply(commit=commit)
@@ -392,31 +394,29 @@ class VarietyDetail(dbCRUD, db.Model):
 
 
 class VarietyFigure(dbCRUD, db.Model):
-    __tablename__ = 'varietyFig'
+    __tablename__ = "varietyFig"
     id = Column(db.Integer, primary_key=True)
     url = Column(db.String(500))
-    variety = db.Column(db.Integer,
-                        db.ForeignKey('varietyDetail.id'),
-                        nullable=True)
+    variety = db.Column(db.Integer, db.ForeignKey("varietyDetail.id"), nullable=True)
 
     def __init__(self, url, variety):
         self.url = url
         self.variety = variety
 
 
-class VarietyFigureExample():
+class VarietyFigureExample:
     def __init__(self):
         randomPhoto = random.choice(os.listdir(VA_IMG_DIR))
-        self.id = 'example'
-        self.url = f'/static/images/variety/{randomPhoto}'
-        self.variety = 'example'
+        self.id = "example"
+        self.url = f"/static/images/variety/{randomPhoto}"
+        self.variety = "example"
 
 
 class DataFigure(dbCRUD, db.Model):
-    __tablename__ = 'dataFig'
+    __tablename__ = "dataFig"
     id = Column(db.Integer, primary_key=True)
     url = Column(db.String(500))
-    data = db.Column(db.Integer, db.ForeignKey('data.id'), nullable=True)
+    data = db.Column(db.Integer, db.ForeignKey("data.id"), nullable=True)
 
     def __init__(self, url, data):
         self.url = url
@@ -424,7 +424,7 @@ class DataFigure(dbCRUD, db.Model):
 
 
 class GeneExpression(dbCRUD, db.Model):
-    __tablename__ = 'geneExpression'
+    __tablename__ = "geneExpression"
     id = Column(db.Integer, primary_key=True)
     gene_id = Column(db.String(20))
     tissue = Column(db.String(50))
@@ -443,11 +443,11 @@ class GeneExpression(dbCRUD, db.Model):
 def generateDTcls(cls):
     class DT(cls):
         def __init__(self, **kwargs):
-            self.draw = kwargs['draw']
-            self.page = kwargs['page']
-            self.length = kwargs['length']
-            self.search_obj = kwargs['search']
-            self.order_str = kwargs['order']
+            self.draw = kwargs["draw"]
+            self.page = kwargs["page"]
+            self.length = kwargs["length"]
+            self.search_obj = kwargs["search"]
+            self.order_str = kwargs["order"]
             self.columns = self.to_list()
             self._query = None
 
@@ -461,9 +461,9 @@ def generateDTcls(cls):
             return self.pager()
 
         def to_list(self):
-            '''
+            """
             rewrite this method to loading other datatables
-            '''
+            """
             pass
 
         @staticmethod
@@ -481,35 +481,32 @@ def generateDTcls(cls):
             if self.order_str:
                 order_type, index = self.order_str.split()
                 col = self.columns[int(index)]
-                if order_type == 'desc':
-                    self._query = self._query.order_by((getattr(cls,
-                                                                col).desc()))
+                if order_type == "desc":
+                    self._query = self._query.order_by((getattr(cls, col).desc()))
                 else:
                     self._query = self._query.order_by(getattr(cls, col))
 
         def like(self):
             filter_param = [
-                getattr(cls, col).like('%{}%'.format(keyword))
+                getattr(cls, col).like("%{}%".format(keyword))
                 for col, keyword in self.search_obj.items()
             ]
             self._query = self._query.filter(or_(*filter_param))
 
         def pager(self):
-            pagination = self._query.paginate(page=self.page,
-                                              per_page=self.length,
-                                              error_out=False)
+            pagination = self._query.paginate(
+                page=self.page, per_page=self.length, error_out=False
+            )
             recordsTotal = self._query.count()
             objs = pagination.items
             rs = []
             for obj in objs:
-                rs.append(
-                    {attr: self.get_attr(obj, attr)
-                     for attr in self.columns})
+                rs.append({attr: self.get_attr(obj, attr) for attr in self.columns})
             res = {
-                'draw': self.draw,
-                'recordsTotal': recordsTotal,
-                'recordsFiltered': recordsTotal,
-                'data': rs
+                "draw": self.draw,
+                "recordsTotal": recordsTotal,
+                "recordsFiltered": recordsTotal,
+                "data": rs,
             }
             return res
 
@@ -517,7 +514,7 @@ def generateDTcls(cls):
 
 
 class TaskInfo(dbCRUD, db.Model):
-    __tablename__ = 'taskInfo'
+    __tablename__ = "taskInfo"
     id = Column(db.Integer, primary_key=True)
     task_type = Column(db.String(12))
     task_name = Column(db.String(500))
@@ -528,14 +525,16 @@ class TaskInfo(dbCRUD, db.Model):
     username = Column(db.String(80))
     create_time = Column(db.DateTime)
 
-    def __init__(self,
-                 task_type,
-                 task_name,
-                 task_id,
-                 redis_id,
-                 task_status,
-                 username=username,
-                 create_time=datetime.now()):
+    def __init__(
+        self,
+        task_type,
+        task_name,
+        task_id,
+        redis_id,
+        task_status,
+        username=username,
+        create_time=datetime.now(),
+    ):
         self.task_type = task_type
         self.task_name = task_name
         self.task_id = task_id
@@ -551,3 +550,108 @@ class TaskInfo(dbCRUD, db.Model):
     @staticmethod
     def findByRedisId(redis_id):
         return TaskInfo.query.filter_by(redis_id=redis_id).first()
+
+
+class LncExpression(dbCRUD, db.Model):
+    __tablename__ = "lncExpression"
+    id = Column(db.Integer, primary_key=True)
+    gene_id = Column(db.String(20))
+    tissue = Column(db.String(50))
+    tpm = Column(FLOAT(precision=10, scale=2))
+
+    def __init__(self, gene_id, tissue, tpm):
+        self.gene_id = gene_id
+        self.tissue = tissue
+        self.tpm = tpm
+
+    @staticmethod
+    def findbygene(gene_id):
+        return LncExpression.query.filter_by(gene_id=gene_id).all()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class RnaNeighbor(dbCRUD, db.Model):
+
+    __tablename__ = "rnaNeighbor"
+
+    id = Column(db.Integer, primary_key=True)
+    chrom = Column(db.String(6))
+    mRNA_start = Column(db.Integer)
+    mRNA_end = Column(db.Integer)
+    mRNA_strand = Column(db.String(1))
+    mRNA_transcript = Column(db.String(25))
+    mRNA_gene = Column(db.String(25))
+    lncRNA_start = Column(db.Integer)
+    lncRNA_end = Column(db.Integer)
+    lncRNA_strand = Column(db.String(1))
+    lncRNA_transcript = Column(db.String(25))
+    lncRNA_gene = Column(db.String(25))
+    direction = Column(db.String(9))
+    type = Column(db.String(10))
+    distance = Column(db.Integer)
+    subtype = Column(db.String(11))
+    location = Column(db.String(10))
+    isBest = Column(db.Integer)
+
+    def __init__(
+        self,
+        chrom,
+        mRNA_start,
+        mRNA_end,
+        mRNA_strand,
+        mRNA_transcript,
+        mRNA_gene,
+        lncRNA_start,
+        lncRNA_end,
+        lncRNA_strand,
+        lncRNA_transcript,
+        lncRNA_gene,
+        direction,
+        type,
+        distance,
+        subtype,
+        location,
+        isBest,
+    ):
+        self.chrom = chrom
+        self.mRNA_start = mRNA_start
+        self.mRNA_end = mRNA_end
+        self.mRNA_strand = mRNA_strand
+        self.mRNA_transcript = mRNA_transcript
+        self.mRNA_gene = mRNA_gene
+        self.lncRNA_start = lncRNA_start
+        self.lncRNA_end = lncRNA_end
+        self.lncRNA_strand = lncRNA_strand
+        self.lncRNA_transcript = lncRNA_transcript
+        self.lncRNA_gene = lncRNA_gene
+        self.direction = direction
+        self.type = type
+        self.distance = distance
+        self.subtype = subtype
+        self.location = location
+        self.isBest = isBest
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class ExpSampleInfo(dbCRUD, db.Model):
+    __tablename__ = "expSampleInfo"
+
+    id = Column(db.Integer, primary_key=True)
+    sample_name = Column(db.String(50))
+    study_title = Column(db.String(30))
+    high_level_variety = Column(db.String(20))
+    high_level_tissue = Column(db.String(13))
+    high_level_age = Column(db.String(12))
+    high_level_stress_disease = Column(db.String(10))
+    variety = Column(db.String(136))
+    tissue = Column(db.String(46))
+    age = Column(db.String(47))
+    stress_disease = Column(db.String(65))
+    doi = Column(db.String(83))
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
