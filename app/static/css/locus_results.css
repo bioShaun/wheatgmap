@@ -23,6 +23,7 @@ table {
 
 .result-table td.leftsmall.sequence {
   font-family: Courier, Helvetica, sans-serif;
+  white-space: pre-line;
 }
 
 .result-table td.header {

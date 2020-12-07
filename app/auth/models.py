@@ -38,6 +38,9 @@ class dbCRUD:
     def __repr__(self):
         return f'<{self.__tablename__}: {self.id}>'
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class User(UserMixin, dbCRUD, db.Model):
     __tablename__ = 'user'
@@ -621,9 +624,6 @@ class RnaNeighbor(dbCRUD, db.Model):
         self.location = location
         self.isBest = isBest
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
 
 class ExpSampleInfo(dbCRUD, db.Model):
     __tablename__ = 'expSampleInfo'
@@ -641,5 +641,13 @@ class ExpSampleInfo(dbCRUD, db.Model):
     stress_disease = Column(db.String(65))
     doi = Column(db.String(83))
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+class GeneSeq(dbCRUD, db.Model):
+    __tablename__ = 'geneSeq'
+
+    id = Column(db.Integer, primary_key=True)
+    gene_id = Column(db.String(25))
+    transcript_id = Column(db.String(25))
+    feature = Column(db.String(3))
+    seq_index = Column(db.Integer)
+    seq = Column(db.String(60))
