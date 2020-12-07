@@ -16,11 +16,13 @@ from settings import basedir
 from app.utils import processor, addOuterLink
 from app.app import celery
 from settings import Config
-from app.auth.models import GeneExpression, LncExpression, RnaNeighbor
+from app.auth.models import GeneExpression, LncExpression, RnaNeighbor, GeneSeq
 from scipy import stats
 from itertools import product
 from scipy.cluster.hierarchy import complete, leaves_list
 from scipy.spatial.distance import pdist
+from itertools import groupby
+from operator import itemgetter
 
 UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'download')
 vcf_seq_script = os.path.join(Config.SCRIPT_PATH, Config.VCF_SEQ)
@@ -92,45 +94,20 @@ def batch_query_gene(gene_list, max_input=1000):
     return []
 
 
-def fetch_blast_result(genename):
-    MAX_ROW_LEN = 125
-    db = DB()
-    command = "select GENE_ID,VAL from {table} where GENE_ID like '{gene}%'"
-    pep_results = db.execute(
-        command.format(table='pep_tb', gene=wildcard_gene(genename)))
-    cds_results = db.execute(
-        command.format(table='cds_tb', gene=wildcard_gene(genename)))
-    if len(pep_results) == 0 and len(cds_results) == 0:
-        return {}
-    pro_seq = {k: v for k, v in pep_results}
-    cds_seq = {k: v for k, v in cds_results}
-    # print it pretty
-    for k, v in pro_seq.items():
-        if len(v) > MAX_ROW_LEN:
-            i = 0
-            over_len = math.ceil(len(v) / MAX_ROW_LEN) * MAX_ROW_LEN
-            tmp_str = ""
-            while i < over_len:
-                tmp_str += v[i:i + MAX_ROW_LEN] + '\n'
-                i += MAX_ROW_LEN
-            pro_seq[k] = tmp_str
-
-    for k, v in cds_seq.items():
-        if len(v) > MAX_ROW_LEN:
-            i = 0
-            over_len = math.ceil(len(v) / MAX_ROW_LEN) * MAX_ROW_LEN
-            tmp_str = ""
-            while i < over_len:
-                tmp_str += v[i:i + MAX_ROW_LEN] + '\n'
-                i += MAX_ROW_LEN
-            cds_seq[k] = tmp_str
-
-    return {'pro_seq': pro_seq, 'cds_seq': cds_seq}
+def fetch_gene_seq(geneId, feature):
+    seq_res = GeneSeq.query.filter_by(gene_id=geneId, feature=feature).all()
+    seq_list = [item.as_dict() for item in seq_res]
+    tr_seq_dict = {}
+    for tr_id, seq_data in groupby(seq_list, key=itemgetter("transcript_id")):
+        tr_seq = [each['seq'] for each in seq_data]
+        tr_seq_dict[tr_id] = '\n'.join(tr_seq)
+    return tr_seq_dict
 
 
 def get_locus_result(genename, blast_results):
     cds_seq_dict = blast_results.get('cds_seq', 'NA')
     pro_seq_dict = blast_results.get('pro_seq', 'NA')
+
     db = DB()
     locus_result = {}
     cmd = """select l.*, f.Description, f.Pfam_Description,
