@@ -1,7 +1,6 @@
 import os
 import json
 import itertools
-from sys import pycache_prefix
 from . import tools
 from .actions import fetch_blast_result, fetch_exp_item, get_locus_result, \
     batch_query_gene, fetch_sequence, allowed_file, run_pca, \
