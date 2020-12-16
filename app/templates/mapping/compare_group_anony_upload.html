@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <div>
-  <div style="margin-top: 100px; margin-bottom: 100px;">
+  <div style="margin-top: 100px; margin-bottom: 100px">
     <h3>Input upload ID</h3>
     <p>If you have more than one upload code, seperate them with ",".</p>
     <div class="row">
@@ -18,7 +18,7 @@
       id="search-upload-query-group"
       class="btn btn-success"
       type="button"
-      style="margin-top: 10px;"
+      style="margin-top: 10px"
     >
       Go!
     </button>
@@ -27,22 +27,29 @@
   <h3>Or Start Uploading</h3>
   <p>
     <b
-      >Please read the VCF format
+      >Only gzip Compressed VCF file (*.vcf.gz) is supported. Please read the
+      VCF format
       <a href="{{ url_for('document.dataAnalysis')}}">REQUIRMENT</a>
       before upload. VCF is allowed less than 1G.</b
     >
   </p>
   <table
     class="table"
-    style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px;"
+    style="border-bottom: 1px solid #e6e6e6; margin-bottom: 50px"
   >
     <tbody>
       <tr>
         <td>
-          <input id="vcf-file" input name="vcfile" type="file" />
+          <input
+            id="vcf-file"
+            input
+            name="vcfile"
+            type="file"
+            accept=".vcf.gz"
+          />
           <div
             class="progress progress-striped active"
-            style="margin-top: 10px;"
+            style="margin-top: 10px"
           >
             <div
               class="progress-bar progress-bar-success"
@@ -50,7 +57,7 @@
               aria-valuenow="60"
               aria-valuemin="0"
               aria-valuemax="100"
-              style="width: 0%;"
+              style="width: 0%"
             >
               <span class="sr-only">0%</span>
             </div>
@@ -61,7 +68,7 @@
             id="vcf-type"
             class="form-control"
             data-width="20%"
-            style="margin: 10px;"
+            style="margin: 10px"
           >
             <option value="WGS">WES</option>
             <option value="WES">WGS</option>
@@ -74,19 +81,19 @@
             id="vcf-sub"
             type="submit"
             value="Upload"
-            style="margin: 10px;"
+            style="margin: 10px"
           />
         </td>
       </tr>
     </tbody>
   </table>
 
-  <div id="upload-info" style="display: none;">
+  <div id="upload-info" style="display: none">
     <h3>
       Your data is under processing, this may take 30 minutes to 1 hour,
       pleasing save the upload code and query your data later:
     </h3>
-    <p id="upload-code" style="color: cornflowerblue;"></p>
+    <p id="upload-code" style="color: cornflowerblue"></p>
   </div>
 </div>
 {% endblock %} {% block js %}

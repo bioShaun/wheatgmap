@@ -73,55 +73,69 @@ $(document).ready(function () {
   add_sample_href();
 
   $("#vcf-sub").click(function () {
-    var index = layer.load(1);
     var formData = new FormData();
     var vcf_type = $("#vcf-type").find("option:selected").text();
-    formData.append("vcf_type", vcf_type);
-    formData.append("vcf_file", document.getElementById("vcf-file").files[0]);
-    $.ajax({
-      url: "/auth/upload/",
-      type: "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
-      xhr: function () {
-        var xhr = new XMLHttpRequest();
-        xhr.upload.addEventListener("progress", function (e) {
-          var progressRate = (e.loaded / e.total) * 100 + "%";
-          $(".progress-bar").css("width", progressRate);
-        });
-        return xhr;
-      },
-      success: function (data) {
-        layer.close(index);
-        if (data.msg == "ok") {
-          $(".progress-bar").css("width", "0%");
-          $("#vcf-result").empty();
-          var headData = ["TC Id", "Sample"];
-          var tableStr = create_table(headData, data.table);
-          $("#vcf-result").html(tableStr);
-          var vcfTd = $("#pr-vcf");
-          var sampleTd = $("#pr-sample");
-          $(vcfTd).text(Number(vcfTd.text()) + 1);
-          $(sampleTd).text(Number(sampleTd.text()) + data.table.length);
-          add_sample_href();
-          //alert('success.')
-        } else if (data.msg == "async") {
-          window.location.href = "/task/result/" + data.task_id + "/";
-          return;
-        } else if (data.msg == "async-upload") {
-          add_upload_id(data.upload_id);
-          if (data.username !== "anonymouse") {
-            window.location.href = "/auth/tasks/";
+    var vcf_file = document.getElementById("vcf-file").files[0];
+
+    if (/vcf.gz$/.test(vcf_file.name)) {
+      var index = layer.load(1);
+      formData.append("vcf_type", vcf_type);
+      formData.append("vcf_file", vcf_file);
+      $.ajax({
+        url: "/auth/upload/",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhr: function () {
+          var xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress", function (e) {
+            var progressRate = (e.loaded / e.total) * 100 + "%";
+            $(".progress-bar").css("width", progressRate);
+          });
+          return xhr;
+        },
+        success: function (data) {
+          layer.close(index);
+          if (data.msg == "ok") {
+            $(".progress-bar").css("width", "0%");
+            $("#vcf-result").empty();
+            var headData = ["TC Id", "Sample"];
+            var tableStr = create_table(headData, data.table);
+            $("#vcf-result").html(tableStr);
+            var vcfTd = $("#pr-vcf");
+            var sampleTd = $("#pr-sample");
+            $(vcfTd).text(Number(vcfTd.text()) + 1);
+            $(sampleTd).text(Number(sampleTd.text()) + data.table.length);
+            add_sample_href();
+            //alert('success.')
+          } else if (data.msg == "async") {
+            window.location.href = "/task/result/" + data.task_id + "/";
+            return;
+          } else if (data.msg == "async-upload") {
+            add_upload_id(data.upload_id);
+            if (data.username !== "anonymouse") {
+              window.location.href = "/auth/tasks/";
+              return;
+            }
+          } else {
+            layer.close(index);
+            layer.alert(data.msg);
             return;
           }
-        } else {
-          layer.close(index);
-          layer.alert(data.msg);
-          return;
-        }
-      },
-    });
+        },
+      });
+    } else {
+      $.confirm({
+        title: "Upload file error!",
+        content: "Only support gzip compressed vcf file (*.vcf.gz).",
+        type: "red",
+        typeAnimated: true,
+        buttons: {
+          close: function () {},
+        },
+      });
+    }
   });
 
   // variety bootstrap table
