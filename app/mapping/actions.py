@@ -9,26 +9,22 @@ from app.app import celery
 from flask_login import current_user
 import json
 
-UPLOAD_PATH = os.path.join(basedir, 'app', 'static', 'download')
-MAPPING_PATH = os.path.join(UPLOAD_PATH, 'gene_mapping')
-ANN_PATH = os.path.join(UPLOAD_PATH, 'vcf_ann')
+UPLOAD_PATH = os.path.join(basedir, "app", "static", "download")
+MAPPING_PATH = os.path.join(UPLOAD_PATH, "gene_mapping")
+ANN_PATH = os.path.join(UPLOAD_PATH, "vcf_ann")
 gene_bed_file = Config.GENE_POS
-#VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
-#SNP_SCORE_SCRIPT = '/home/scripts/omSnpScore/scripts/snpScore'
+# VCF_TABLE_PATH = '/home/app/wheatDB/data/vcf_private_table'
+# SNP_SCORE_SCRIPT = '/home/scripts/omSnpScore/scripts/snpScore'
 
 
 def fetch_vcf():
     pub_vcf = Data.query.filter_by(opened=1, sign=0).all()
-    pub_samples = [
-        '.'.join([each.tc_id, each.sample_name]) for each in pub_vcf
-    ]
+    pub_samples = [".".join([each.tc_id, each.sample_name]) for each in pub_vcf]
     if current_user.is_authenticated:
-        own_vcf = Data.query.filter_by(provider=current_user.username,
-                                       opened=0,
-                                       sign=0).all()
-        private_samples = [
-            '.'.join([each.tc_id, each.sample_name]) for each in own_vcf
-        ]
+        own_vcf = Data.query.filter_by(
+            provider=current_user.username, opened=0, sign=0
+        ).all()
+        private_samples = [".".join([each.tc_id, each.sample_name]) for each in own_vcf]
     else:
         private_samples = []
 
@@ -48,49 +44,48 @@ def run_bsa(info, task_id):
 
     result = processor.shRun(cmd)
     result_base = result[0]
-    result_path = os.path.join(result_base, 'results')
+    result_path = os.path.join(result_base, "results")
     processor.Run(
-        cmd=
-        'cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*" -x "results/mutant*.bed" -x "results/qtlseqr*.csv" -x "results/history/*"'
-        .format(zip_file=os.path.join(result_base, 'results.zip'),
-                dir=result_base))
+        cmd='cd {dir} && zip -r {zip_file} results -x "results/split/*" -x "results/circos_data/*" -x "results/mutant*.bed" -x "results/qtlseqr*.csv" -x "results/history/*"'.format(
+            zip_file=os.path.join(result_base, "results.zip"), dir=result_base
+        )
+    )
 
-    path = re.sub(r'\S+wheat.*/app', '', result_path)
+    path = re.sub(r"\S+wheat.*/app", "", result_path)
+    # fix link bug
+    path = path.replace("/mapping/mapping_download", "/static/download")
 
-    png_files = glob.glob(f'{result_path}/*/*png')
-    jpg_files = glob.glob(f'{result_path}/*/*jpg')
+    png_files = glob.glob(f"{result_path}/*/*png")
+    jpg_files = glob.glob(f"{result_path}/*/*jpg")
 
     plot_files = png_files + jpg_files
+    plot_files_path = [re.sub(r"\S+wheat.*/app", "", each) for each in plot_files]
+    # fix link bug
     plot_files_path = [
-        re.sub(r'\S+wheat.*/app', '', each) for each in plot_files
+        each.replace("/mapping/mapping_download", "/static/download")
+        for each in plot_files_path
     ]
 
     finish_task(task_id)
 
     return {
-        'task': 'bsa',
-        'result': {
-            'path': os.path.join(path, '../results.zip'),
-            'files': plot_files_path,
-            'params': info
-        }
+        "task": "bsa",
+        "result": {
+            "path": os.path.join(path, "../results.zip"),
+            "files": plot_files_path,
+            "params": info,
+        },
     }
 
 
 @celery.task
 def compare_info(info):
-    genes = info.get('gene_id')
+    genes = info.get("gene_id")
     if genes:
         gene_list = parseInput(genes)
         if len(gene_list) == 0:
-            return {
-                'task': 'compare_info',
-                'result': {
-                    'header': [],
-                    'body': []
-                }
-            }
-        info['gene_id'] = gene_list
+            return {"task": "compare_info", "result": {"header": [], "body": []}}
+        info["gene_id"] = gene_list
 
     cmd = "snpInf-bychr \
             --gene_bed {gene_bed} \
@@ -107,13 +102,10 @@ def compare_info(info):
     print(cmd)
     result = processor.shRun(cmd)
     if result:
-        head_data = result[0].split('\t')
-        body_data = [row.split('\t') for row in result[1:]]
+        head_data = result[0].split("\t")
+        body_data = [row.split("\t") for row in result[1:]]
         return {
-            'task': 'compare_info',
-            'result': {
-                'header': head_data,
-                'body': body_data
-            }
+            "task": "compare_info",
+            "result": {"header": head_data, "body": body_data},
         }
-    return {'task': 'compare_info', 'result': {'header': [], 'body': []}}
+    return {"task": "compare_info", "result": {"header": [], "body": []}}
