@@ -122,7 +122,7 @@ nltk==3.3
 nose==1.3.7
 notebook==5.6.0
 numexpr==2.6.8
-numpy==1.16.2
+numpy==1.22.0
 olefile==0.46
 -e git+git@github.com:bioShaun/omSnpScore.git@6f8fbabd5cef709a18f50c988ec7f4752cb147f9#egg=omSnpScore
 openpyxl==2.5.6
