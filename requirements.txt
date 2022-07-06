@@ -102,7 +102,7 @@ linecache2==1.0.0
 llvmlite==0.24.0
 locket==0.2.0
 loguru==0.2.5
-lxml==4.2.5
+lxml==4.9.1
 Mako==1.0.8
 MarkupSafe==1.0
 matplotlib==2.2.3
